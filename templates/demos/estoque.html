@@ -1,0 +1,637 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Controle de Estoque - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-boxes text-warning me-2"></i>Demo: Controle de Estoque</h1>
+        <p class="lead text-muted">Sistema completo de gestão de estoque com alertas automáticos</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente adicionar produtos e gerar relatórios de estoque!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-cubes fa-2x mb-2"></i>
+                    <h4 id="totalItens">{{ products|length }}</h4>
+                    <p class="mb-0">Itens no Estoque</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                    <h4 id="valorEstoque">R$ 0,00</h4>
+                    <p class="mb-0">Valor Total do Estoque</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                    <h4 id="alertasEstoque">0</h4>
+                    <p class="mb-0">Alertas de Reposição</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                    <h4 id="giroEstoque">12.5%</h4>
+                    <p class="mb-0">Giro de Estoque</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="produtos-tab" data-bs-toggle="tab" data-bs-target="#produtos" type="button">
+                        <i class="fas fa-box me-2"></i>Produtos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="movimentacao-tab" data-bs-toggle="tab" data-bs-target="#movimentacao" type="button">
+                        <i class="fas fa-exchange-alt me-2"></i>Movimentações
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="alertas-tab" data-bs-toggle="tab" data-bs-target="#alertas" type="button">
+                        <i class="fas fa-bell me-2"></i>Alertas
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-chart-bar me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Produtos Tab -->
+                <div class="tab-pane fade show active" id="produtos" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Inventário de Produtos</h5>
+                        <div>
+                            <button class="btn btn-warning me-2" onclick="baixarEstoque()">
+                                <i class="fas fa-minus me-2"></i>Dar Baixa
+                            </button>
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#entradaEstoqueModal">
+                                <i class="fas fa-plus me-2"></i>Entrada de Estoque
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="produtosTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                    </th>
+                                    <th>Código</th>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Qtd. Atual</th>
+                                    <th>Qtd. Mínima</th>
+                                    <th>Preço Unitário</th>
+                                    <th>Valor Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td><input type="checkbox" class="product-checkbox" value="{{ product.id }}"></td>
+                                    <td>{{ "%04d"|format(product.id) }}</td>
+                                    <td>{{ product.nome }}</td>
+                                    <td><span class="badge bg-secondary">{{ product.categoria }}</span></td>
+                                    <td class="fw-bold">{{ product.estoque }}</td>
+                                    <td>10</td>
+                                    <td>R$ {{ "%.2f"|format(product.preco) }}</td>
+                                    <td>R$ {{ "%.2f"|format(product.preco * product.estoque) }}</td>
+                                    <td>
+                                        {% if product.estoque > 10 %}
+                                            <span class="badge bg-success">Normal</span>
+                                        {% elif product.estoque > 5 %}
+                                            <span class="badge bg-warning">Baixo</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Crítico</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Movimentações Tab -->
+                <div class="tab-pane fade" id="movimentacao" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Histórico de Movimentações</h5>
+                        <div>
+                            <input type="date" id="filtroData" class="form-control d-inline-block" style="width: auto;">
+                            <button class="btn btn-outline-primary ms-2" onclick="filtrarMovimentacoes()">
+                                <i class="fas fa-filter me-2"></i>Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="movimentacoesList">
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-exchange-alt fa-2x mb-3"></i>
+                            <p class="mb-0">Nenhuma movimentação registrada. Realize entradas ou saídas de estoque para visualizar o histórico.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas Tab -->
+                <div class="tab-pane fade" id="alertas" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Alertas de Estoque</h5>
+                        <button class="btn btn-outline-success" onclick="marcarTodosLidos()">
+                            <i class="fas fa-check-double me-2"></i>Marcar Todos como Lidos
+                        </button>
+                    </div>
+                    
+                    <div id="alertasList">
+                        <!-- Alertas will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Distribuição do Estoque por Categoria</h5>
+                            <canvas id="categoriaEstoqueChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Produtos com Menor Estoque</h5>
+                            <canvas id="baixoEstoqueChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="/export/csv/estoque" class="btn btn-success me-2">
+                            <i class="fas fa-file-excel me-2"></i>Exportar Planilha
+                        </a>
+                        <button class="btn btn-info me-2" onclick="gerarRelatorioCompleto()">
+                            <i class="fas fa-chart-bar me-2"></i>Relatório Completo
+                        </button>
+                        <button class="btn btn-warning" onclick="gerarPedidoCompra()">
+                            <i class="fas fa-shopping-cart me-2"></i>Gerar Pedido de Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Entrada de Estoque Modal -->
+<div class="modal fade" id="entradaEstoqueModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Entrada de Estoque</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="entradaEstoqueForm">
+                    <div class="mb-3">
+                        <label for="produtoSelect" class="form-label">Produto</label>
+                        <select class="form-select" id="produtoSelect" required>
+                            <option value="">Selecione um produto</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}">{{ product.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantidadeEntrada" class="form-label">Quantidade</label>
+                        <input type="number" class="form-control" id="quantidadeEntrada" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipoMovimentacao" class="form-label">Tipo de Movimentação</label>
+                        <select class="form-select" id="tipoMovimentacao" required>
+                            <option value="compra">Compra</option>
+                            <option value="devolucao">Devolução</option>
+                            <option value="ajuste">Ajuste de Estoque</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="observacaoEntrada" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacaoEntrada" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="registrarEntrada()">Registrar Entrada</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize Estoque Demo
+let produtos = {{ products | tojsonfilter }};
+let movimentacoes = [];
+let nextMovimentacaoId = 1;
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    updateAlertas();
+    initCharts();
+    
+    // Set today's date for filter
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('filtroData').value = today;
+});
+
+function updateDashboard() {
+    const totalItens = produtos.reduce((sum, p) => sum + p.estoque, 0);
+    const valorEstoque = produtos.reduce((sum, p) => sum + (p.preco * p.estoque), 0);
+    const alertasEstoque = produtos.filter(p => p.estoque <= 10).length;
+    
+    document.getElementById('totalItens').textContent = totalItens;
+    document.getElementById('valorEstoque').textContent = `R$ ${valorEstoque.toFixed(2)}`;
+    document.getElementById('alertasEstoque').textContent = alertasEstoque;
+}
+
+function registrarEntrada() {
+    const produtoId = parseInt(document.getElementById('produtoSelect').value);
+    const quantidade = parseInt(document.getElementById('quantidadeEntrada').value);
+    const tipo = document.getElementById('tipoMovimentacao').value;
+    const observacao = document.getElementById('observacaoEntrada').value;
+    
+    // Find product and update stock
+    const produto = produtos.find(p => p.id === produtoId);
+    if (produto) {
+        produto.estoque += quantidade;
+        
+        // Register movement
+        const movimentacao = {
+            id: nextMovimentacaoId++,
+            produtoId: produtoId,
+            produtoNome: produto.nome,
+            tipo: 'entrada',
+            motivo: tipo,
+            quantidade: quantidade,
+            data: new Date().toISOString().split('T')[0],
+            hora: new Date().toTimeString().slice(0,5),
+            observacao: observacao
+        };
+        
+        movimentacoes.push(movimentacao);
+        
+        updateDashboard();
+        updateProductsTable();
+        updateMovimentacoesList();
+        updateAlertas();
+        
+        // Close modal and reset form
+        const modal = bootstrap.Modal.getInstance(document.getElementById('entradaEstoqueModal'));
+        modal.hide();
+        document.getElementById('entradaEstoqueForm').reset();
+        
+        showNotification(`Entrada registrada: +${quantidade} ${produto.nome}`, 'success');
+    }
+}
+
+function baixarEstoque() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Selecione pelo menos um produto para dar baixa.', 'warning');
+        return;
+    }
+    
+    const quantidade = prompt('Quantidade para dar baixa:');
+    if (!quantidade || isNaN(quantidade) || quantidade <= 0) {
+        return;
+    }
+    
+    checkboxes.forEach(checkbox => {
+        const produtoId = parseInt(checkbox.value);
+        const produto = produtos.find(p => p.id === produtoId);
+        
+        if (produto && produto.estoque >= quantidade) {
+            produto.estoque -= parseInt(quantidade);
+            
+            // Register movement
+            const movimentacao = {
+                id: nextMovimentacaoId++,
+                produtoId: produtoId,
+                produtoNome: produto.nome,
+                tipo: 'saida',
+                motivo: 'venda',
+                quantidade: parseInt(quantidade),
+                data: new Date().toISOString().split('T')[0],
+                hora: new Date().toTimeString().slice(0,5),
+                observacao: 'Baixa manual'
+            };
+            
+            movimentacoes.push(movimentacao);
+        }
+    });
+    
+    updateDashboard();
+    updateProductsTable();
+    updateMovimentacoesList();
+    updateAlertas();
+    
+    // Uncheck all checkboxes
+    checkboxes.forEach(cb => cb.checked = false);
+    document.getElementById('selectAll').checked = false;
+    
+    showNotification('Baixa de estoque realizada com sucesso!', 'success');
+}
+
+function updateProductsTable() {
+    const tbody = document.querySelector('#produtosTable tbody');
+    tbody.innerHTML = '';
+    
+    produtos.forEach(product => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td><input type="checkbox" class="product-checkbox" value="${product.id}"></td>
+            <td>${String(product.id).padStart(4, '0')}</td>
+            <td>${product.nome}</td>
+            <td><span class="badge bg-secondary">${product.categoria}</span></td>
+            <td class="fw-bold">${product.estoque}</td>
+            <td>10</td>
+            <td>R$ ${product.preco.toFixed(2)}</td>
+            <td>R$ ${(product.preco * product.estoque).toFixed(2)}</td>
+            <td>
+                ${product.estoque > 10 ? '<span class="badge bg-success">Normal</span>' : 
+                  product.estoque > 5 ? '<span class="badge bg-warning">Baixo</span>' : 
+                  '<span class="badge bg-danger">Crítico</span>'}
+            </td>
+        `;
+    });
+}
+
+function updateMovimentacoesList() {
+    const container = document.getElementById('movimentacoesList');
+    
+    if (movimentacoes.length === 0) {
+        container.innerHTML = `
+            <div class="alert alert-info text-center">
+                <i class="fas fa-exchange-alt fa-2x mb-3"></i>
+                <p class="mb-0">Nenhuma movimentação registrada. Realize entradas ou saídas de estoque para visualizar o histórico.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const movimentacoesOrdenadas = [...movimentacoes].sort((a, b) => 
+        new Date(b.data + ' ' + b.hora) - new Date(a.data + ' ' + a.hora)
+    );
+    
+    let html = '';
+    movimentacoesOrdenadas.forEach(mov => {
+        const iconClass = mov.tipo === 'entrada' ? 'fas fa-arrow-up text-success' : 'fas fa-arrow-down text-danger';
+        const tipoText = mov.tipo === 'entrada' ? 'Entrada' : 'Saída';
+        
+        html += `
+            <div class="card mb-2">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">
+                                <i class="${iconClass} me-2"></i>
+                                ${tipoText} - ${mov.produtoNome}
+                            </h6>
+                            <p class="mb-1"><strong>Quantidade:</strong> ${mov.quantidade}</p>
+                            <p class="mb-1"><strong>Motivo:</strong> ${mov.motivo}</p>
+                            ${mov.observacao ? `<p class="mb-0"><strong>Obs:</strong> ${mov.observacao}</p>` : ''}
+                        </div>
+                        <div class="text-end">
+                            <span class="badge ${mov.tipo === 'entrada' ? 'bg-success' : 'bg-danger'}">${tipoText}</span>
+                            <br>
+                            <small class="text-muted">${mov.data} ${mov.hora}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function updateAlertas() {
+    const alertas = produtos.filter(p => p.estoque <= 10);
+    const container = document.getElementById('alertasList');
+    
+    if (alertas.length === 0) {
+        container.innerHTML = `
+            <div class="alert alert-success text-center">
+                <i class="fas fa-check-circle fa-2x mb-3"></i>
+                <p class="mb-0">Nenhum alerta de estoque. Todos os produtos estão com níveis adequados!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    alertas.forEach(produto => {
+        const urgencia = produto.estoque <= 5 ? 'danger' : 'warning';
+        const nivelText = produto.estoque <= 5 ? 'Crítico' : 'Baixo';
+        
+        html += `
+            <div class="alert alert-${urgencia} d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="alert-heading mb-1">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        ${produto.nome} - Estoque ${nivelText}
+                    </h6>
+                    <p class="mb-0">
+                        Quantidade atual: <strong>${produto.estoque}</strong> | 
+                        Quantidade mínima: <strong>10</strong>
+                    </p>
+                </div>
+                <button class="btn btn-sm btn-outline-primary" onclick="reabastecer(${produto.id})">
+                    Reabastecer
+                </button>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function reabastecer(produtoId) {
+    document.getElementById('produtoSelect').value = produtoId;
+    document.getElementById('quantidadeEntrada').value = 20;
+    document.getElementById('tipoMovimentacao').value = 'compra';
+    
+    const modal = new bootstrap.Modal(document.getElementById('entradaEstoqueModal'));
+    modal.show();
+}
+
+function toggleSelectAll() {
+    const selectAll = document.getElementById('selectAll').checked;
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    checkboxes.forEach(cb => cb.checked = selectAll);
+}
+
+function filtrarMovimentacoes() {
+    const dataFiltro = document.getElementById('filtroData').value;
+    // Filter logic would be implemented here
+    showNotification(`Filtro aplicado para a data: ${dataFiltro}`, 'info');
+}
+
+function marcarTodosLidos() {
+    showNotification('Todos os alertas foram marcados como lidos!', 'success');
+}
+
+function initCharts() {
+    // Categoria chart
+    const ctxCategoria = document.getElementById('categoriaEstoqueChart').getContext('2d');
+    const categorias = [...new Set(produtos.map(p => p.categoria))];
+    const dadosCategoria = categorias.map(cat => 
+        produtos.filter(p => p.categoria === cat).reduce((sum, p) => sum + p.estoque, 0)
+    );
+    
+    new Chart(ctxCategoria, {
+        type: 'pie',
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: dadosCategoria,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Estoque por Categoria'
+                }
+            }
+        }
+    });
+    
+    // Low stock chart
+    const ctxBaixo = document.getElementById('baixoEstoqueChart').getContext('2d');
+    const produtosBaixos = produtos.filter(p => p.estoque <= 15).slice(0, 5);
+    
+    new Chart(ctxBaixo, {
+        type: 'bar',
+        data: {
+            labels: produtosBaixos.map(p => p.nome),
+            datasets: [{
+                label: 'Quantidade',
+                data: produtosBaixos.map(p => p.estoque),
+                backgroundColor: produtosBaixos.map(p => p.estoque <= 5 ? '#dc3545' : '#ffc107')
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Produtos com Menor Estoque'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function gerarRelatorioCompleto() {
+    const totalProdutos = produtos.length;
+    const valorTotal = produtos.reduce((sum, p) => sum + (p.preco * p.estoque), 0);
+    const produtosCriticos = produtos.filter(p => p.estoque <= 5).length;
+    const produtosBaixos = produtos.filter(p => p.estoque <= 10).length;
+    
+    alert(`
+RELATÓRIO COMPLETO DE ESTOQUE
+
+Total de Produtos: ${totalProdutos}
+Valor Total do Estoque: R$ ${valorTotal.toFixed(2)}
+Produtos em Nível Crítico: ${produtosCriticos}
+Produtos com Estoque Baixo: ${produtosBaixos}
+Total de Movimentações: ${movimentacoes.length}
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `);
+}
+
+function gerarPedidoCompra() {
+    const produtosParaCompra = produtos.filter(p => p.estoque <= 10);
+    
+    if (produtosParaCompra.length === 0) {
+        showNotification('Não há produtos que necessitam reposição no momento.', 'info');
+        return;
+    }
+    
+    let pedido = 'PEDIDO DE COMPRA SUGERIDO\n\n';
+    let valorTotal = 0;
+    
+    produtosParaCompra.forEach(produto => {
+        const qtdSugerida = 30 - produto.estoque;
+        const valorItem = qtdSugerida * produto.preco;
+        valorTotal += valorItem;
+        
+        pedido += `${produto.nome} - Qtd: ${qtdSugerida} - Valor: R$ ${valorItem.toFixed(2)}\n`;
+    });
+    
+    pedido += `\nVALOR TOTAL: R$ ${valorTotal.toFixed(2)}`;
+    
+    alert(pedido);
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

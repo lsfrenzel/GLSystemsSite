@@ -1,0 +1,874 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Gestão para Restaurantes - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-utensils text-danger me-2"></i>Demo: Gestão para Restaurantes</h1>
+        <p class="lead text-muted">Sistema completo para controle de pedidos e análise de vendas</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente criar pedidos e visualizar relatórios de vendas!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-receipt fa-2x mb-2"></i>
+                    <h4 id="pedidosHoje">0</h4>
+                    <p class="mb-0">Pedidos Hoje</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                    <h4 id="faturamentoHoje">R$ 0,00</h4>
+                    <p class="mb-0">Faturamento Hoje</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x mb-2"></i>
+                    <h4 id="tempoMedio">25 min</h4>
+                    <p class="mb-0">Tempo Médio</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-star fa-2x mb-2"></i>
+                    <h4 id="itemPopular">--</h4>
+                    <p class="mb-0">Item Mais Vendido</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="pedidos-tab" data-bs-toggle="tab" data-bs-target="#pedidos" type="button">
+                        <i class="fas fa-list-alt me-2"></i>Pedidos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="cardapio-tab" data-bs-toggle="tab" data-bs-target="#cardapio" type="button">
+                        <i class="fas fa-book me-2"></i>Cardápio
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="vendas-tab" data-bs-toggle="tab" data-bs-target="#vendas" type="button">
+                        <i class="fas fa-chart-bar me-2"></i>Vendas
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-file-alt me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Pedidos Tab -->
+                <div class="tab-pane fade show active" id="pedidos" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Pedidos Ativos</h5>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#novoPedidoModal">
+                            <i class="fas fa-plus me-2"></i>Novo Pedido
+                        </button>
+                    </div>
+                    
+                    <div class="row" id="pedidosAtivos">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-clipboard-list fa-2x mb-3"></i>
+                                <p class="mb-0">Nenhum pedido ativo no momento. Clique em "Novo Pedido" para começar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cardápio Tab -->
+                <div class="tab-pane fade" id="cardapio" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Cardápio Digital</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novoItemModal">
+                            <i class="fas fa-plus me-2"></i>Novo Item
+                        </button>
+                    </div>
+                    
+                    <div class="row" id="cardapioItems">
+                        <!-- Cardápio items will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Vendas Tab -->
+                <div class="tab-pane fade" id="vendas" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h5>Vendas por Hora</h5>
+                            <canvas id="vendasHoraChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Top 5 Itens Mais Vendidos</h5>
+                            <div id="topItens" class="list-group">
+                                <!-- Top items will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Vendas por Categoria</h5>
+                            <canvas id="vendasCategoriaChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Faturamento Semanal</h5>
+                            <canvas id="faturamentoSemanalChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                                    <h6>Relatório de Vendas Diárias</h6>
+                                    <p class="small text-muted">Análise detalhada das vendas do dia</p>
+                                    <button class="btn btn-primary" onclick="gerarRelatorioVendasDiarias()">
+                                        <i class="fas fa-chart-bar me-2"></i>Gerar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                                    <h6>Itens Mais Vendidos</h6>
+                                    <p class="small text-muted">Ranking dos pratos favoritos</p>
+                                    <button class="btn btn-warning" onclick="gerarRelatorioItensPopulares()">
+                                        <i class="fas fa-trophy me-2"></i>Gerar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
+                                    <h6>Exportar Dados</h6>
+                                    <p class="small text-muted">Planilha completa de vendas</p>
+                                    <button class="btn btn-success" onclick="exportarDadosVendas()">
+                                        <i class="fas fa-download me-2"></i>Exportar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6>Indicadores de Performance</h6>
+                            <div class="row">
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-success" id="ticketMedio">R$ 0,00</h4>
+                                    <small>Ticket Médio</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-primary" id="itensPorPedido">0</h4>
+                                    <small>Itens por Pedido</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-warning" id="tempoMedioPreparo">0 min</h4>
+                                    <small>Tempo Médio Preparo</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-info" id="satisfacaoCliente">98%</h4>
+                                    <small>Satisfação Cliente</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Novo Pedido Modal -->
+<div class="modal fade" id="novoPedidoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoPedidoForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="numeroMesa" class="form-label">Mesa/Balcão</label>
+                            <input type="text" class="form-control" id="numeroMesa" placeholder="Ex: Mesa 5" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nomeCliente" class="form-label">Nome do Cliente</label>
+                            <input type="text" class="form-control" id="nomeCliente" placeholder="Opcional">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Itens do Pedido</label>
+                        <div id="itensPedido">
+                            <div class="row align-items-end mb-2">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="itemSelect">
+                                        <option value="">Selecione um item</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" id="quantidadeItem" min="1" value="1">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-primary" onclick="adicionarItem()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <h6>Itens Adicionados:</h6>
+                            <div id="itensAdicionados" class="border p-2 bg-light" style="min-height: 60px;">
+                                <p class="text-muted mb-0">Nenhum item adicionado</p>
+                            </div>
+                            <div class="text-end mt-2">
+                                <strong>Total: R$ <span id="totalPedido">0.00</span></strong>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="criarPedido()">Criar Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Novo Item Modal -->
+<div class="modal fade" id="novoItemModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Item do Cardápio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoItemForm">
+                    <div class="mb-3">
+                        <label for="itemNome" class="form-label">Nome do Item</label>
+                        <input type="text" class="form-control" id="itemNome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemCategoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="itemCategoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Entradas">Entradas</option>
+                            <option value="Pratos Principais">Pratos Principais</option>
+                            <option value="Sobremesas">Sobremesas</option>
+                            <option value="Bebidas">Bebidas</option>
+                            <option value="Lanches">Lanches</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemPreco" class="form-label">Preço (R$)</label>
+                        <input type="number" class="form-control" id="itemPreco" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemDescricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="itemDescricao" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="adicionarItemCardapio()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize Restaurant Demo
+let cardapio = [
+    {id: 1, nome: "Hambúrguer Clássico", categoria: "Lanches", preco: 25.90, descricao: "Pão, hambúrguer, alface, tomate"},
+    {id: 2, nome: "Pizza Margherita", categoria: "Pratos Principais", preco: 32.00, descricao: "Molho de tomate, mussarela, manjericão"},
+    {id: 3, nome: "Suco de Laranja", categoria: "Bebidas", preco: 8.50, descricao: "Suco natural de laranja"},
+    {id: 4, nome: "Batata Frita", categoria: "Entradas", preco: 12.00, descricao: "Porção de batata frita crocante"},
+    {id: 5, nome: "Pudim", categoria: "Sobremesas", preco: 9.90, descricao: "Pudim de leite condensado"}
+];
+
+let pedidos = [];
+let vendas = [];
+let nextCardapioId = 6;
+let nextPedidoId = 1;
+let itensPedidoAtual = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    updateCardapio();
+    updateItemSelect();
+    initCharts();
+    simulateInitialSales();
+});
+
+function simulateInitialSales() {
+    // Simulate some sales for demonstration
+    const hoje = new Date().toISOString().split('T')[0];
+    
+    for (let i = 0; i < 10; i++) {
+        const item = cardapio[Math.floor(Math.random() * cardapio.length)];
+        vendas.push({
+            itemId: item.id,
+            itemNome: item.nome,
+            categoria: item.categoria,
+            quantidade: Math.floor(Math.random() * 3) + 1,
+            valorUnitario: item.preco,
+            data: hoje,
+            hora: `${9 + Math.floor(Math.random() * 10)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`
+        });
+    }
+    
+    updateDashboard();
+    updateTopItens();
+    initCharts();
+}
+
+function updateDashboard() {
+    const hoje = new Date().toISOString().split('T')[0];
+    const vendasHoje = vendas.filter(v => v.data === hoje);
+    
+    const pedidosHoje = vendasHoje.length;
+    const faturamentoHoje = vendasHoje.reduce((sum, v) => sum + (v.valorUnitario * v.quantidade), 0);
+    
+    // Find most popular item
+    const itemCount = {};
+    vendasHoje.forEach(v => {
+        itemCount[v.itemNome] = (itemCount[v.itemNome] || 0) + v.quantidade;
+    });
+    
+    const itemPopular = Object.keys(itemCount).reduce((a, b) => itemCount[a] > itemCount[b] ? a : b, '--');
+    
+    document.getElementById('pedidosHoje').textContent = pedidosHoje;
+    document.getElementById('faturamentoHoje').textContent = `R$ ${faturamentoHoje.toFixed(2)}`;
+    document.getElementById('itemPopular').textContent = itemPopular.substring(0, 15) + (itemPopular.length > 15 ? '...' : '');
+    
+    // Update performance indicators
+    const ticketMedio = pedidosHoje > 0 ? faturamentoHoje / pedidosHoje : 0;
+    const itensPorPedido = pedidosHoje > 0 ? vendasHoje.reduce((sum, v) => sum + v.quantidade, 0) / pedidosHoje : 0;
+    
+    document.getElementById('ticketMedio').textContent = `R$ ${ticketMedio.toFixed(2)}`;
+    document.getElementById('itensPorPedido').textContent = itensPorPedido.toFixed(1);
+    document.getElementById('tempoMedioPreparo').textContent = '22 min';
+}
+
+function updateCardapio() {
+    const container = document.getElementById('cardapioItems');
+    container.innerHTML = '';
+    
+    const categorias = [...new Set(cardapio.map(item => item.categoria))];
+    
+    categorias.forEach(categoria => {
+        const itensCategoria = cardapio.filter(item => item.categoria === categoria);
+        
+        container.innerHTML += `
+            <div class="col-12 mb-3">
+                <h6 class="text-muted">${categoria}</h6>
+                <div class="row">
+                    ${itensCategoria.map(item => `
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">${item.nome}</h6>
+                                    <p class="card-text small text-muted">${item.descricao}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h6 text-success mb-0">R$ ${item.preco.toFixed(2)}</span>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editarItem(${item.id})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    });
+}
+
+function updateItemSelect() {
+    const select = document.getElementById('itemSelect');
+    select.innerHTML = '<option value="">Selecione um item</option>';
+    
+    cardapio.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        option.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+        select.appendChild(option);
+    });
+}
+
+function adicionarItemCardapio() {
+    const nome = document.getElementById('itemNome').value;
+    const categoria = document.getElementById('itemCategoria').value;
+    const preco = parseFloat(document.getElementById('itemPreco').value);
+    const descricao = document.getElementById('itemDescricao').value;
+    
+    const novoItem = {
+        id: nextCardapioId++,
+        nome: nome,
+        categoria: categoria,
+        preco: preco,
+        descricao: descricao
+    };
+    
+    cardapio.push(novoItem);
+    updateCardapio();
+    updateItemSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoItemModal'));
+    modal.hide();
+    document.getElementById('novoItemForm').reset();
+    
+    showNotification('Item adicionado ao cardápio com sucesso!', 'success');
+}
+
+function adicionarItem() {
+    const itemId = parseInt(document.getElementById('itemSelect').value);
+    const quantidade = parseInt(document.getElementById('quantidadeItem').value);
+    
+    if (!itemId || !quantidade) {
+        showNotification('Selecione um item e quantidade!', 'warning');
+        return;
+    }
+    
+    const item = cardapio.find(i => i.id === itemId);
+    if (!item) return;
+    
+    const itemExistente = itensPedidoAtual.find(i => i.id === itemId);
+    if (itemExistente) {
+        itemExistente.quantidade += quantidade;
+    } else {
+        itensPedidoAtual.push({
+            id: itemId,
+            nome: item.nome,
+            preco: item.preco,
+            quantidade: quantidade
+        });
+    }
+    
+    updateItensPedido();
+    document.getElementById('itemSelect').value = '';
+    document.getElementById('quantidadeItem').value = 1;
+}
+
+function updateItensPedido() {
+    const container = document.getElementById('itensAdicionados');
+    
+    if (itensPedidoAtual.length === 0) {
+        container.innerHTML = '<p class="text-muted mb-0">Nenhum item adicionado</p>';
+        document.getElementById('totalPedido').textContent = '0.00';
+        return;
+    }
+    
+    let html = '';
+    let total = 0;
+    
+    itensPedidoAtual.forEach((item, index) => {
+        const subtotal = item.preco * item.quantidade;
+        total += subtotal;
+        
+        html += `
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span>${item.quantidade}x ${item.nome}</span>
+                <div>
+                    <span class="me-2">R$ ${subtotal.toFixed(2)}</span>
+                    <button class="btn btn-sm btn-outline-danger" onclick="removerItem(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    document.getElementById('totalPedido').textContent = total.toFixed(2);
+}
+
+function removerItem(index) {
+    itensPedidoAtual.splice(index, 1);
+    updateItensPedido();
+}
+
+function criarPedido() {
+    const mesa = document.getElementById('numeroMesa').value;
+    const cliente = document.getElementById('nomeCliente').value;
+    
+    if (!mesa || itensPedidoAtual.length === 0) {
+        showNotification('Preencha a mesa e adicione pelo menos um item!', 'warning');
+        return;
+    }
+    
+    const novoPedido = {
+        id: nextPedidoId++,
+        mesa: mesa,
+        cliente: cliente || 'Cliente',
+        itens: [...itensPedidoAtual],
+        total: itensPedidoAtual.reduce((sum, item) => sum + (item.preco * item.quantidade), 0),
+        status: 'Preparando',
+        horario: new Date().toTimeString().slice(0,5),
+        data: new Date().toISOString().split('T')[0]
+    };
+    
+    pedidos.push(novoPedido);
+    
+    // Add to sales
+    itensPedidoAtual.forEach(item => {
+        vendas.push({
+            itemId: item.id,
+            itemNome: item.nome,
+            categoria: cardapio.find(c => c.id === item.id)?.categoria || 'Outros',
+            quantidade: item.quantidade,
+            valorUnitario: item.preco,
+            data: novoPedido.data,
+            hora: novoPedido.horario
+        });
+    });
+    
+    updateDashboard();
+    updatePedidosAtivos();
+    updateTopItens();
+    initCharts();
+    
+    // Reset form
+    itensPedidoAtual = [];
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoPedidoModal'));
+    modal.hide();
+    document.getElementById('novoPedidoForm').reset();
+    updateItensPedido();
+    
+    showNotification(`Pedido #${novoPedido.id} criado para ${mesa}!`, 'success');
+}
+
+function updatePedidosAtivos() {
+    const container = document.getElementById('pedidosAtivos');
+    const pedidosAtivos = pedidos.filter(p => p.status !== 'Finalizado');
+    
+    if (pedidosAtivos.length === 0) {
+        container.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-clipboard-list fa-2x mb-3"></i>
+                    <p class="mb-0">Nenhum pedido ativo no momento. Clique em "Novo Pedido" para começar.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    pedidosAtivos.forEach(pedido => {
+        const statusColor = pedido.status === 'Preparando' ? 'warning' : 
+                           pedido.status === 'Pronto' ? 'success' : 'primary';
+        
+        html += `
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>Pedido #${pedido.id}</strong>
+                        <span class="badge bg-${statusColor}">${pedido.status}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Mesa:</strong> ${pedido.mesa}</p>
+                        <p class="mb-1"><strong>Cliente:</strong> ${pedido.cliente}</p>
+                        <p class="mb-2"><strong>Horário:</strong> ${pedido.horario}</p>
+                        <div class="mb-2">
+                            <strong>Itens:</strong>
+                            <ul class="small mb-0">
+                                ${pedido.itens.map(item => 
+                                    `<li>${item.quantidade}x ${item.nome}</li>`
+                                ).join('')}
+                            </ul>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>Total: R$ ${pedido.total.toFixed(2)}</strong>
+                            <div>
+                                ${pedido.status === 'Preparando' ? 
+                                    `<button class="btn btn-sm btn-success" onclick="marcarPronto(${pedido.id})">Pronto</button>` :
+                                    `<button class="btn btn-sm btn-primary" onclick="finalizarPedido(${pedido.id})">Finalizar</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function marcarPronto(pedidoId) {
+    const pedido = pedidos.find(p => p.id === pedidoId);
+    if (pedido) {
+        pedido.status = 'Pronto';
+        updatePedidosAtivos();
+        showNotification(`Pedido #${pedidoId} marcado como pronto!`, 'success');
+    }
+}
+
+function finalizarPedido(pedidoId) {
+    const pedido = pedidos.find(p => p.id === pedidoId);
+    if (pedido) {
+        pedido.status = 'Finalizado';
+        updatePedidosAtivos();
+        showNotification(`Pedido #${pedidoId} finalizado!`, 'success');
+    }
+}
+
+function updateTopItens() {
+    const container = document.getElementById('topItens');
+    
+    // Count item sales
+    const itemCount = {};
+    vendas.forEach(v => {
+        itemCount[v.itemNome] = (itemCount[v.itemNome] || 0) + v.quantidade;
+    });
+    
+    // Sort and get top 5
+    const topItens = Object.entries(itemCount)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 5);
+    
+    if (topItens.length === 0) {
+        container.innerHTML = '<p class="text-muted">Nenhuma venda registrada ainda.</p>';
+        return;
+    }
+    
+    let html = '';
+    topItens.forEach(([nome, quantidade], index) => {
+        html += `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-primary me-2">${index + 1}º</span>
+                    ${nome}
+                </div>
+                <span class="badge bg-success">${quantidade}</span>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function editarItem(itemId) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function initCharts() {
+    // Vendas por hora
+    const ctxHora = document.getElementById('vendasHoraChart').getContext('2d');
+    const horas = Array.from({length: 12}, (_, i) => `${9 + i}:00`);
+    const vendasPorHora = horas.map(hora => {
+        return vendas.filter(v => v.hora.startsWith(hora.slice(0, 2))).length;
+    });
+    
+    new Chart(ctxHora, {
+        type: 'line',
+        data: {
+            labels: horas,
+            datasets: [{
+                label: 'Vendas',
+                data: vendasPorHora,
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Vendas por categoria
+    const ctxCategoria = document.getElementById('vendasCategoriaChart').getContext('2d');
+    const categorias = [...new Set(vendas.map(v => v.categoria))];
+    const vendasCategoria = categorias.map(cat => 
+        vendas.filter(v => v.categoria === cat).reduce((sum, v) => sum + v.quantidade, 0)
+    );
+    
+    new Chart(ctxCategoria, {
+        type: 'doughnut',
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: vendasCategoria,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    
+    // Faturamento semanal
+    const ctxSemanal = document.getElementById('faturamentoSemanalChart').getContext('2d');
+    const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const faturamentoSemanal = [1200, 1800, 1650, 2100, 2400, 2800, 1900]; // Sample data
+    
+    new Chart(ctxSemanal, {
+        type: 'bar',
+        data: {
+            labels: diasSemana,
+            datasets: [{
+                label: 'Faturamento (R$)',
+                data: faturamentoSemanal,
+                backgroundColor: '#28a745'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function gerarRelatorioVendasDiarias() {
+    const hoje = new Date().toISOString().split('T')[0];
+    const vendasHoje = vendas.filter(v => v.data === hoje);
+    
+    const totalVendas = vendasHoje.length;
+    const faturamento = vendasHoje.reduce((sum, v) => sum + (v.valorUnitario * v.quantidade), 0);
+    const ticketMedio = totalVendas > 0 ? faturamento / totalVendas : 0;
+    
+    const relatorio = `
+RELATÓRIO DE VENDAS DIÁRIAS
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+RESUMO DO DIA
+- Total de Vendas: ${totalVendas}
+- Faturamento Total: R$ ${faturamento.toFixed(2)}
+- Ticket Médio: R$ ${ticketMedio.toFixed(2)}
+- Pedidos Ativos: ${pedidos.filter(p => p.status !== 'Finalizado').length}
+
+PERFORMANCE
+- Horário de Pico: 12:00 - 14:00
+- Item Mais Vendido: ${document.getElementById('itemPopular').textContent}
+- Tempo Médio de Preparo: 22 minutos
+
+Relatório gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function gerarRelatorioItensPopulares() {
+    const itemCount = {};
+    vendas.forEach(v => {
+        itemCount[v.itemNome] = (itemCount[v.itemNome] || 0) + v.quantidade;
+    });
+    
+    const topItens = Object.entries(itemCount)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 10);
+    
+    let relatorio = 'RANKING DOS ITENS MAIS VENDIDOS\n\n';
+    
+    topItens.forEach(([nome, quantidade], index) => {
+        relatorio += `${index + 1}º lugar: ${nome} - ${quantidade} vendas\n`;
+    });
+    
+    relatorio += '\nRelatório gerado automaticamente pelo sistema G&L Systems.';
+    
+    alert(relatorio);
+}
+
+function exportarDadosVendas() {
+    const csv = 'Data,Hora,Item,Categoria,Quantidade,Valor Unitário,Total\n' +
+        vendas.map(v => 
+            `${v.data},${v.hora},${v.itemNome},${v.categoria},${v.quantidade},${v.valorUnitario.toFixed(2)},${(v.valorUnitario * v.quantidade).toFixed(2)}`
+        ).join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'vendas_restaurante.csv';
+    link.click();
+    
+    showNotification('Dados de vendas exportados com sucesso!', 'success');
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

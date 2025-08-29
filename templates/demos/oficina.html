@@ -1,0 +1,972 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Gestão de Oficinas - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-wrench text-secondary me-2"></i>Demo: Gestão de Oficinas</h1>
+        <p class="lead text-muted">Sistema completo para controle de ordens de serviço e assistência técnica</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente criar ordens de serviço e acompanhar produtividade!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-tools fa-2x mb-2"></i>
+                    <h4 id="servicosAbertos">0</h4>
+                    <p class="mb-0">Serviços em Andamento</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <h4 id="servicosConcluidos">0</h4>
+                    <p class="mb-0">Serviços Concluídos Hoje</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x mb-2"></i>
+                    <h4 id="tempoMedio">0h</h4>
+                    <p class="mb-0">Tempo Médio de Serviço</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                    <h4 id="faturamentoDia">R$ 0,00</h4>
+                    <p class="mb-0">Faturamento do Dia</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="ordens-tab" data-bs-toggle="tab" data-bs-target="#ordens" type="button">
+                        <i class="fas fa-clipboard-list me-2"></i>Ordens de Serviço
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button">
+                        <i class="fas fa-users me-2"></i>Clientes
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="pecas-tab" data-bs-toggle="tab" data-bs-target="#pecas" type="button">
+                        <i class="fas fa-cog me-2"></i>Peças e Serviços
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-chart-bar me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Ordens de Serviço Tab -->
+                <div class="tab-pane fade show active" id="ordens" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Ordens de Serviço</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novaOrdemModal">
+                            <i class="fas fa-plus me-2"></i>Nova Ordem
+                        </button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroStatus">
+                                <option value="">Todos os status</option>
+                                <option value="Aguardando">Aguardando</option>
+                                <option value="Em Andamento">Em Andamento</option>
+                                <option value="Aguardando Peças">Aguardando Peças</option>
+                                <option value="Concluído">Concluído</option>
+                                <option value="Entregue">Entregue</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="buscarOrdem" placeholder="Buscar por número ou cliente">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="filtroData">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary w-100" onclick="filtrarOrdens()">
+                                <i class="fas fa-filter me-2"></i>Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="ordensTable">
+                            <thead>
+                                <tr>
+                                    <th>OS</th>
+                                    <th>Cliente</th>
+                                    <th>Equipamento</th>
+                                    <th>Data Entrada</th>
+                                    <th>Status</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Ordem data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Clientes Tab -->
+                <div class="tab-pane fade" id="clientes" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Cadastro de Clientes</h5>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#novoClienteModal">
+                            <i class="fas fa-plus me-2"></i>Novo Cliente
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="clientesTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th>Última Visita</th>
+                                    <th>Total de Serviços</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Cliente data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Peças e Serviços Tab -->
+                <div class="tab-pane fade" id="pecas" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6>Catálogo de Peças</h6>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#novaPecaModal">
+                                    <i class="fas fa-plus me-1"></i>Nova Peça
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-sm" id="pecasTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Descrição</th>
+                                            <th>Estoque</th>
+                                            <th>Preço</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Peças data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6>Tipos de Serviço</h6>
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#novoServicoModal">
+                                    <i class="fas fa-plus me-1"></i>Novo Serviço
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-sm" id="servicosTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Descrição</th>
+                                            <th>Tempo Médio</th>
+                                            <th>Preço</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Serviços data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Produtividade Diária</h5>
+                            <canvas id="produtividadeChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Status das Ordens</h5>
+                            <canvas id="statusChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Peças Mais Utilizadas</h5>
+                            <canvas id="pecasChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Faturamento Mensal</h5>
+                            <canvas id="faturamentoChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-success me-2" onclick="exportarRelatorio()">
+                            <i class="fas fa-file-excel me-2"></i>Exportar Planilha
+                        </button>
+                        <button class="btn btn-info me-2" onclick="gerarRelatorioProdutividade()">
+                            <i class="fas fa-chart-line me-2"></i>Relatório de Produtividade
+                        </button>
+                        <button class="btn btn-warning" onclick="gerarRelatorioClientes()">
+                            <i class="fas fa-users me-2"></i>Histórico de Clientes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Nova Ordem Modal -->
+<div class="modal fade" id="novaOrdemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Ordem de Serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novaOrdemForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemCliente" class="form-label">Cliente</label>
+                            <select class="form-select" id="ordemCliente" required>
+                                <option value="">Selecione um cliente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemEquipamento" class="form-label">Equipamento</label>
+                            <input type="text" class="form-control" id="ordemEquipamento" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemModelo" class="form-label">Modelo/Marca</label>
+                            <input type="text" class="form-control" id="ordemModelo">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemNumeroSerie" class="form-label">Número de Série</label>
+                            <input type="text" class="form-control" id="ordemNumeroSerie">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ordemDefeito" class="form-label">Descrição do Defeito</label>
+                        <textarea class="form-control" id="ordemDefeito" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemPrioridade" class="form-label">Prioridade</label>
+                            <select class="form-select" id="ordemPrioridade">
+                                <option value="Normal">Normal</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Urgente">Urgente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ordemPrevisao" class="form-label">Previsão de Entrega</label>
+                            <input type="date" class="form-control" id="ordemPrevisao">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="criarOrdem()">Criar Ordem</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Novo Cliente Modal -->
+<div class="modal fade" id="novoClienteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoClienteForm">
+                    <div class="mb-3">
+                        <label for="clienteNome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="clienteNome" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteTelefone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="clienteTelefone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteEmail" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="clienteEmail">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clienteEndereco" class="form-label">Endereço</label>
+                        <textarea class="form-control" id="clienteEndereco" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="cadastrarCliente()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nova Peça Modal -->
+<div class="modal fade" id="novaPecaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Peça</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novaPecaForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pecaCodigo" class="form-label">Código</label>
+                            <input type="text" class="form-control" id="pecaCodigo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pecaPreco" class="form-label">Preço (R$)</label>
+                            <input type="number" class="form-control" id="pecaPreco" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pecaDescricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" id="pecaDescricao" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pecaEstoque" class="form-label">Quantidade em Estoque</label>
+                        <input type="number" class="form-control" id="pecaEstoque" min="0" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="adicionarPeca()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Novo Serviço Modal -->
+<div class="modal fade" id="novoServicoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Tipo de Serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoServicoForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="servicoCodigo" class="form-label">Código</label>
+                            <input type="text" class="form-control" id="servicoCodigo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="servicoPreco" class="form-label">Preço (R$)</label>
+                            <input type="number" class="form-control" id="servicoPreco" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicoDescricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" id="servicoDescricao" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicoTempo" class="form-label">Tempo Médio (horas)</label>
+                        <input type="number" class="form-control" id="servicoTempo" step="0.5" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="adicionarServico()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize Oficina Demo
+let clientes = [
+    {id: 1, nome: "João Silva", telefone: "(11) 99999-1111", email: "joao@email.com", endereco: "Rua A, 123", ultimaVisita: "2025-01-15", totalServicos: 3},
+    {id: 2, nome: "Maria Santos", telefone: "(11) 99999-2222", email: "maria@email.com", endereco: "Rua B, 456", ultimaVisita: "2025-01-10", totalServicos: 1},
+    {id: 3, nome: "Pedro Costa", telefone: "(11) 99999-3333", email: "pedro@email.com", endereco: "Rua C, 789", ultimaVisita: "2025-01-08", totalServicos: 5}
+];
+
+let ordens = [
+    {id: 1, numero: "OS-001", clienteId: 1, equipamento: "Notebook Dell", modelo: "Inspiron 15", numeroSerie: "ABC123", defeito: "Não liga", dataEntrada: "2025-01-15", status: "Em Andamento", prioridade: "Alta", valor: 150.00, previsao: "2025-01-18"},
+    {id: 2, numero: "OS-002", clienteId: 2, equipamento: "Smartphone Samsung", modelo: "Galaxy S20", numeroSerie: "XYZ789", defeito: "Tela quebrada", dataEntrada: "2025-01-16", status: "Aguardando Peças", prioridade: "Normal", valor: 280.00, previsao: "2025-01-20"},
+    {id: 3, numero: "OS-003", clienteId: 3, equipamento: "Impressora HP", modelo: "LaserJet", numeroSerie: "HP456", defeito: "Não imprime", dataEntrada: "2025-01-14", status: "Concluído", prioridade: "Normal", valor: 85.00, previsao: "2025-01-17"}
+];
+
+let pecas = [
+    {codigo: "P001", descricao: "Tela LCD 15.6\"", estoque: 5, preco: 180.00},
+    {codigo: "P002", descricao: "Bateria Notebook", estoque: 8, preco: 120.00},
+    {codigo: "P003", descricao: "Carregador Universal", estoque: 12, preco: 45.00},
+    {codigo: "P004", descricao: "Memória RAM 8GB", estoque: 6, preco: 200.00}
+];
+
+let servicos = [
+    {codigo: "S001", descricao: "Formatação e Instalação", tempo: 2.0, preco: 80.00},
+    {codigo: "S002", descricao: "Limpeza Interna", tempo: 1.0, preco: 40.00},
+    {codigo: "S003", descricao: "Diagnóstico Completo", tempo: 0.5, preco: 30.00},
+    {codigo: "S004", descricao: "Recuperação de Dados", tempo: 4.0, preco: 150.00}
+];
+
+let nextClienteId = 4;
+let nextOrdemId = 4;
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    updateOrdensTable();
+    updateClientesTable();
+    updatePecasTable();
+    updateServicosTable();
+    updateClienteSelect();
+    initCharts();
+    
+    // Set today's date for filter
+    const hoje = new Date().toISOString().split('T')[0];
+    document.getElementById('filtroData').value = hoje;
+    
+    // Set default delivery date (3 days from now)
+    const previsao = new Date();
+    previsao.setDate(previsao.getDate() + 3);
+    document.getElementById('ordemPrevisao').value = previsao.toISOString().split('T')[0];
+});
+
+function updateDashboard() {
+    const hoje = new Date().toISOString().split('T')[0];
+    
+    const servicosAbertos = ordens.filter(o => o.status === 'Em Andamento' || o.status === 'Aguardando' || o.status === 'Aguardando Peças').length;
+    const servicosConcluidos = ordens.filter(o => o.status === 'Concluído' && o.dataEntrada === hoje).length;
+    const faturamentoDia = ordens.filter(o => o.status === 'Concluído' && o.dataEntrada === hoje)
+                                 .reduce((sum, o) => sum + o.valor, 0);
+    
+    // Calculate average service time
+    const ordensCompletas = ordens.filter(o => o.status === 'Concluído');
+    const tempoMedio = ordensCompletas.length > 0 ? 2.5 : 0; // Sample calculation
+    
+    document.getElementById('servicosAbertos').textContent = servicosAbertos;
+    document.getElementById('servicosConcluidos').textContent = servicosConcluidos;
+    document.getElementById('tempoMedio').textContent = `${tempoMedio}h`;
+    document.getElementById('faturamentoDia').textContent = `R$ ${faturamentoDia.toFixed(2)}`;
+}
+
+function cadastrarCliente() {
+    const nome = document.getElementById('clienteNome').value;
+    const telefone = document.getElementById('clienteTelefone').value;
+    const email = document.getElementById('clienteEmail').value;
+    const endereco = document.getElementById('clienteEndereco').value;
+    
+    const novoCliente = {
+        id: nextClienteId++,
+        nome: nome,
+        telefone: telefone,
+        email: email,
+        endereco: endereco,
+        ultimaVisita: new Date().toISOString().split('T')[0],
+        totalServicos: 0
+    };
+    
+    clientes.push(novoCliente);
+    updateClientesTable();
+    updateClienteSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoClienteModal'));
+    modal.hide();
+    document.getElementById('novoClienteForm').reset();
+    
+    showNotification('Cliente cadastrado com sucesso!', 'success');
+}
+
+function criarOrdem() {
+    const clienteId = parseInt(document.getElementById('ordemCliente').value);
+    const equipamento = document.getElementById('ordemEquipamento').value;
+    const modelo = document.getElementById('ordemModelo').value;
+    const numeroSerie = document.getElementById('ordemNumeroSerie').value;
+    const defeito = document.getElementById('ordemDefeito').value;
+    const prioridade = document.getElementById('ordemPrioridade').value;
+    const previsao = document.getElementById('ordemPrevisao').value;
+    
+    const novaOrdem = {
+        id: nextOrdemId,
+        numero: `OS-${String(nextOrdemId).padStart(3, '0')}`,
+        clienteId: clienteId,
+        equipamento: equipamento,
+        modelo: modelo,
+        numeroSerie: numeroSerie,
+        defeito: defeito,
+        dataEntrada: new Date().toISOString().split('T')[0],
+        status: 'Aguardando',
+        prioridade: prioridade,
+        valor: 0,
+        previsao: previsao
+    };
+    
+    nextOrdemId++;
+    ordens.push(novaOrdem);
+    
+    // Update cliente's last visit
+    const cliente = clientes.find(c => c.id === clienteId);
+    if (cliente) {
+        cliente.ultimaVisita = novaOrdem.dataEntrada;
+        cliente.totalServicos++;
+    }
+    
+    updateDashboard();
+    updateOrdensTable();
+    updateClientesTable();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novaOrdemModal'));
+    modal.hide();
+    document.getElementById('novaOrdemForm').reset();
+    
+    // Reset default delivery date
+    const previsaoDefault = new Date();
+    previsaoDefault.setDate(previsaoDefault.getDate() + 3);
+    document.getElementById('ordemPrevisao').value = previsaoDefault.toISOString().split('T')[0];
+    
+    showNotification(`Ordem ${novaOrdem.numero} criada com sucesso!`, 'success');
+}
+
+function updateOrdensTable() {
+    const tbody = document.querySelector('#ordensTable tbody');
+    tbody.innerHTML = '';
+    
+    ordens.forEach(ordem => {
+        const cliente = clientes.find(c => c.id === ordem.clienteId);
+        const statusClass = ordem.status === 'Concluído' ? 'success' : 
+                           ordem.status === 'Em Andamento' ? 'primary' : 
+                           ordem.status === 'Aguardando Peças' ? 'warning' : 
+                           ordem.status === 'Entregue' ? 'info' : 'secondary';
+        
+        const prioridadeClass = ordem.prioridade === 'Urgente' ? 'danger' : 
+                               ordem.prioridade === 'Alta' ? 'warning' : 'secondary';
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>
+                <span class="fw-bold">${ordem.numero}</span>
+                <br><small class="badge bg-${prioridadeClass}">${ordem.prioridade}</small>
+            </td>
+            <td>${cliente?.nome || 'Cliente não encontrado'}</td>
+            <td>
+                ${ordem.equipamento}
+                <br><small class="text-muted">${ordem.modelo}</small>
+            </td>
+            <td>${new Date(ordem.dataEntrada).toLocaleDateString('pt-BR')}</td>
+            <td><span class="badge bg-${statusClass}">${ordem.status}</span></td>
+            <td>R$ ${ordem.valor.toFixed(2)}</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-primary" onclick="editarOrdem(${ordem.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-outline-success" onclick="atualizarStatus(${ordem.id})">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+    });
+}
+
+function updateClientesTable() {
+    const tbody = document.querySelector('#clientesTable tbody');
+    tbody.innerHTML = '';
+    
+    clientes.forEach(cliente => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${cliente.id}</td>
+            <td>${cliente.nome}</td>
+            <td>${cliente.telefone}</td>
+            <td>${cliente.email || '-'}</td>
+            <td>${new Date(cliente.ultimaVisita).toLocaleDateString('pt-BR')}</td>
+            <td><span class="badge bg-info">${cliente.totalServicos}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(${cliente.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-success" onclick="novaOrdemCliente(${cliente.id})">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </td>
+        `;
+    });
+}
+
+function updatePecasTable() {
+    const tbody = document.querySelector('#pecasTable tbody');
+    tbody.innerHTML = '';
+    
+    pecas.forEach(peca => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td><code>${peca.codigo}</code></td>
+            <td>${peca.descricao}</td>
+            <td>
+                <span class="badge ${peca.estoque <= 3 ? 'bg-danger' : peca.estoque <= 5 ? 'bg-warning' : 'bg-success'}">
+                    ${peca.estoque}
+                </span>
+            </td>
+            <td>R$ ${peca.preco.toFixed(2)}</td>
+        `;
+    });
+}
+
+function updateServicosTable() {
+    const tbody = document.querySelector('#servicosTable tbody');
+    tbody.innerHTML = '';
+    
+    servicos.forEach(servico => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td><code>${servico.codigo}</code></td>
+            <td>${servico.descricao}</td>
+            <td>${servico.tempo}h</td>
+            <td>R$ ${servico.preco.toFixed(2)}</td>
+        `;
+    });
+}
+
+function updateClienteSelect() {
+    const select = document.getElementById('ordemCliente');
+    select.innerHTML = '<option value="">Selecione um cliente</option>';
+    
+    clientes.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = `${cliente.nome} - ${cliente.telefone}`;
+        select.appendChild(option);
+    });
+}
+
+function adicionarPeca() {
+    const codigo = document.getElementById('pecaCodigo').value;
+    const descricao = document.getElementById('pecaDescricao').value;
+    const estoque = parseInt(document.getElementById('pecaEstoque').value);
+    const preco = parseFloat(document.getElementById('pecaPreco').value);
+    
+    pecas.push({codigo, descricao, estoque, preco});
+    updatePecasTable();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novaPecaModal'));
+    modal.hide();
+    document.getElementById('novaPecaForm').reset();
+    
+    showNotification('Peça adicionada com sucesso!', 'success');
+}
+
+function adicionarServico() {
+    const codigo = document.getElementById('servicoCodigo').value;
+    const descricao = document.getElementById('servicoDescricao').value;
+    const tempo = parseFloat(document.getElementById('servicoTempo').value);
+    const preco = parseFloat(document.getElementById('servicoPreco').value);
+    
+    servicos.push({codigo, descricao, tempo, preco});
+    updateServicosTable();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoServicoModal'));
+    modal.hide();
+    document.getElementById('novoServicoForm').reset();
+    
+    showNotification('Serviço adicionado com sucesso!', 'success');
+}
+
+function atualizarStatus(ordemId) {
+    const ordem = ordens.find(o => o.id === ordemId);
+    if (ordem) {
+        const statusOptions = ['Aguardando', 'Em Andamento', 'Aguardando Peças', 'Concluído', 'Entregue'];
+        const currentIndex = statusOptions.indexOf(ordem.status);
+        const nextIndex = (currentIndex + 1) % statusOptions.length;
+        
+        ordem.status = statusOptions[nextIndex];
+        
+        if (ordem.status === 'Concluído' && ordem.valor === 0) {
+            // Assign random value for demo
+            ordem.valor = Math.floor(Math.random() * 200) + 50;
+        }
+        
+        updateDashboard();
+        updateOrdensTable();
+        
+        showNotification(`Ordem ${ordem.numero} atualizada para: ${ordem.status}`, 'info');
+    }
+}
+
+function filtrarOrdens() {
+    showNotification('Filtros aplicados com sucesso!', 'info');
+}
+
+function editarOrdem(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function editarCliente(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function novaOrdemCliente(clienteId) {
+    document.getElementById('ordemCliente').value = clienteId;
+    const modal = new bootstrap.Modal(document.getElementById('novaOrdemModal'));
+    modal.show();
+}
+
+function initCharts() {
+    // Produtividade Chart
+    const ctxProdutividade = document.getElementById('produtividadeChart').getContext('2d');
+    const diasSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const servicosDiarios = [8, 12, 10, 15, 14, 6];
+    
+    new Chart(ctxProdutividade, {
+        type: 'bar',
+        data: {
+            labels: diasSemana,
+            datasets: [{
+                label: 'Serviços Concluídos',
+                data: servicosDiarios,
+                backgroundColor: '#6c757d'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Status Chart
+    const ctxStatus = document.getElementById('statusChart').getContext('2d');
+    const statusCount = {};
+    ordens.forEach(o => {
+        statusCount[o.status] = (statusCount[o.status] || 0) + 1;
+    });
+    
+    new Chart(ctxStatus, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(statusCount),
+            datasets: [{
+                data: Object.values(statusCount),
+                backgroundColor: ['#ffc107', '#007bff', '#fd7e14', '#28a745', '#17a2b8']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    
+    // Peças Chart
+    const ctxPecas = document.getElementById('pecasChart').getContext('2d');
+    const topPecas = pecas.slice(0, 5);
+    
+    new Chart(ctxPecas, {
+        type: 'bar',
+        data: {
+            labels: topPecas.map(p => p.descricao),
+            datasets: [{
+                label: 'Utilizações',
+                data: topPecas.map(() => Math.floor(Math.random() * 20) + 5),
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Faturamento Chart
+    const ctxFaturamento = document.getElementById('faturamentoChart').getContext('2d');
+    const meses = ['Ago', 'Set', 'Out', 'Nov', 'Dez', 'Jan'];
+    const faturamentoMensal = [8500, 9200, 7800, 10500, 9800, 11200];
+    
+    new Chart(ctxFaturamento, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Faturamento (R$)',
+                data: faturamentoMensal,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function exportarRelatorio() {
+    const csv = 'OS,Cliente,Equipamento,Status,Valor,Data Entrada\n' +
+        ordens.map(o => {
+            const cliente = clientes.find(c => c.id === o.clienteId);
+            return `${o.numero},${cliente?.nome},${o.equipamento},${o.status},${o.valor.toFixed(2)},${o.dataEntrada}`;
+        }).join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'relatorio_oficina.csv';
+    link.click();
+    
+    showNotification('Relatório exportado com sucesso!', 'success');
+}
+
+function gerarRelatorioProdutividade() {
+    const totalOrdens = ordens.length;
+    const ordensCompletas = ordens.filter(o => o.status === 'Concluído').length;
+    const faturamentoTotal = ordens.filter(o => o.status === 'Concluído').reduce((sum, o) => sum + o.valor, 0);
+    const ticketMedio = ordensCompletas > 0 ? faturamentoTotal / ordensCompletas : 0;
+    
+    const relatorio = `
+RELATÓRIO DE PRODUTIVIDADE - OFICINA
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+INDICADORES GERAIS
+- Total de Ordens: ${totalOrdens}
+- Ordens Concluídas: ${ordensCompletas}
+- Taxa de Conclusão: ${totalOrdens > 0 ? ((ordensCompletas / totalOrdens) * 100).toFixed(1) : 0}%
+- Faturamento Total: R$ ${faturamentoTotal.toFixed(2)}
+- Ticket Médio: R$ ${ticketMedio.toFixed(2)}
+
+PERFORMANCE TÉCNICA
+- Tempo Médio de Serviço: 2.5 horas
+- Serviços em Andamento: ${ordens.filter(o => o.status === 'Em Andamento').length}
+- Aguardando Peças: ${ordens.filter(o => o.status === 'Aguardando Peças').length}
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function gerarRelatorioClientes() {
+    const clientesAtivos = clientes.filter(c => c.totalServicos > 0);
+    const clienteTopFaturamento = clientesAtivos.sort((a, b) => b.totalServicos - a.totalServicos)[0];
+    
+    let relatorio = `
+RELATÓRIO DE CLIENTES - OFICINA
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+RESUMO GERAL
+- Total de Clientes: ${clientes.length}
+- Clientes Ativos: ${clientesAtivos.length}
+- Cliente com Mais Serviços: ${clienteTopFaturamento?.nome || 'N/A'} (${clienteTopFaturamento?.totalServicos || 0} serviços)
+
+HISTÓRICO RECENTE
+`;
+
+    clientes.forEach(cliente => {
+        const ordensCliente = ordens.filter(o => o.clienteId === cliente.id);
+        relatorio += `
+- ${cliente.nome}: ${ordensCliente.length} ordens, última visita em ${new Date(cliente.ultimaVisita).toLocaleDateString('pt-BR')}`;
+    });
+
+    relatorio += '\n\nRelatório gerado automaticamente pelo sistema G&L Systems.';
+    
+    alert(relatorio);
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

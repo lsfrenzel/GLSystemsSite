@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Soluções - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Nossas Soluções Empresariais</h1>
+        <p class="lead text-muted">Sistemas completos com demonstrações funcionais para sua empresa</p>
+    </div>
+
+    <!-- Solutions Grid -->
+    <div class="row">
+        <!-- E-commerce -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                    <h4>Sistema de Vendas Online</h4>
+                </div>
+                <div class="card-body">
+                    <p>E-commerce completo com controle de produtos, pedidos e relatórios de vendas automáticos.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Catálogo de produtos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de pedidos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Gráficos de performance</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_ecommerce') }}" class="btn btn-primary">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agenda Online -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <i class="fas fa-calendar-check fa-2x mb-2"></i>
+                    <h4>Agenda Online</h4>
+                </div>
+                <div class="card-body">
+                    <p>Perfeito para consultórios, salões e clínicas com agendamento automático e lembretes.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Agendamento online</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de horários</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatório de atendimentos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Estatísticas mensais</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_agenda') }}" class="btn btn-success">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controle de Estoque -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-warning text-dark text-center">
+                    <i class="fas fa-boxes fa-2x mb-2"></i>
+                    <h4>Controle de Estoque</h4>
+                </div>
+                <div class="card-body">
+                    <p>Gestão completa de estoque com alertas automáticos e relatórios detalhados.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de produtos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Alertas de reposição</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de movimento</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Exportação para Excel</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_estoque') }}" class="btn btn-warning">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sistema Financeiro -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-info text-white text-center">
+                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                    <h4>Sistema Financeiro</h4>
+                </div>
+                <div class="card-body">
+                    <p>Controle financeiro completo com gráficos de receitas, despesas e fluxo de caixa.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de receitas/despesas</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Fluxo de caixa</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Dashboards visuais</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios mensais</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_financeiro') }}" class="btn btn-info">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestão Restaurante -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-danger text-white text-center">
+                    <i class="fas fa-utensils fa-2x mb-2"></i>
+                    <h4>Gestão para Restaurantes</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistema completo para restaurantes com controle de pedidos e análise de vendas.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de pedidos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Cardápio digital</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Itens mais vendidos</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_restaurante') }}" class="btn btn-danger">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini ERP -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-dark text-white text-center">
+                    <i class="fas fa-cogs fa-2x mb-2"></i>
+                    <h4>Mini ERP Financeiro</h4>
+                </div>
+                <div class="card-body">
+                    <p>ERP simplificado com módulos integrados para gestão completa da empresa.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Módulo financeiro</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de clientes</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Business Intelligence</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Dashboards executivos</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_erp') }}" class="btn btn-dark">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sistema para Oficinas -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-secondary text-white text-center">
+                    <i class="fas fa-wrench fa-2x mb-2"></i>
+                    <h4>Gestão de Oficinas</h4>
+                </div>
+                <div class="card-body">
+                    <p>Controle completo de ordens de serviço, peças e atendimentos para oficinas.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Ordens de serviço</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de peças</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de produtividade</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Histórico de clientes</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_oficina') }}" class="btn btn-secondary">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sistema Imobiliário -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="fas fa-home fa-2x mb-2"></i>
+                    <h4>Gestão Imobiliária</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistema completo para imobiliárias com cadastro de imóveis e relatórios de vendas.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Cadastro de imóveis</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de disponibilidade</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas/aluguéis</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Estatísticas de mercado</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_imoveis') }}" class="btn btn-primary">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sistema para Academia -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card solution-card h-100 shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <i class="fas fa-dumbbell fa-2x mb-2"></i>
+                    <h4>Gestão de Academia</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistema para academias e escolas com controle de alunos, matrículas e frequência.</p>
+                    <ul class="list-unstyled mb-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Cadastro de alunos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Controle de matrículas</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de frequência</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Gráficos de desempenho</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('demo_academia') }}" class="btn btn-success">
+                        <i class="fas fa-play me-2"></i>Testar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Services -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center p-5">
+                    <h3 class="fw-bold mb-3">Também Criamos Sites Institucionais</h3>
+                    <p class="lead mb-4">
+                        Além dos sistemas empresariais, a G&L Systems desenvolve sites institucionais 
+                        modernos, responsivos e profissionais para empresas que precisam de uma presença 
+                        online de qualidade.
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-3 mb-3">
+                            <i class="fas fa-mobile-alt fa-2x text-primary mb-2"></i>
+                            <p><strong>Design Responsivo</strong></p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <i class="fas fa-search fa-2x text-success mb-2"></i>
+                            <p><strong>SEO Otimizado</strong></p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <i class="fas fa-tachometer-alt fa-2x text-warning mb-2"></i>
+                            <p><strong>Alta Performance</strong></p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <i class="fas fa-shield-alt fa-2x text-info mb-2"></i>
+                            <p><strong>100% Seguro</strong></p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg mt-3">
+                        <i class="fas fa-envelope me-2"></i>Solicitar Orçamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,733 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Sistema Financeiro - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-chart-line text-info me-2"></i>Demo: Sistema Financeiro</h1>
+        <p class="lead text-muted">Controle financeiro completo com relatórios e dashboards</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente adicionar transações e visualizar relatórios financeiros!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                    <h4 id="totalReceitas">R$ 0,00</h4>
+                    <p class="mb-0">Receitas do Mês</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-arrow-down fa-2x mb-2"></i>
+                    <h4 id="totalDespesas">R$ 0,00</h4>
+                    <p class="mb-0">Despesas do Mês</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                    <h4 id="saldoAtual">R$ 0,00</h4>
+                    <p class="mb-0">Saldo Atual</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-pie fa-2x mb-2"></i>
+                    <h4 id="margemLucro">0%</h4>
+                    <p class="mb-0">Margem de Lucro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="transacoes-tab" data-bs-toggle="tab" data-bs-target="#transacoes" type="button">
+                        <i class="fas fa-exchange-alt me-2"></i>Transações
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="fluxo-tab" data-bs-toggle="tab" data-bs-target="#fluxo" type="button">
+                        <i class="fas fa-chart-area me-2"></i>Fluxo de Caixa
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button">
+                        <i class="fas fa-tags me-2"></i>Por Categoria
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-file-alt me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Transações Tab -->
+                <div class="tab-pane fade show active" id="transacoes" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Lançamentos Financeiros</h5>
+                        <div>
+                            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#novaTransacaoModal" onclick="prepararReceita()">
+                                <i class="fas fa-plus me-2"></i>Receita
+                            </button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#novaTransacaoModal" onclick="prepararDespesa()">
+                                <i class="fas fa-minus me-2"></i>Despesa
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroTipo" onchange="filtrarTransacoes()">
+                                <option value="">Todos os tipos</option>
+                                <option value="Receita">Receitas</option>
+                                <option value="Despesa">Despesas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroCategoria" onchange="filtrarTransacoes()">
+                                <option value="">Todas as categorias</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="dataInicio">
+                                <span class="input-group-text">até</span>
+                                <input type="date" class="form-control" id="dataFim">
+                                <button class="btn btn-outline-primary" onclick="filtrarTransacoes()">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="transacoesTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.data }}</td>
+                                    <td>{{ transaction.descricao }}</td>
+                                    <td><span class="badge bg-secondary">{{ transaction.categoria }}</span></td>
+                                    <td>
+                                        <span class="badge {{ 'bg-success' if transaction.tipo == 'Receita' else 'bg-danger' }}">
+                                            {{ transaction.tipo }}
+                                        </span>
+                                    </td>
+                                    <td class="{{ 'text-success' if transaction.valor > 0 else 'text-danger' }}">
+                                        R$ {{ "%.2f"|format(transaction.valor|abs) }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editarTransacao({{ loop.index0 }})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="excluirTransacao({{ loop.index0 }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Fluxo de Caixa Tab -->
+                <div class="tab-pane fade" id="fluxo" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h5>Fluxo de Caixa Mensal</h5>
+                            <canvas id="fluxoCaixaChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Resumo do Período</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Total de Receitas:</span>
+                                        <span class="text-success fw-bold" id="resumoReceitas">R$ 0,00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Total de Despesas:</span>
+                                        <span class="text-danger fw-bold" id="resumoDespesas">R$ 0,00</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span><strong>Resultado:</strong></span>
+                                        <span class="fw-bold" id="resumoResultado">R$ 0,00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categorias Tab -->
+                <div class="tab-pane fade" id="categorias" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5>Receitas por Categoria</h5>
+                            <canvas id="receitasCategoriaChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5>Despesas por Categoria</h5>
+                            <canvas id="despesasCategoriaChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Análise Detalhada por Categoria</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="categoriasTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Categoria</th>
+                                            <th>Receitas</th>
+                                            <th>Despesas</th>
+                                            <th>Saldo</th>
+                                            <th>% do Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
+                                    <h6>Planilha Financeira</h6>
+                                    <p class="small text-muted">Exportar todas as transações para Excel</p>
+                                    <a href="/export/csv/financeiro" class="btn btn-success">
+                                        <i class="fas fa-download me-2"></i>Baixar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-chart-pie fa-3x text-info mb-3"></i>
+                                    <h6>Demonstrativo de Resultados</h6>
+                                    <p class="small text-muted">DRE simplificado do período</p>
+                                    <button class="btn btn-info" onclick="gerarDRE()">
+                                        <i class="fas fa-file-alt me-2"></i>Gerar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-calendar-month fa-3x text-warning mb-3"></i>
+                                    <h6>Relatório Mensal</h6>
+                                    <p class="small text-muted">Análise completa do mês</p>
+                                    <button class="btn btn-warning" onclick="gerarRelatorioMensal()">
+                                        <i class="fas fa-calendar me-2"></i>Gerar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6>Indicadores Financeiros</h6>
+                            <div class="row">
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-primary" id="indicadorLiquidez">1.5</h4>
+                                    <small>Índice de Liquidez</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-success" id="indicadorCrescimento">+12%</h4>
+                                    <small>Crescimento Mensal</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-warning" id="indicadorGasto">65%</h4>
+                                    <small>Taxa de Gastos</small>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h4 class="text-info" id="indicadorPoupanca">35%</h4>
+                                    <small>Taxa de Poupança</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Nova Transação Modal -->
+<div class="modal fade" id="novaTransacaoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transacaoModalTitle">Nova Transação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novaTransacaoForm">
+                    <div class="mb-3">
+                        <label for="transacaoTipo" class="form-label">Tipo</label>
+                        <select class="form-select" id="transacaoTipo" required onchange="atualizarCategorias()">
+                            <option value="Receita">Receita</option>
+                            <option value="Despesa">Despesa</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoDescricao" class="form-label">Descrição</label>
+                        <input type="text" class="form-control" id="transacaoDescricao" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoCategoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="transacaoCategoria" required>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoValor" class="form-label">Valor (R$)</label>
+                        <input type="number" class="form-control" id="transacaoValor" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoData" class="form-label">Data</label>
+                        <input type="date" class="form-control" id="transacaoData" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarTransacao()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize Financial Demo
+let transacoes = {{ transactions | tojsonfilter }};
+let nextTransacaoId = transacoes.length + 1;
+
+const categoriasReceita = ['Vendas', 'Serviços', 'Comissões', 'Investimentos', 'Outros'];
+const categoriasDespesa = ['Aluguel', 'Fornecedores', 'Salários', 'Marketing', 'Utilities', 'Outros'];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Set date range to current month
+    const hoje = new Date();
+    const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+    
+    document.getElementById('dataInicio').value = primeiroDia.toISOString().split('T')[0];
+    document.getElementById('dataFim').value = ultimoDia.toISOString().split('T')[0];
+    document.getElementById('transacaoData').value = hoje.toISOString().split('T')[0];
+    
+    updateDashboard();
+    updateTransacoesTable();
+    updateFiltroCategoria();
+    updateCategoriasAnalysis();
+    initCharts();
+});
+
+function updateDashboard() {
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+    
+    const transacoesMes = transacoes.filter(t => {
+        const dataTransacao = new Date(t.data);
+        return dataTransacao.getMonth() === mesAtual && dataTransacao.getFullYear() === anoAtual;
+    });
+    
+    const receitas = transacoesMes.filter(t => t.valor > 0).reduce((sum, t) => sum + t.valor, 0);
+    const despesas = Math.abs(transacoesMes.filter(t => t.valor < 0).reduce((sum, t) => sum + t.valor, 0));
+    const saldo = receitas - despesas;
+    const margem = receitas > 0 ? ((saldo / receitas) * 100) : 0;
+    
+    document.getElementById('totalReceitas').textContent = `R$ ${receitas.toFixed(2)}`;
+    document.getElementById('totalDespesas').textContent = `R$ ${despesas.toFixed(2)}`;
+    document.getElementById('saldoAtual').textContent = `R$ ${saldo.toFixed(2)}`;
+    document.getElementById('margemLucro').textContent = `${margem.toFixed(1)}%`;
+    
+    // Update summary card
+    document.getElementById('resumoReceitas').textContent = `R$ ${receitas.toFixed(2)}`;
+    document.getElementById('resumoDespesas').textContent = `R$ ${despesas.toFixed(2)}`;
+    document.getElementById('resumoResultado').textContent = `R$ ${saldo.toFixed(2)}`;
+    document.getElementById('resumoResultado').className = `fw-bold ${saldo >= 0 ? 'text-success' : 'text-danger'}`;
+}
+
+function prepararReceita() {
+    document.getElementById('transacaoModalTitle').textContent = 'Nova Receita';
+    document.getElementById('transacaoTipo').value = 'Receita';
+    atualizarCategorias();
+}
+
+function prepararDespesa() {
+    document.getElementById('transacaoModalTitle').textContent = 'Nova Despesa';
+    document.getElementById('transacaoTipo').value = 'Despesa';
+    atualizarCategorias();
+}
+
+function atualizarCategorias() {
+    const tipo = document.getElementById('transacaoTipo').value;
+    const select = document.getElementById('transacaoCategoria');
+    const categorias = tipo === 'Receita' ? categoriasReceita : categoriasDespesa;
+    
+    select.innerHTML = '';
+    categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+    });
+}
+
+function salvarTransacao() {
+    const tipo = document.getElementById('transacaoTipo').value;
+    const descricao = document.getElementById('transacaoDescricao').value;
+    const categoria = document.getElementById('transacaoCategoria').value;
+    let valor = parseFloat(document.getElementById('transacaoValor').value);
+    const data = document.getElementById('transacaoData').value;
+    
+    // Convert expense to negative value
+    if (tipo === 'Despesa') valor = -valor;
+    
+    const novaTransacao = {
+        data: data,
+        tipo: tipo,
+        categoria: categoria,
+        valor: valor,
+        descricao: descricao
+    };
+    
+    transacoes.push(novaTransacao);
+    
+    updateDashboard();
+    updateTransacoesTable();
+    updateFiltroCategoria();
+    updateCategoriasAnalysis();
+    initCharts();
+    
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novaTransacaoModal'));
+    modal.hide();
+    document.getElementById('novaTransacaoForm').reset();
+    
+    showNotification(`${tipo} de R$ ${Math.abs(valor).toFixed(2)} adicionada com sucesso!`, 'success');
+}
+
+function updateTransacoesTable() {
+    const tbody = document.querySelector('#transacoesTable tbody');
+    tbody.innerHTML = '';
+    
+    const transacoesOrdenadas = [...transacoes].sort((a, b) => new Date(b.data) - new Date(a.data));
+    
+    transacoesOrdenadas.forEach((transacao, index) => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${new Date(transacao.data).toLocaleDateString('pt-BR')}</td>
+            <td>${transacao.descricao}</td>
+            <td><span class="badge bg-secondary">${transacao.categoria}</span></td>
+            <td>
+                <span class="badge ${transacao.valor > 0 ? 'bg-success' : 'bg-danger'}">
+                    ${transacao.tipo}
+                </span>
+            </td>
+            <td class="${transacao.valor > 0 ? 'text-success' : 'text-danger'}">
+                R$ ${Math.abs(transacao.valor).toFixed(2)}
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editarTransacao(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="excluirTransacao(${index})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+    });
+}
+
+function updateFiltroCategoria() {
+    const select = document.getElementById('filtroCategoria');
+    const categorias = [...new Set(transacoes.map(t => t.categoria))];
+    
+    select.innerHTML = '<option value="">Todas as categorias</option>';
+    categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+    });
+}
+
+function updateCategoriasAnalysis() {
+    const tbody = document.querySelector('#categoriasTable tbody');
+    tbody.innerHTML = '';
+    
+    const categorias = [...new Set(transacoes.map(t => t.categoria))];
+    const totalGeral = transacoes.reduce((sum, t) => sum + Math.abs(t.valor), 0);
+    
+    categorias.forEach(categoria => {
+        const transacoesCategoria = transacoes.filter(t => t.categoria === categoria);
+        const receitas = transacoesCategoria.filter(t => t.valor > 0).reduce((sum, t) => sum + t.valor, 0);
+        const despesas = Math.abs(transacoesCategoria.filter(t => t.valor < 0).reduce((sum, t) => sum + t.valor, 0));
+        const saldo = receitas - despesas;
+        const percentual = totalGeral > 0 ? ((receitas + despesas) / totalGeral * 100) : 0;
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${categoria}</td>
+            <td class="text-success">R$ ${receitas.toFixed(2)}</td>
+            <td class="text-danger">R$ ${despesas.toFixed(2)}</td>
+            <td class="${saldo >= 0 ? 'text-success' : 'text-danger'}">R$ ${saldo.toFixed(2)}</td>
+            <td>${percentual.toFixed(1)}%</td>
+        `;
+    });
+}
+
+function filtrarTransacoes() {
+    // Filter logic would be implemented here
+    showNotification('Filtros aplicados com sucesso!', 'info');
+}
+
+function editarTransacao(index) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function excluirTransacao(index) {
+    if (confirm('Tem certeza que deseja excluir esta transação?')) {
+        transacoes.splice(index, 1);
+        updateDashboard();
+        updateTransacoesTable();
+        updateCategoriasAnalysis();
+        initCharts();
+        showNotification('Transação excluída com sucesso!', 'success');
+    }
+}
+
+function initCharts() {
+    // Fluxo de Caixa Chart
+    const ctxFluxo = document.getElementById('fluxoCaixaChart').getContext('2d');
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
+    const receitasMensais = [8500, 9200, 7800, 10500, 9800, 11200];
+    const despesasMensais = [6200, 6800, 5900, 7200, 6500, 7800];
+    
+    new Chart(ctxFluxo, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Receitas',
+                data: receitasMensais,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4
+            }, {
+                label: 'Despesas',
+                data: despesasMensais,
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Receitas por Categoria Chart
+    const ctxReceitas = document.getElementById('receitasCategoriaChart').getContext('2d');
+    const receitasPorCategoria = categoriasReceita.map(cat => {
+        return transacoes.filter(t => t.categoria === cat && t.valor > 0)
+                       .reduce((sum, t) => sum + t.valor, 0);
+    });
+    
+    new Chart(ctxReceitas, {
+        type: 'doughnut',
+        data: {
+            labels: categoriasReceita,
+            datasets: [{
+                data: receitasPorCategoria,
+                backgroundColor: ['#28a745', '#17a2b8', '#ffc107', '#6f42c1', '#fd7e14']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+    
+    // Despesas por Categoria Chart
+    const ctxDespesas = document.getElementById('despesasCategoriaChart').getContext('2d');
+    const despesasPorCategoria = categoriasDespesa.map(cat => {
+        return Math.abs(transacoes.filter(t => t.categoria === cat && t.valor < 0)
+                                .reduce((sum, t) => sum + t.valor, 0));
+    });
+    
+    new Chart(ctxDespesas, {
+        type: 'doughnut',
+        data: {
+            labels: categoriasDespesa,
+            datasets: [{
+                data: despesasPorCategoria,
+                backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#6c757d', '#e83e8c', '#20c997']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function gerarDRE() {
+    const receitas = transacoes.filter(t => t.valor > 0).reduce((sum, t) => sum + t.valor, 0);
+    const despesas = Math.abs(transacoes.filter(t => t.valor < 0).reduce((sum, t) => sum + t.valor, 0));
+    const resultado = receitas - despesas;
+    
+    const dre = `
+DEMONSTRATIVO DE RESULTADOS (DRE)
+Período: ${new Date().getFullYear()}
+
+RECEITAS OPERACIONAIS
+Total de Receitas: R$ ${receitas.toFixed(2)}
+
+DESPESAS OPERACIONAIS
+Total de Despesas: R$ ${despesas.toFixed(2)}
+
+RESULTADO OPERACIONAL: R$ ${resultado.toFixed(2)}
+
+${resultado >= 0 ? 'LUCRO' : 'PREJUÍZO'} NO PERÍODO
+
+Este demonstrativo foi gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(dre);
+}
+
+function gerarRelatorioMensal() {
+    const hoje = new Date();
+    const mesAtual = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    
+    const transacoesMes = transacoes.filter(t => {
+        const dataTransacao = new Date(t.data);
+        return dataTransacao.getMonth() === hoje.getMonth() && 
+               dataTransacao.getFullYear() === hoje.getFullYear();
+    });
+    
+    const receitas = transacoesMes.filter(t => t.valor > 0).reduce((sum, t) => sum + t.valor, 0);
+    const despesas = Math.abs(transacoesMes.filter(t => t.valor < 0).reduce((sum, t) => sum + t.valor, 0));
+    const resultado = receitas - despesas;
+    
+    const relatorio = `
+RELATÓRIO FINANCEIRO MENSAL
+Período: ${mesAtual}
+
+RESUMO EXECUTIVO
+- Total de Transações: ${transacoesMes.length}
+- Receitas do Mês: R$ ${receitas.toFixed(2)}
+- Despesas do Mês: R$ ${despesas.toFixed(2)}
+- Resultado Líquido: R$ ${resultado.toFixed(2)}
+- Margem de Lucro: ${receitas > 0 ? ((resultado / receitas) * 100).toFixed(1) : 0}%
+
+INDICADORES
+- Maior Receita: R$ ${Math.max(...transacoesMes.filter(t => t.valor > 0).map(t => t.valor), 0).toFixed(2)}
+- Maior Despesa: R$ ${Math.max(...transacoesMes.filter(t => t.valor < 0).map(t => Math.abs(t.valor)), 0).toFixed(2)}
+
+Relatório gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

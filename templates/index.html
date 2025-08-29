@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Economize Tempo na Sua Empresa com Tecnologia
+                </h1>
+                <p class="lead mb-4">
+                    Sistemas empresariais inteligentes que automatizam processos, geram relatórios precisos e 
+                    transformam dados em decisões estratégicas para pequenas empresas e empreendedores.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('solutions') }}" class="btn btn-warning btn-lg me-3">
+                        <i class="fas fa-play me-2"></i>Testar Demos
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Solicitar Contato
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-illustration">
+                    <i class="fas fa-chart-line display-1 mb-3"></i>
+                    <div class="row">
+                        <div class="col-4">
+                            <i class="fas fa-cog fa-3x text-warning"></i>
+                            <p class="mt-2">Automação</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-chart-bar fa-3x text-success"></i>
+                            <p class="mt-2">Relatórios</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-clock fa-3x text-info"></i>
+                            <p class="mt-2">Economia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Before vs After Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Antes x Depois da G&L Systems</h2>
+            <p class="lead text-muted">Veja como nossos sistemas transformam a gestão da sua empresa</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 border-danger">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h4><i class="fas fa-times-circle me-2"></i>ANTES</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                <strong>Planilhas desorganizadas</strong> espalhadas em vários arquivos
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                <strong>Relatórios manuais</strong> que demoram horas para criar
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                <strong>Decisões baseadas</strong> em informações incompletas
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                <strong>Perda de tempo</strong> com tarefas repetitivas
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                <strong>Erros frequentes</strong> em cálculos e controles
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 border-success">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4><i class="fas fa-check-circle me-2"></i>DEPOIS</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Dados centralizados</strong> em sistema único e organizado
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Relatórios automáticos</strong> gerados em segundos
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Gráficos e dashboards</strong> para decisões inteligentes
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Mais tempo</strong> para focar no crescimento
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Precisão total</strong> com automação inteligente
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Por que Escolher a G&L Systems?</h2>
+            <p class="lead text-muted">Tecnologia acessível e funcional para empresas modernas</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="text-center feature-card p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-rocket fa-3x text-primary"></i>
+                    </div>
+                    <h4>Implementação Rápida</h4>
+                    <p class="text-muted">Sistemas prontos para usar em minutos, sem complicações técnicas.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="text-center feature-card p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-chart-pie fa-3x text-success"></i>
+                    </div>
+                    <h4>Relatórios Inteligentes</h4>
+                    <p class="text-muted">Gráficos automáticos e planilhas exportáveis para análise completa.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="text-center feature-card p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-mobile-alt fa-3x text-warning"></i>
+                    </div>
+                    <h4>100% Responsivo</h4>
+                    <p class="text-muted">Acesse seus sistemas de qualquer dispositivo, a qualquer hora.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Pronto para Revolucionar sua Empresa?</h2>
+        <p class="lead mb-4">Teste nossos sistemas agora e veja a diferença na prática!</p>
+        <a href="{{ url_for('solutions') }}" class="btn btn-warning btn-lg">
+            <i class="fas fa-play me-2"></i>Explorar Soluções
+        </a>
+    </div>
+</section>
+{% endblock %}

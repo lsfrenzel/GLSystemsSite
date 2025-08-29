@@ -1,0 +1,939 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Gestão Imobiliária - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-home text-primary me-2"></i>Demo: Gestão Imobiliária</h1>
+        <p class="lead text-muted">Sistema completo para imobiliárias com controle de imóveis e relatórios</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente cadastrar imóveis e gerar relatórios de vendas/aluguéis!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-building fa-2x mb-2"></i>
+                    <h4 id="totalImoveis">0</h4>
+                    <p class="mb-0">Imóveis Cadastrados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <h4 id="imoveisDisponiveis">0</h4>
+                    <p class="mb-0">Disponíveis</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-key fa-2x mb-2"></i>
+                    <h4 id="imoveisAlugados">0</h4>
+                    <p class="mb-0">Alugados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-handshake fa-2x mb-2"></i>
+                    <h4 id="imoveisVendidos">0</h4>
+                    <p class="mb-0">Vendidos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="imoveis-tab" data-bs-toggle="tab" data-bs-target="#imoveis" type="button">
+                        <i class="fas fa-home me-2"></i>Imóveis
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="proprietarios-tab" data-bs-toggle="tab" data-bs-target="#proprietarios" type="button">
+                        <i class="fas fa-users me-2"></i>Proprietários
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="transacoes-tab" data-bs-toggle="tab" data-bs-target="#transacoes" type="button">
+                        <i class="fas fa-exchange-alt me-2"></i>Transações
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-chart-bar me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Imóveis Tab -->
+                <div class="tab-pane fade show active" id="imoveis" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Portfólio de Imóveis</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novoImovelModal">
+                            <i class="fas fa-plus me-2"></i>Novo Imóvel
+                        </button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroTipo">
+                                <option value="">Todos os tipos</option>
+                                <option value="Apartamento">Apartamento</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Comercial">Comercial</option>
+                                <option value="Terreno">Terreno</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroStatus">
+                                <option value="">Todos os status</option>
+                                <option value="Disponível">Disponível</option>
+                                <option value="Alugado">Alugado</option>
+                                <option value="Vendido">Vendido</option>
+                                <option value="Reservado">Reservado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="filtroBairro" placeholder="Filtrar por bairro">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary w-100" onclick="filtrarImoveis()">
+                                <i class="fas fa-filter me-2"></i>Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="row" id="imoveisList">
+                        <!-- Imóveis will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Proprietários Tab -->
+                <div class="tab-pane fade" id="proprietarios" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Proprietários Cadastrados</h5>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#novoProprietarioModal">
+                            <i class="fas fa-plus me-2"></i>Novo Proprietário
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="proprietariosTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>E-mail</th>
+                                    <th>Imóveis</th>
+                                    <th>Receita Mensal</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Proprietários data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Transações Tab -->
+                <div class="tab-pane fade" id="transacoes" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Histórico de Transações</h5>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#novaTransacaoModal">
+                            <i class="fas fa-plus me-2"></i>Nova Transação
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="transacoesTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Imóvel</th>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Comissão</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Transações data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Imóveis por Tipo</h5>
+                            <canvas id="tipoImovelChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Vendas vs Aluguéis</h5>
+                            <canvas id="vendasAluguelChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Evolução de Preços por m²</h5>
+                            <canvas id="precoM2Chart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Faturamento Mensal</h5>
+                            <canvas id="faturamentoMensalChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-success me-2" onclick="exportarPortfolio()">
+                            <i class="fas fa-file-excel me-2"></i>Exportar Portfólio
+                        </button>
+                        <button class="btn btn-info me-2" onclick="gerarRelatorioVendas()">
+                            <i class="fas fa-chart-line me-2"></i>Relatório de Vendas
+                        </button>
+                        <button class="btn btn-warning" onclick="gerarRelatorioMercado()">
+                            <i class="fas fa-map-marked-alt me-2"></i>Análise de Mercado
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Novo Imóvel Modal -->
+<div class="modal fade" id="novoImovelModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Imóvel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoImovelForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="imovelTipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="imovelTipo" required>
+                                <option value="">Selecione</option>
+                                <option value="Apartamento">Apartamento</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Comercial">Comercial</option>
+                                <option value="Terreno">Terreno</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="imovelProprietario" class="form-label">Proprietário</label>
+                            <select class="form-select" id="imovelProprietario" required>
+                                <option value="">Selecione um proprietário</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="imovelEndereco" class="form-label">Endereço</label>
+                            <input type="text" class="form-control" id="imovelEndereco" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="imovelBairro" class="form-label">Bairro</label>
+                            <input type="text" class="form-control" id="imovelBairro" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="imovelArea" class="form-label">Área (m²)</label>
+                            <input type="number" class="form-control" id="imovelArea" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="imovelQuartos" class="form-label">Quartos</label>
+                            <input type="number" class="form-control" id="imovelQuartos">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="imovelBanheiros" class="form-label">Banheiros</label>
+                            <input type="number" class="form-control" id="imovelBanheiros">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="imovelVagas" class="form-label">Vagas</label>
+                            <input type="number" class="form-control" id="imovelVagas">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="imovelValorVenda" class="form-label">Valor de Venda (R$)</label>
+                            <input type="number" class="form-control" id="imovelValorVenda" step="0.01">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="imovelValorAluguel" class="form-label">Valor do Aluguel (R$)</label>
+                            <input type="number" class="form-control" id="imovelValorAluguel" step="0.01">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imovelDescricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="imovelDescricao" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="cadastrarImovel()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Novo Proprietário Modal -->
+<div class="modal fade" id="novoProprietarioModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Proprietário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoProprietarioForm">
+                    <div class="mb-3">
+                        <label for="proprietarioNome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="proprietarioNome" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="proprietarioTelefone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="proprietarioTelefone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="proprietarioEmail" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="proprietarioEmail">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="proprietarioCpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="proprietarioCpf">
+                    </div>
+                    <div class="mb-3">
+                        <label for="proprietarioEndereco" class="form-label">Endereço</label>
+                        <textarea class="form-control" id="proprietarioEndereco" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="cadastrarProprietario()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nova Transação Modal -->
+<div class="modal fade" id="novaTransacaoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Transação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novaTransacaoForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="transacaoImovel" class="form-label">Imóvel</label>
+                            <select class="form-select" id="transacaoImovel" required>
+                                <option value="">Selecione um imóvel</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="transacaoTipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="transacaoTipo" required>
+                                <option value="">Selecione</option>
+                                <option value="Venda">Venda</option>
+                                <option value="Aluguel">Aluguel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoCliente" class="form-label">Cliente</label>
+                        <input type="text" class="form-control" id="transacaoCliente" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="transacaoValor" class="form-label">Valor (R$)</label>
+                            <input type="number" class="form-control" id="transacaoValor" step="0.01" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="transacaoComissao" class="form-label">Comissão (%)</label>
+                            <input type="number" class="form-control" id="transacaoComissao" value="6" step="0.1">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="transacaoData" class="form-label">Data</label>
+                        <input type="date" class="form-control" id="transacaoData" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-info" onclick="registrarTransacao()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize Imóveis Demo
+let proprietarios = [
+    {id: 1, nome: "Carlos Silva", telefone: "(11) 99999-1111", email: "carlos@email.com", cpf: "123.456.789-00", endereco: "Rua A, 123"},
+    {id: 2, nome: "Ana Costa", telefone: "(11) 99999-2222", email: "ana@email.com", cpf: "987.654.321-00", endereco: "Rua B, 456"},
+    {id: 3, nome: "Pedro Santos", telefone: "(11) 99999-3333", email: "pedro@email.com", cpf: "456.789.123-00", endereco: "Rua C, 789"}
+];
+
+let imoveis = [
+    {id: 1, tipo: "Apartamento", proprietarioId: 1, endereco: "Rua das Flores, 100", bairro: "Vila Madalena", area: 85, quartos: 2, banheiros: 2, vagas: 1, valorVenda: 450000, valorAluguel: 2500, descricao: "Apartamento moderno com vista", status: "Disponível"},
+    {id: 2, tipo: "Casa", proprietarioId: 2, endereco: "Rua do Sol, 250", bairro: "Jardins", area: 120, quartos: 3, banheiros: 2, vagas: 2, valorVenda: 680000, valorAluguel: 3800, descricao: "Casa com quintal amplo", status: "Alugado"},
+    {id: 3, tipo: "Comercial", proprietarioId: 3, endereco: "Av. Paulista, 1500", bairro: "Bela Vista", area: 200, quartos: 0, banheiros: 2, vagas: 0, valorVenda: 1200000, valorAluguel: 8000, descricao: "Sala comercial no centro", status: "Disponível"}
+];
+
+let transacoes = [
+    {id: 1, imovelId: 2, cliente: "João Oliveira", tipo: "Aluguel", valor: 3800, comissao: 6, data: "2025-01-10", status: "Concluída"},
+    {id: 2, imovelId: 1, cliente: "Maria Ferreira", tipo: "Venda", valor: 450000, comissao: 6, data: "2025-01-05", status: "Em Andamento"}
+];
+
+let nextProprietarioId = 4;
+let nextImovelId = 4;
+let nextTransacaoId = 3;
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    updateImoveisList();
+    updateProprietariosTable();
+    updateTransacoesTable();
+    updateProprietarioSelect();
+    updateImovelSelect();
+    initCharts();
+    
+    // Set today's date
+    const hoje = new Date().toISOString().split('T')[0];
+    document.getElementById('transacaoData').value = hoje;
+});
+
+function updateDashboard() {
+    const totalImoveis = imoveis.length;
+    const imoveisDisponiveis = imoveis.filter(i => i.status === 'Disponível').length;
+    const imoveisAlugados = imoveis.filter(i => i.status === 'Alugado').length;
+    const imoveisVendidos = imoveis.filter(i => i.status === 'Vendido').length;
+    
+    document.getElementById('totalImoveis').textContent = totalImoveis;
+    document.getElementById('imoveisDisponiveis').textContent = imoveisDisponiveis;
+    document.getElementById('imoveisAlugados').textContent = imoveisAlugados;
+    document.getElementById('imoveisVendidos').textContent = imoveisVendidos;
+}
+
+function cadastrarProprietario() {
+    const nome = document.getElementById('proprietarioNome').value;
+    const telefone = document.getElementById('proprietarioTelefone').value;
+    const email = document.getElementById('proprietarioEmail').value;
+    const cpf = document.getElementById('proprietarioCpf').value;
+    const endereco = document.getElementById('proprietarioEndereco').value;
+    
+    const novoProprietario = {
+        id: nextProprietarioId++,
+        nome: nome,
+        telefone: telefone,
+        email: email,
+        cpf: cpf,
+        endereco: endereco
+    };
+    
+    proprietarios.push(novoProprietario);
+    updateProprietariosTable();
+    updateProprietarioSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoProprietarioModal'));
+    modal.hide();
+    document.getElementById('novoProprietarioForm').reset();
+    
+    showNotification('Proprietário cadastrado com sucesso!', 'success');
+}
+
+function cadastrarImovel() {
+    const tipo = document.getElementById('imovelTipo').value;
+    const proprietarioId = parseInt(document.getElementById('imovelProprietario').value);
+    const endereco = document.getElementById('imovelEndereco').value;
+    const bairro = document.getElementById('imovelBairro').value;
+    const area = parseInt(document.getElementById('imovelArea').value);
+    const quartos = parseInt(document.getElementById('imovelQuartos').value) || 0;
+    const banheiros = parseInt(document.getElementById('imovelBanheiros').value) || 0;
+    const vagas = parseInt(document.getElementById('imovelVagas').value) || 0;
+    const valorVenda = parseFloat(document.getElementById('imovelValorVenda').value) || 0;
+    const valorAluguel = parseFloat(document.getElementById('imovelValorAluguel').value) || 0;
+    const descricao = document.getElementById('imovelDescricao').value;
+    
+    const novoImovel = {
+        id: nextImovelId++,
+        tipo: tipo,
+        proprietarioId: proprietarioId,
+        endereco: endereco,
+        bairro: bairro,
+        area: area,
+        quartos: quartos,
+        banheiros: banheiros,
+        vagas: vagas,
+        valorVenda: valorVenda,
+        valorAluguel: valorAluguel,
+        descricao: descricao,
+        status: 'Disponível'
+    };
+    
+    imoveis.push(novoImovel);
+    updateDashboard();
+    updateImoveisList();
+    updateImovelSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoImovelModal'));
+    modal.hide();
+    document.getElementById('novoImovelForm').reset();
+    
+    showNotification('Imóvel cadastrado com sucesso!', 'success');
+}
+
+function updateImoveisList() {
+    const container = document.getElementById('imoveisList');
+    container.innerHTML = '';
+    
+    if (imoveis.length === 0) {
+        container.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-home fa-2x mb-3"></i>
+                    <p class="mb-0">Nenhum imóvel cadastrado. Clique em "Novo Imóvel" para começar.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    imoveis.forEach(imovel => {
+        const proprietario = proprietarios.find(p => p.id === imovel.proprietarioId);
+        const statusClass = imovel.status === 'Disponível' ? 'success' : 
+                           imovel.status === 'Alugado' ? 'warning' : 
+                           imovel.status === 'Vendido' ? 'info' : 'secondary';
+        
+        const card = `
+            <div class="col-lg-6 col-xl-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">${imovel.tipo}</h6>
+                        <span class="badge bg-${statusClass}">${imovel.status}</span>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">${imovel.endereco}</h6>
+                        <p class="card-text small text-muted mb-2">${imovel.bairro}</p>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <small><i class="fas fa-ruler-combined me-1"></i>${imovel.area}m²</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-bed me-1"></i>${imovel.quartos} quartos</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small><i class="fas fa-bath me-1"></i>${imovel.banheiros} banheiros</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-car me-1"></i>${imovel.vagas} vagas</small>
+                            </div>
+                        </div>
+                        <p class="card-text small">${imovel.descricao}</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                ${imovel.valorVenda > 0 ? `<small class="text-success">Venda: R$ ${imovel.valorVenda.toLocaleString()}</small><br>` : ''}
+                                ${imovel.valorAluguel > 0 ? `<small class="text-info">Aluguel: R$ ${imovel.valorAluguel.toLocaleString()}</small>` : ''}
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary" onclick="editarImovel(${imovel.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-muted">Proprietário: ${proprietario?.nome || 'N/A'}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.innerHTML += card;
+    });
+}
+
+function updateProprietariosTable() {
+    const tbody = document.querySelector('#proprietariosTable tbody');
+    tbody.innerHTML = '';
+    
+    proprietarios.forEach(proprietario => {
+        const imoveisProprietario = imoveis.filter(i => i.proprietarioId === proprietario.id);
+        const receitaMensal = imoveisProprietario
+            .filter(i => i.status === 'Alugado')
+            .reduce((sum, i) => sum + i.valorAluguel, 0);
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${proprietario.id}</td>
+            <td>${proprietario.nome}</td>
+            <td>${proprietario.telefone}</td>
+            <td>${proprietario.email || '-'}</td>
+            <td><span class="badge bg-primary">${imoveisProprietario.length}</span></td>
+            <td>R$ ${receitaMensal.toLocaleString()}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editarProprietario(${proprietario.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-success" onclick="novoImovelProprietario(${proprietario.id})">
+                    <i class="fas fa-home"></i>
+                </button>
+            </td>
+        `;
+    });
+}
+
+function updateTransacoesTable() {
+    const tbody = document.querySelector('#transacoesTable tbody');
+    tbody.innerHTML = '';
+    
+    transacoes.forEach(transacao => {
+        const imovel = imoveis.find(i => i.id === transacao.imovelId);
+        const valorComissao = transacao.valor * (transacao.comissao / 100);
+        const statusClass = transacao.status === 'Concluída' ? 'success' : 'warning';
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${new Date(transacao.data).toLocaleDateString('pt-BR')}</td>
+            <td>${imovel?.endereco || 'Imóvel não encontrado'}</td>
+            <td>${transacao.cliente}</td>
+            <td><span class="badge bg-${transacao.tipo === 'Venda' ? 'info' : 'warning'}">${transacao.tipo}</span></td>
+            <td>R$ ${transacao.valor.toLocaleString()}</td>
+            <td>R$ ${valorComissao.toLocaleString()}</td>
+            <td><span class="badge bg-${statusClass}">${transacao.status}</span></td>
+        `;
+    });
+}
+
+function updateProprietarioSelect() {
+    const select = document.getElementById('imovelProprietario');
+    select.innerHTML = '<option value="">Selecione um proprietário</option>';
+    
+    proprietarios.forEach(proprietario => {
+        const option = document.createElement('option');
+        option.value = proprietario.id;
+        option.textContent = proprietario.nome;
+        select.appendChild(option);
+    });
+}
+
+function updateImovelSelect() {
+    const select = document.getElementById('transacaoImovel');
+    select.innerHTML = '<option value="">Selecione um imóvel</option>';
+    
+    imoveis.filter(i => i.status === 'Disponível').forEach(imovel => {
+        const option = document.createElement('option');
+        option.value = imovel.id;
+        option.textContent = `${imovel.endereco} - ${imovel.bairro}`;
+        select.appendChild(option);
+    });
+}
+
+function registrarTransacao() {
+    const imovelId = parseInt(document.getElementById('transacaoImovel').value);
+    const tipo = document.getElementById('transacaoTipo').value;
+    const cliente = document.getElementById('transacaoCliente').value;
+    const valor = parseFloat(document.getElementById('transacaoValor').value);
+    const comissao = parseFloat(document.getElementById('transacaoComissao').value);
+    const data = document.getElementById('transacaoData').value;
+    
+    const novaTransacao = {
+        id: nextTransacaoId++,
+        imovelId: imovelId,
+        cliente: cliente,
+        tipo: tipo,
+        valor: valor,
+        comissao: comissao,
+        data: data,
+        status: 'Em Andamento'
+    };
+    
+    transacoes.push(novaTransacao);
+    
+    // Update imovel status
+    const imovel = imoveis.find(i => i.id === imovelId);
+    if (imovel) {
+        imovel.status = tipo === 'Venda' ? 'Vendido' : 'Alugado';
+    }
+    
+    updateDashboard();
+    updateImoveisList();
+    updateTransacoesTable();
+    updateImovelSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novaTransacaoModal'));
+    modal.hide();
+    document.getElementById('novaTransacaoForm').reset();
+    
+    showNotification(`Transação de ${tipo.toLowerCase()} registrada com sucesso!`, 'success');
+}
+
+function filtrarImoveis() {
+    showNotification('Filtros aplicados com sucesso!', 'info');
+}
+
+function editarImovel(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function editarProprietario(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function novoImovelProprietario(proprietarioId) {
+    document.getElementById('imovelProprietario').value = proprietarioId;
+    const modal = new bootstrap.Modal(document.getElementById('novoImovelModal'));
+    modal.show();
+}
+
+function initCharts() {
+    // Tipo de Imóvel Chart
+    const ctxTipo = document.getElementById('tipoImovelChart').getContext('2d');
+    const tipos = [...new Set(imoveis.map(i => i.tipo))];
+    const dadosTipo = tipos.map(tipo => imoveis.filter(i => i.tipo === tipo).length);
+    
+    new Chart(ctxTipo, {
+        type: 'doughnut',
+        data: {
+            labels: tipos,
+            datasets: [{
+                data: dadosTipo,
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    
+    // Vendas vs Aluguéis Chart
+    const ctxVendasAluguel = document.getElementById('vendasAluguelChart').getContext('2d');
+    const vendas = transacoes.filter(t => t.tipo === 'Venda').length;
+    const alugueis = transacoes.filter(t => t.tipo === 'Aluguel').length;
+    
+    new Chart(ctxVendasAluguel, {
+        type: 'bar',
+        data: {
+            labels: ['Vendas', 'Aluguéis'],
+            datasets: [{
+                label: 'Quantidade',
+                data: [vendas, alugueis],
+                backgroundColor: ['#17a2b8', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Preço por m² Chart
+    const ctxPreco = document.getElementById('precoM2Chart').getContext('2d');
+    const meses = ['Ago', 'Set', 'Out', 'Nov', 'Dez', 'Jan'];
+    const precoM2 = [5500, 5650, 5800, 5950, 6100, 6250];
+    
+    new Chart(ctxPreco, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Preço/m² (R$)',
+                data: precoM2,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Faturamento Mensal Chart
+    const ctxFaturamento = document.getElementById('faturamentoMensalChart').getContext('2d');
+    const faturamentoMensal = [125000, 98000, 156000, 187000, 142000, 203000];
+    
+    new Chart(ctxFaturamento, {
+        type: 'bar',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Faturamento (R$)',
+                data: faturamentoMensal,
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function exportarPortfolio() {
+    const csv = 'Tipo,Endereço,Bairro,Área,Status,Valor Venda,Valor Aluguel\n' +
+        imoveis.map(i => 
+            `${i.tipo},"${i.endereco}",${i.bairro},${i.area},${i.status},${i.valorVenda},${i.valorAluguel}`
+        ).join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'portfolio_imoveis.csv';
+    link.click();
+    
+    showNotification('Portfólio exportado com sucesso!', 'success');
+}
+
+function gerarRelatorioVendas() {
+    const totalTransacoes = transacoes.length;
+    const totalVendas = transacoes.filter(t => t.tipo === 'Venda').length;
+    const totalAlugueis = transacoes.filter(t => t.tipo === 'Aluguel').length;
+    const faturamentoTotal = transacoes.reduce((sum, t) => sum + (t.valor * t.comissao / 100), 0);
+    
+    const relatorio = `
+RELATÓRIO DE VENDAS E ALUGUÉIS
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+RESUMO DAS TRANSAÇÕES
+- Total de Transações: ${totalTransacoes}
+- Vendas Realizadas: ${totalVendas}
+- Aluguéis Fechados: ${totalAlugueis}
+- Faturamento em Comissões: R$ ${faturamentoTotal.toLocaleString()}
+
+PORTFÓLIO
+- Total de Imóveis: ${imoveis.length}
+- Disponíveis: ${imoveis.filter(i => i.status === 'Disponível').length}
+- Alugados: ${imoveis.filter(i => i.status === 'Alugado').length}
+- Vendidos: ${imoveis.filter(i => i.status === 'Vendido').length}
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function gerarRelatorioMercado() {
+    const precoMedioVenda = imoveis.filter(i => i.valorVenda > 0)
+                                  .reduce((sum, i) => sum + i.valorVenda, 0) / 
+                           imoveis.filter(i => i.valorVenda > 0).length || 0;
+    
+    const precoMedioAluguel = imoveis.filter(i => i.valorAluguel > 0)
+                                    .reduce((sum, i) => sum + i.valorAluguel, 0) / 
+                             imoveis.filter(i => i.valorAluguel > 0).length || 0;
+    
+    const precoM2Medio = imoveis.reduce((sum, i) => sum + (i.valorVenda / i.area), 0) / imoveis.length || 0;
+    
+    const relatorio = `
+ANÁLISE DE MERCADO IMOBILIÁRIO
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+PREÇOS MÉDIOS
+- Valor Médio de Venda: R$ ${precoMedioVenda.toLocaleString()}
+- Valor Médio de Aluguel: R$ ${precoMedioAluguel.toLocaleString()}
+- Preço Médio por m²: R$ ${precoM2Medio.toLocaleString()}
+
+TENDÊNCIAS
+- Crescimento no preço/m²: +13.6% nos últimos 6 meses
+- Tempo médio de venda: 45 dias
+- Taxa de ocupação: 78%
+
+BAIRROS EM DESTAQUE
+- Vila Madalena: Alta valorização
+- Jardins: Mercado estável
+- Bela Vista: Crescimento comercial
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,853 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Mini ERP Financeiro - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-cogs text-dark me-2"></i>Demo: Mini ERP Financeiro</h1>
+        <p class="lead text-muted">Sistema integrado de gestão empresarial com Business Intelligence</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Explore os módulos integrados e dashboards executivos!
+        </div>
+    </div>
+
+    <!-- KPI Dashboard -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                    <h4 id="faturamentoMes">R$ 0,00</h4>
+                    <p class="mb-0">Faturamento Mensal</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x mb-2"></i>
+                    <h4 id="totalClientes">0</h4>
+                    <p class="mb-0">Clientes Ativos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-invoice fa-2x mb-2"></i>
+                    <h4 id="faturasPendentes">0</h4>
+                    <p class="mb-0">Faturas Pendentes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-percentage fa-2x mb-2"></i>
+                    <h4 id="margemLucro">0%</h4>
+                    <p class="mb-0">Margem de Lucro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button">
+                        <i class="fas fa-users me-2"></i>Clientes
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="faturas-tab" data-bs-toggle="tab" data-bs-target="#faturas" type="button">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>Faturas
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="bi-tab" data-bs-toggle="tab" data-bs-target="#bi" type="button">
+                        <i class="fas fa-chart-pie me-2"></i>Business Intelligence
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Dashboard Tab -->
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <div class="row">
+                        <div class="col-lg-8 mb-4">
+                            <h5>Fluxo de Caixa - Últimos 6 Meses</h5>
+                            <canvas id="fluxoCaixaChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-lg-4 mb-4">
+                            <h5>Tarefas Pendentes</h5>
+                            <div class="list-group" id="tarefasPendentes">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                        Faturas Vencidas
+                                    </div>
+                                    <span class="badge bg-danger" id="faturasVencidas">0</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-clock text-info me-2"></i>
+                                        Propostas Pendentes
+                                    </div>
+                                    <span class="badge bg-primary" id="propostasPendentes">0</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-user-plus text-success me-2"></i>
+                                        Novos Leads
+                                    </div>
+                                    <span class="badge bg-success" id="novosLeads">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Vendas por Período</h5>
+                            <canvas id="vendasPeriodoChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Top Clientes por Faturamento</h5>
+                            <canvas id="topClientesChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clientes Tab -->
+                <div class="tab-pane fade" id="clientes" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Gestão de Clientes</h5>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#novoClienteModal">
+                            <i class="fas fa-plus me-2"></i>Novo Cliente
+                        </button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="buscaCliente" placeholder="Buscar cliente...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroStatus">
+                                <option value="">Todos os status</option>
+                                <option value="Ativo">Ativo</option>
+                                <option value="Inativo">Inativo</option>
+                                <option value="Prospecto">Prospecto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroSegmento">
+                                <option value="">Todos os segmentos</option>
+                                <option value="Varejo">Varejo</option>
+                                <option value="Serviços">Serviços</option>
+                                <option value="Indústria">Indústria</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-primary w-100" onclick="filtrarClientes()">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="clientesTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome/Empresa</th>
+                                    <th>Segmento</th>
+                                    <th>Status</th>
+                                    <th>Faturamento</th>
+                                    <th>Último Contato</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Cliente data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Faturas Tab -->
+                <div class="tab-pane fade" id="faturas" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Controle de Faturas</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novaFaturaModal">
+                            <i class="fas fa-plus me-2"></i>Nova Fatura
+                        </button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="filtroStatusFatura">
+                                <option value="">Todos os status</option>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Vencido">Vencido</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="dataInicio">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="dataFim">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary w-100" onclick="filtrarFaturas()">
+                                <i class="fas fa-filter me-2"></i>Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="faturasTable">
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Cliente</th>
+                                    <th>Data Emissão</th>
+                                    <th>Vencimento</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Fatura data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Business Intelligence Tab -->
+                <div class="tab-pane fade" id="bi" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5>Análise de Performance Empresarial</h5>
+                            <div class="row">
+                                <div class="col-md-3 text-center">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="text-primary" id="crescimentoMensal">+15%</h4>
+                                            <small>Crescimento Mensal</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="text-success" id="receitaRecorrente">R$ 0</h4>
+                                            <small>Receita Recorrente</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="text-warning" id="churnRate">2.5%</h4>
+                                            <small>Taxa de Churn</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="text-info" id="ltv">R$ 0</h4>
+                                            <small>LTV Médio</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h6>Análise de Rentabilidade por Cliente</h6>
+                            <canvas id="rentabilidadeChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h6>Previsão de Faturamento</h6>
+                            <canvas id="previsaoChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-success me-2" onclick="exportarDashboard()">
+                            <i class="fas fa-file-excel me-2"></i>Exportar Dashboard
+                        </button>
+                        <button class="btn btn-info" onclick="gerarRelatorioExecutivo()">
+                            <i class="fas fa-chart-pie me-2"></i>Relatório Executivo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Novo Cliente Modal -->
+<div class="modal fade" id="novoClienteModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novoClienteForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteNome" class="form-label">Nome/Razão Social</label>
+                            <input type="text" class="form-control" id="clienteNome" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteSegmento" class="form-label">Segmento</label>
+                            <select class="form-select" id="clienteSegmento" required>
+                                <option value="">Selecione</option>
+                                <option value="Varejo">Varejo</option>
+                                <option value="Serviços">Serviços</option>
+                                <option value="Indústria">Indústria</option>
+                                <option value="Tecnologia">Tecnologia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteEmail" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="clienteEmail">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="clienteTelefone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="clienteTelefone">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clienteObservacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="clienteObservacoes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="cadastrarCliente()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nova Fatura Modal -->
+<div class="modal fade" id="novaFaturaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Fatura</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="novaFaturaForm">
+                    <div class="mb-3">
+                        <label for="faturaCliente" class="form-label">Cliente</label>
+                        <select class="form-select" id="faturaCliente" required>
+                            <option value="">Selecione um cliente</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="faturaValor" class="form-label">Valor (R$)</label>
+                            <input type="number" class="form-control" id="faturaValor" step="0.01" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="faturaVencimento" class="form-label">Vencimento</label>
+                            <input type="date" class="form-control" id="faturaVencimento" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="faturaDescricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="faturaDescricao" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="criarFatura()">Criar Fatura</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize ERP Demo
+let clientes = [
+    {id: 1, nome: "Empresa ABC Ltda", segmento: "Varejo", status: "Ativo", faturamento: 45000, ultimoContato: "2025-01-15"},
+    {id: 2, nome: "Consultoria XYZ", segmento: "Serviços", status: "Ativo", faturamento: 28000, ultimoContato: "2025-01-10"},
+    {id: 3, nome: "Indústria 123", segmento: "Indústria", status: "Prospecto", faturamento: 0, ultimoContato: "2025-01-08"}
+];
+
+let faturas = [
+    {id: 1, clienteId: 1, numero: "FAT-2025-001", valor: 5500, emissao: "2025-01-01", vencimento: "2025-01-31", status: "Pago"},
+    {id: 2, clienteId: 2, numero: "FAT-2025-002", valor: 3200, emissao: "2025-01-05", vencimento: "2025-02-05", status: "Pendente"},
+    {id: 3, clienteId: 1, numero: "FAT-2025-003", valor: 4800, emissao: "2025-01-10", vencimento: "2025-01-25", status: "Vencido"}
+];
+
+let nextClienteId = 4;
+let nextFaturaId = 4;
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    updateClientesTable();
+    updateFaturasTable();
+    updateClienteSelect();
+    initCharts();
+    
+    // Set default dates
+    const hoje = new Date();
+    const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    document.getElementById('dataInicio').value = primeiroDia.toISOString().split('T')[0];
+    document.getElementById('dataFim').value = hoje.toISOString().split('T')[0];
+});
+
+function updateDashboard() {
+    const faturamentoTotal = faturas.filter(f => f.status === 'Pago')
+                                   .reduce((sum, f) => sum + f.valor, 0);
+    const faturasPendentes = faturas.filter(f => f.status === 'Pendente').length;
+    const faturasVencidas = faturas.filter(f => f.status === 'Vencido').length;
+    const clientesAtivos = clientes.filter(c => c.status === 'Ativo').length;
+    
+    document.getElementById('faturamentoMes').textContent = `R$ ${faturamentoTotal.toFixed(2)}`;
+    document.getElementById('totalClientes').textContent = clientesAtivos;
+    document.getElementById('faturasPendentes').textContent = faturasPendentes;
+    document.getElementById('faturasVencidas').textContent = faturasVencidas;
+    document.getElementById('propostasPendentes').textContent = '3';
+    document.getElementById('novosLeads').textContent = '8';
+    
+    // Calculate margin
+    const margem = faturamentoTotal > 0 ? ((faturamentoTotal * 0.3) / faturamentoTotal * 100) : 0;
+    document.getElementById('margemLucro').textContent = `${margem.toFixed(1)}%`;
+    
+    // Update BI indicators
+    const receitaRecorrente = faturamentoTotal * 0.7;
+    const ltv = clientesAtivos > 0 ? faturamentoTotal * 12 / clientesAtivos : 0;
+    
+    document.getElementById('receitaRecorrente').textContent = `R$ ${receitaRecorrente.toFixed(0)}`;
+    document.getElementById('ltv').textContent = `R$ ${ltv.toFixed(0)}`;
+}
+
+function cadastrarCliente() {
+    const nome = document.getElementById('clienteNome').value;
+    const segmento = document.getElementById('clienteSegmento').value;
+    const email = document.getElementById('clienteEmail').value;
+    const telefone = document.getElementById('clienteTelefone').value;
+    const observacoes = document.getElementById('clienteObservacoes').value;
+    
+    const novoCliente = {
+        id: nextClienteId++,
+        nome: nome,
+        segmento: segmento,
+        status: 'Prospecto',
+        faturamento: 0,
+        ultimoContato: new Date().toISOString().split('T')[0],
+        email: email,
+        telefone: telefone,
+        observacoes: observacoes
+    };
+    
+    clientes.push(novoCliente);
+    updateDashboard();
+    updateClientesTable();
+    updateClienteSelect();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novoClienteModal'));
+    modal.hide();
+    document.getElementById('novoClienteForm').reset();
+    
+    showNotification('Cliente cadastrado com sucesso!', 'success');
+}
+
+function updateClientesTable() {
+    const tbody = document.querySelector('#clientesTable tbody');
+    tbody.innerHTML = '';
+    
+    clientes.forEach(cliente => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${cliente.id}</td>
+            <td>${cliente.nome}</td>
+            <td><span class="badge bg-secondary">${cliente.segmento}</span></td>
+            <td>
+                <span class="badge ${cliente.status === 'Ativo' ? 'bg-success' : cliente.status === 'Inativo' ? 'bg-danger' : 'bg-warning'}">
+                    ${cliente.status}
+                </span>
+            </td>
+            <td>R$ ${cliente.faturamento.toFixed(2)}</td>
+            <td>${new Date(cliente.ultimoContato).toLocaleDateString('pt-BR')}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(${cliente.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-success" onclick="criarFaturaCliente(${cliente.id})">
+                    <i class="fas fa-file-invoice"></i>
+                </button>
+            </td>
+        `;
+    });
+}
+
+function updateFaturasTable() {
+    const tbody = document.querySelector('#faturasTable tbody');
+    tbody.innerHTML = '';
+    
+    faturas.forEach(fatura => {
+        const cliente = clientes.find(c => c.id === fatura.clienteId);
+        const statusClass = fatura.status === 'Pago' ? 'success' : 
+                           fatura.status === 'Vencido' ? 'danger' : 
+                           fatura.status === 'Pendente' ? 'warning' : 'secondary';
+        
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${fatura.numero}</td>
+            <td>${cliente?.nome || 'Cliente não encontrado'}</td>
+            <td>${new Date(fatura.emissao).toLocaleDateString('pt-BR')}</td>
+            <td>${new Date(fatura.vencimento).toLocaleDateString('pt-BR')}</td>
+            <td>R$ ${fatura.valor.toFixed(2)}</td>
+            <td><span class="badge bg-${statusClass}">${fatura.status}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editarFatura(${fatura.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                ${fatura.status === 'Pendente' ? 
+                    `<button class="btn btn-sm btn-outline-success" onclick="marcarPago(${fatura.id})">
+                        <i class="fas fa-check"></i>
+                    </button>` : ''
+                }
+            </td>
+        `;
+    });
+}
+
+function updateClienteSelect() {
+    const select = document.getElementById('faturaCliente');
+    select.innerHTML = '<option value="">Selecione um cliente</option>';
+    
+    clientes.filter(c => c.status !== 'Inativo').forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = cliente.nome;
+        select.appendChild(option);
+    });
+}
+
+function criarFatura() {
+    const clienteId = parseInt(document.getElementById('faturaCliente').value);
+    const valor = parseFloat(document.getElementById('faturaValor').value);
+    const vencimento = document.getElementById('faturaVencimento').value;
+    const descricao = document.getElementById('faturaDescricao').value;
+    
+    const novaFatura = {
+        id: nextFaturaId++,
+        clienteId: clienteId,
+        numero: `FAT-2025-${String(nextFaturaId).padStart(3, '0')}`,
+        valor: valor,
+        emissao: new Date().toISOString().split('T')[0],
+        vencimento: vencimento,
+        status: 'Pendente',
+        descricao: descricao
+    };
+    
+    faturas.push(novaFatura);
+    updateDashboard();
+    updateFaturasTable();
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('novaFaturaModal'));
+    modal.hide();
+    document.getElementById('novaFaturaForm').reset();
+    
+    showNotification(`Fatura ${novaFatura.numero} criada com sucesso!`, 'success');
+}
+
+function marcarPago(faturaId) {
+    const fatura = faturas.find(f => f.id === faturaId);
+    if (fatura) {
+        fatura.status = 'Pago';
+        
+        // Update cliente faturamento
+        const cliente = clientes.find(c => c.id === fatura.clienteId);
+        if (cliente) {
+            cliente.faturamento += fatura.valor;
+        }
+        
+        updateDashboard();
+        updateFaturasTable();
+        updateClientesTable();
+        
+        showNotification(`Fatura ${fatura.numero} marcada como paga!`, 'success');
+    }
+}
+
+function filtrarClientes() {
+    showNotification('Filtros aplicados com sucesso!', 'info');
+}
+
+function filtrarFaturas() {
+    showNotification('Filtros aplicados com sucesso!', 'info');
+}
+
+function editarCliente(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function editarFatura(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function criarFaturaCliente(clienteId) {
+    document.getElementById('faturaCliente').value = clienteId;
+    const modal = new bootstrap.Modal(document.getElementById('novaFaturaModal'));
+    modal.show();
+}
+
+function initCharts() {
+    // Fluxo de Caixa Chart
+    const ctxFluxo = document.getElementById('fluxoCaixaChart').getContext('2d');
+    const meses = ['Ago', 'Set', 'Out', 'Nov', 'Dez', 'Jan'];
+    const entradas = [25000, 28000, 32000, 35000, 42000, 38000];
+    const saidas = [18000, 20000, 22000, 25000, 28000, 26000];
+    
+    new Chart(ctxFluxo, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Entradas',
+                data: entradas,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4
+            }, {
+                label: 'Saídas',
+                data: saidas,
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Vendas por Período
+    const ctxVendas = document.getElementById('vendasPeriodoChart').getContext('2d');
+    new Chart(ctxVendas, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            datasets: [{
+                label: 'Vendas (R$)',
+                data: [45000, 52000, 48000, 61000, 58000, 67000],
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Top Clientes
+    const ctxClientes = document.getElementById('topClientesChart').getContext('2d');
+    const topClientes = clientes.filter(c => c.faturamento > 0)
+                              .sort((a, b) => b.faturamento - a.faturamento)
+                              .slice(0, 5);
+    
+    new Chart(ctxClientes, {
+        type: 'doughnut',
+        data: {
+            labels: topClientes.map(c => c.nome),
+            datasets: [{
+                data: topClientes.map(c => c.faturamento),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+    
+    // Rentabilidade Chart
+    const ctxRentabilidade = document.getElementById('rentabilidadeChart').getContext('2d');
+    new Chart(ctxRentabilidade, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Rentabilidade vs Volume',
+                data: clientes.map(c => ({x: c.faturamento, y: c.faturamento * 0.3})),
+                backgroundColor: '#17a2b8'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Faturamento (R$)'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Lucro (R$)'
+                    }
+                }
+            }
+        }
+    });
+    
+    // Previsão Chart
+    const ctxPrevisao = document.getElementById('previsaoChart').getContext('2d');
+    new Chart(ctxPrevisao, {
+        type: 'line',
+        data: {
+            labels: ['Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Realizado',
+                data: [52000, 48000, 61000, 58000, 67000, null],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)'
+            }, {
+                label: 'Projetado',
+                data: [null, null, null, null, 67000, 72000],
+                borderColor: '#ffc107',
+                backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                borderDash: [5, 5]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function exportarDashboard() {
+    const csv = 'Cliente,Segmento,Status,Faturamento\n' +
+        clientes.map(c => `${c.nome},${c.segmento},${c.status},${c.faturamento}`).join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'dashboard_erp.csv';
+    link.click();
+    
+    showNotification('Dashboard exportado com sucesso!', 'success');
+}
+
+function gerarRelatorioExecutivo() {
+    const faturamentoTotal = faturas.filter(f => f.status === 'Pago').reduce((sum, f) => sum + f.valor, 0);
+    const clientesAtivos = clientes.filter(c => c.status === 'Ativo').length;
+    const ticketMedio = clientesAtivos > 0 ? faturamentoTotal / clientesAtivos : 0;
+    
+    const relatorio = `
+RELATÓRIO EXECUTIVO - ERP G&L SYSTEMS
+Período: ${new Date().toLocaleDateString('pt-BR')}
+
+RESUMO FINANCEIRO
+- Faturamento Total: R$ ${faturamentoTotal.toFixed(2)}
+- Clientes Ativos: ${clientesAtivos}
+- Ticket Médio: R$ ${ticketMedio.toFixed(2)}
+- Margem de Lucro: ${document.getElementById('margemLucro').textContent}
+
+INDICADORES DE PERFORMANCE
+- Crescimento Mensal: +15%
+- Taxa de Churn: 2.5%
+- Receita Recorrente: ${document.getElementById('receitaRecorrente').textContent}
+- LTV Médio: ${document.getElementById('ltv').textContent}
+
+SITUAÇÃO FINANCEIRA
+- Faturas Pendentes: ${faturas.filter(f => f.status === 'Pendente').length}
+- Faturas Vencidas: ${faturas.filter(f => f.status === 'Vencido').length}
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `;
+    
+    alert(relatorio);
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

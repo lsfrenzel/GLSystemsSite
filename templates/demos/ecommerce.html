@@ -1,0 +1,481 @@
+{% extends "base.html" %}
+
+{% block title %}Demo: Sistema de Vendas Online - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Demo Header -->
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-shopping-cart text-primary me-2"></i>Demo: Sistema de Vendas Online</h1>
+        <p class="lead text-muted">E-commerce completo com relatórios automáticos</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Esta é uma demonstração funcional. Experimente adicionar produtos e gerar relatórios!
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-box fa-2x mb-2"></i>
+                    <h4 id="totalProdutos">{{ products|length }}</h4>
+                    <p class="mb-0">Produtos Cadastrados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                    <h4 id="valorTotal">R$ 0,00</h4>
+                    <p class="mb-0">Valor Total em Estoque</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                    <h4 id="produtosBaixos">0</h4>
+                    <p class="mb-0">Estoque Baixo</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-basket fa-2x mb-2"></i>
+                    <h4 id="totalPedidos">0</h4>
+                    <p class="mb-0">Pedidos Hoje</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Tabs -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="produtos-tab" data-bs-toggle="tab" data-bs-target="#produtos" type="button">
+                        <i class="fas fa-box me-2"></i>Produtos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="pedidos-tab" data-bs-toggle="tab" data-bs-target="#pedidos" type="button">
+                        <i class="fas fa-shopping-cart me-2"></i>Pedidos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab" data-bs-target="#relatorios" type="button">
+                        <i class="fas fa-chart-bar me-2"></i>Relatórios
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Produtos Tab -->
+                <div class="tab-pane fade show active" id="produtos" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Catálogo de Produtos</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            <i class="fas fa-plus me-2"></i>Novo Produto
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="produtosTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Estoque</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{ product.id }}</td>
+                                    <td>{{ product.nome }}</td>
+                                    <td><span class="badge bg-secondary">{{ product.categoria }}</span></td>
+                                    <td>R$ {{ "%.2f"|format(product.preco) }}</td>
+                                    <td>{{ product.estoque }}</td>
+                                    <td>
+                                        {% if product.estoque > 10 %}
+                                            <span class="badge bg-success">Em Estoque</span>
+                                        {% elif product.estoque > 0 %}
+                                            <span class="badge bg-warning">Baixo</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Esgotado</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editProduct({{ product.id }})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pedidos Tab -->
+                <div class="tab-pane fade" id="pedidos" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Pedidos Recentes</h5>
+                        <button class="btn btn-success" onclick="simularPedido()">
+                            <i class="fas fa-plus me-2"></i>Simular Pedido
+                        </button>
+                    </div>
+                    
+                    <div id="pedidosList">
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-shopping-basket fa-2x mb-3"></i>
+                            <p class="mb-0">Nenhum pedido encontrado. Clique em "Simular Pedido" para criar um pedido de exemplo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-pane fade" id="relatorios" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Gráfico de Vendas por Categoria</h5>
+                            <canvas id="categoriaChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Produtos Mais Vendidos</h5>
+                            <canvas id="produtosChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-success me-2" onclick="exportarPlanilha()">
+                            <i class="fas fa-file-excel me-2"></i>Exportar Planilha
+                        </button>
+                        <button class="btn btn-info" onclick="gerarRelatorio()">
+                            <i class="fas fa-chart-bar me-2"></i>Gerar Relatório Completo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Solutions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('solutions') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Voltar às Soluções
+        </a>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Novo Produto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm">
+                    <div class="mb-3">
+                        <label for="produtoNome" class="form-label">Nome do Produto</label>
+                        <input type="text" class="form-control" id="produtoNome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="produtoCategoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="produtoCategoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Roupas">Roupas</option>
+                            <option value="Calçados">Calçados</option>
+                            <option value="Acessórios">Acessórios</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Papelaria">Papelaria</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="produtoPreco" class="form-label">Preço (R$)</label>
+                        <input type="number" class="form-control" id="produtoPreco" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="produtoEstoque" class="form-label">Quantidade em Estoque</label>
+                        <input type="number" class="form-control" id="produtoEstoque" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="adicionarProduto()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/demos.js') }}"></script>
+<script>
+// Initialize E-commerce Demo
+let produtos = {{ products | tojsonfilter }};
+let pedidos = [];
+let nextProductId = Math.max(...produtos.map(p => p.id)) + 1;
+let nextPedidoId = 1;
+
+// Update dashboard on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateDashboard();
+    initCharts();
+});
+
+function updateDashboard() {
+    const totalProdutos = produtos.length;
+    const valorTotal = produtos.reduce((sum, p) => sum + (p.preco * p.estoque), 0);
+    const produtosBaixos = produtos.filter(p => p.estoque <= 10).length;
+    
+    document.getElementById('totalProdutos').textContent = totalProdutos;
+    document.getElementById('valorTotal').textContent = `R$ ${valorTotal.toFixed(2)}`;
+    document.getElementById('produtosBaixos').textContent = produtosBaixos;
+    document.getElementById('totalPedidos').textContent = pedidos.length;
+}
+
+function adicionarProduto() {
+    const nome = document.getElementById('produtoNome').value;
+    const categoria = document.getElementById('produtoCategoria').value;
+    const preco = parseFloat(document.getElementById('produtoPreco').value);
+    const estoque = parseInt(document.getElementById('produtoEstoque').value);
+    
+    const novoProduto = {
+        id: nextProductId++,
+        nome: nome,
+        categoria: categoria,
+        preco: preco,
+        estoque: estoque
+    };
+    
+    produtos.push(novoProduto);
+    updateDashboard();
+    updateProductsTable();
+    
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+    modal.hide();
+    document.getElementById('addProductForm').reset();
+    
+    showNotification('Produto adicionado com sucesso!', 'success');
+}
+
+function updateProductsTable() {
+    const tbody = document.querySelector('#produtosTable tbody');
+    tbody.innerHTML = '';
+    
+    produtos.forEach(product => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.nome}</td>
+            <td><span class="badge bg-secondary">${product.categoria}</span></td>
+            <td>R$ ${product.preco.toFixed(2)}</td>
+            <td>${product.estoque}</td>
+            <td>
+                ${product.estoque > 10 ? '<span class="badge bg-success">Em Estoque</span>' : 
+                  product.estoque > 0 ? '<span class="badge bg-warning">Baixo</span>' : 
+                  '<span class="badge bg-danger">Esgotado</span>'}
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editProduct(${product.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        `;
+    });
+}
+
+function simularPedido() {
+    if (produtos.length === 0) {
+        showNotification('Adicione produtos antes de criar pedidos!', 'warning');
+        return;
+    }
+    
+    const produtoAleatorio = produtos[Math.floor(Math.random() * produtos.length)];
+    const quantidade = Math.floor(Math.random() * 3) + 1;
+    
+    const novoPedido = {
+        id: nextPedidoId++,
+        produto: produtoAleatorio.nome,
+        quantidade: quantidade,
+        valorUnitario: produtoAleatorio.preco,
+        valorTotal: produtoAleatorio.preco * quantidade,
+        data: new Date().toLocaleDateString('pt-BR'),
+        status: 'Pendente'
+    };
+    
+    pedidos.push(novoPedido);
+    updatePedidosList();
+    updateDashboard();
+    
+    showNotification('Pedido simulado criado com sucesso!', 'success');
+}
+
+function updatePedidosList() {
+    const container = document.getElementById('pedidosList');
+    
+    if (pedidos.length === 0) {
+        container.innerHTML = `
+            <div class="alert alert-info text-center">
+                <i class="fas fa-shopping-basket fa-2x mb-3"></i>
+                <p class="mb-0">Nenhum pedido encontrado. Clique em "Simular Pedido" para criar um pedido de exemplo.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '<div class="row">';
+    
+    pedidos.forEach(pedido => {
+        html += `
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <strong>Pedido #${pedido.id}</strong>
+                        <span class="badge bg-primary">${pedido.status}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Produto:</strong> ${pedido.produto}</p>
+                        <p class="mb-1"><strong>Quantidade:</strong> ${pedido.quantidade}</p>
+                        <p class="mb-1"><strong>Valor Total:</strong> R$ ${pedido.valorTotal.toFixed(2)}</p>
+                        <p class="mb-0"><strong>Data:</strong> ${pedido.data}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function initCharts() {
+    // Chart by category
+    const ctxCategoria = document.getElementById('categoriaChart').getContext('2d');
+    const categorias = [...new Set(produtos.map(p => p.categoria))];
+    const dadosCategoria = categorias.map(cat => 
+        produtos.filter(p => p.categoria === cat).reduce((sum, p) => sum + (p.preco * p.estoque), 0)
+    );
+    
+    new Chart(ctxCategoria, {
+        type: 'pie',
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: dadosCategoria,
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Valor por Categoria'
+                }
+            }
+        }
+    });
+    
+    // Top products chart
+    const ctxProdutos = document.getElementById('produtosChart').getContext('2d');
+    const topProdutos = produtos.slice(0, 5);
+    
+    new Chart(ctxProdutos, {
+        type: 'bar',
+        data: {
+            labels: topProdutos.map(p => p.nome),
+            datasets: [{
+                label: 'Estoque',
+                data: topProdutos.map(p => p.estoque),
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Produtos em Estoque'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function exportarPlanilha() {
+    window.open('/export/csv/estoque', '_blank');
+    showNotification('Planilha exportada com sucesso!', 'success');
+}
+
+function gerarRelatorio() {
+    const relatorio = {
+        totalProdutos: produtos.length,
+        valorTotalEstoque: produtos.reduce((sum, p) => sum + (p.preco * p.estoque), 0),
+        produtosBaixoEstoque: produtos.filter(p => p.estoque <= 10).length,
+        totalPedidos: pedidos.length,
+        faturamentoEstimado: pedidos.reduce((sum, p) => sum + p.valorTotal, 0)
+    };
+    
+    alert(`
+RELATÓRIO DE VENDAS ONLINE
+
+Total de Produtos: ${relatorio.totalProdutos}
+Valor Total em Estoque: R$ ${relatorio.valorTotalEstoque.toFixed(2)}
+Produtos com Estoque Baixo: ${relatorio.produtosBaixoEstoque}
+Total de Pedidos: ${relatorio.totalPedidos}
+Faturamento Estimado: R$ ${relatorio.faturamentoEstimado.toFixed(2)}
+
+Este relatório foi gerado automaticamente pelo sistema G&L Systems.
+    `);
+}
+
+function editProduct(id) {
+    showNotification('Funcionalidade de edição em desenvolvimento!', 'info');
+}
+
+function showNotification(message, type) {
+    const alertClass = type === 'success' ? 'alert-success' : 
+                      type === 'warning' ? 'alert-warning' : 
+                      type === 'info' ? 'alert-info' : 'alert-primary';
+    
+    const alert = document.createElement('div');
+    alert.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    alert.style.zIndex = '9999';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

@@ -14,6 +14,32 @@ sample_products = [
     {"id": 5, "nome": "Agenda de Couro", "categoria": "Papelaria", "preco": 28.90, "estoque": 30}
 ]
 
+# Sample IA Analytics data
+sample_analytics_data = {
+    "vendas_mes": [
+        {"mes": "Jan", "vendas": 25000, "meta": 20000, "crescimento": 25},
+        {"mes": "Fev", "vendas": 28000, "meta": 22000, "crescimento": 12},
+        {"mes": "Mar", "vendas": 32000, "meta": 25000, "crescimento": 14},
+        {"mes": "Abr", "vendas": 35000, "meta": 28000, "crescimento": 9},
+        {"mes": "Mai", "vendas": 38000, "meta": 30000, "crescimento": 8}
+    ],
+    "insights": [
+        {"tipo": "Tendência", "titulo": "Crescimento Consistente", "descricao": "Vendas crescendo 13% ao mês", "impacto": "Alto"},
+        {"tipo": "Alerta", "titulo": "Estoque Baixo", "descricao": "3 produtos com estoque crítico", "impacto": "Médio"},
+        {"tipo": "Oportunidade", "titulo": "Nova Categoria", "descricao": "Eletrônicos com alta demanda", "impacto": "Alto"},
+        {"tipo": "Previsão", "titulo": "Meta Junho", "descricao": "Projeção: R$ 42.000", "impacto": "Informativo"}
+    ]
+}
+
+# Sample CRM data
+sample_crm_data = [
+    {"id": 1, "nome": "João Silva", "empresa": "Tech Corp", "status": "Negociação", "valor": 15000, "telefone": "(11) 99999-1111"},
+    {"id": 2, "nome": "Maria Santos", "empresa": "Inovação Ltda", "status": "Proposta", "valor": 8500, "telefone": "(11) 99999-2222"},
+    {"id": 3, "nome": "Pedro Costa", "empresa": "Digital Solutions", "status": "Qualificado", "valor": 12000, "telefone": "(11) 99999-3333"},
+    {"id": 4, "nome": "Ana Lima", "empresa": "StartUp XYZ", "status": "Fechado", "valor": 25000, "telefone": "(11) 99999-4444"},
+    {"id": 5, "nome": "Carlos Mendes", "empresa": "Mega Systems", "status": "Contato", "valor": 18000, "telefone": "(11) 99999-5555"}
+]
+
 sample_financial_data = [
     {"data": "2025-01-15", "tipo": "Receita", "categoria": "Vendas", "valor": 2500.00, "descricao": "Vendas do dia"},
     {"data": "2025-01-16", "tipo": "Despesa", "categoria": "Aluguel", "valor": -800.00, "descricao": "Aluguel da loja"},
@@ -84,6 +110,50 @@ def demo_imoveis():
 @app.route('/demo/academia')
 def demo_academia():
     return render_template('demos/academia.html')
+
+# New Top 3 Systems for 2025
+@app.route('/demo/ia-analytics')
+def demo_ia_analytics():
+    return render_template('demos/ia-analytics.html', 
+                         analytics_data=sample_analytics_data,
+                         products=sample_products)
+
+@app.route('/demo/crm')
+def demo_crm():
+    return render_template('demos/crm.html', leads=sample_crm_data)
+
+# New systems for different niches
+@app.route('/demo/clinica-medica')
+def demo_clinica_medica():
+    return render_template('demos/clinica-medica.html')
+
+@app.route('/demo/escola-online')
+def demo_escola_online():
+    return render_template('demos/escola-online.html')
+
+@app.route('/demo/delivery')
+def demo_delivery():
+    return render_template('demos/delivery.html')
+
+@app.route('/demo/pet-shop')
+def demo_pet_shop():
+    return render_template('demos/pet-shop.html')
+
+@app.route('/demo/agencia-viagem')
+def demo_agencia_viagem():
+    return render_template('demos/agencia-viagem.html')
+
+@app.route('/demo/contabilidade')
+def demo_contabilidade():
+    return render_template('demos/contabilidade.html')
+
+@app.route('/demo/advocacia')
+def demo_advocacia():
+    return render_template('demos/advocacia.html')
+
+@app.route('/demo/marketing-digital')
+def demo_marketing_digital():
+    return render_template('demos/marketing-digital.html')
 
 # Export functionality
 @app.route('/export/csv/<demo_type>')

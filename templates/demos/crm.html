@@ -1,0 +1,453 @@
+{% extends "base.html" %}
+
+{% block title %}CRM + Automação - Demo | G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <div class="d-inline-block p-3 bg-success rounded-circle mb-3">
+            <i class="fas fa-users-cog fa-2x text-white"></i>
+        </div>
+        <h1 class="display-5 fw-bold">CRM + Automação</h1>
+        <p class="lead text-muted">Gestão Completa de Clientes com Automação Inteligente</p>
+        <div class="demo-badge">
+            <span class="badge bg-warning text-dark px-3 py-2">🥉 #3 Mais Desejado 2025</span>
+        </div>
+    </div>
+
+    <!-- Pipeline Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4"><i class="fas fa-chart-line me-2 text-success"></i>Pipeline de Vendas</h3>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 pipeline-stage" data-stage="leads">
+                <div class="card-header bg-info text-white text-center">
+                    <h5 class="mb-0">Leads</h5>
+                    <small>Primeiros Contatos</small>
+                </div>
+                <div class="card-body p-2">
+                    <div class="stage-count text-center mb-2">
+                        <span class="h3 text-info">15</span>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Empresa XYZ</strong><br>Interesse em ERP</small>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Tech Solutions</strong><br>Consultoria BI</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 pipeline-stage" data-stage="qualificados">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h5 class="mb-0">Qualificados</h5>
+                    <small>Verificados</small>
+                </div>
+                <div class="card-body p-2">
+                    <div class="stage-count text-center mb-2">
+                        <span class="h3 text-warning">8</span>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Digital Corp</strong><br>R$ 12.000</small>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>StartUp Alpha</strong><br>R$ 8.500</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 pipeline-stage" data-stage="propostas">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Propostas</h5>
+                    <small>Em Negociação</small>
+                </div>
+                <div class="card-body p-2">
+                    <div class="stage-count text-center mb-2">
+                        <span class="h3 text-primary">5</span>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Mega Systems</strong><br>R$ 25.000</small>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Inovação Ltda</strong><br>R$ 15.000</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 pipeline-stage" data-stage="fechados">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0">Fechados</h5>
+                    <small>Contratos Assinados</small>
+                </div>
+                <div class="card-body p-2">
+                    <div class="stage-count text-center mb-2">
+                        <span class="h3 text-success">12</span>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Tech Master</strong><br>R$ 35.000</small>
+                    </div>
+                    <div class="lead-item mb-2 p-2 bg-light rounded">
+                        <small><strong>Future Co.</strong><br>R$ 18.500</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Automation Center -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-gradient text-white">
+                    <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Centro de Automação</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="automation-item p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="automation-status me-3">
+                                        <div class="status-dot bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Follow-up Automático</h6>
+                                        <small class="text-muted">WhatsApp + Email</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <span class="badge bg-success">Ativo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="automation-item p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="automation-status me-3">
+                                        <div class="status-dot bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Qualificação de Leads</h6>
+                                        <small class="text-muted">Score automático</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <span class="badge bg-success">Ativo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="automation-item p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="automation-status me-3">
+                                        <div class="status-dot bg-warning"></div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Relatórios Semanais</h6>
+                                        <small class="text-muted">Envio automático</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <span class="badge bg-warning text-dark">Config.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="automation-item p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="automation-status me-3">
+                                        <div class="status-dot bg-info"></div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Integração WhatsApp</h6>
+                                        <small class="text-muted">API conectada</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <span class="badge bg-info">Online</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card border-0 shadow h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Métricas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="metric-item mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Taxa de Conversão</span>
+                            <strong class="text-success">32%</strong>
+                        </div>
+                        <div class="progress mt-1" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 32%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-item mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Tempo Médio</span>
+                            <strong class="text-primary">18 dias</strong>
+                        </div>
+                        <div class="progress mt-1" style="height: 6px;">
+                            <div class="progress-bar bg-primary" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-item mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Follow-ups</span>
+                            <strong class="text-warning">98%</strong>
+                        </div>
+                        <div class="progress mt-1" style="height: 6px;">
+                            <div class="progress-bar bg-warning" style="width: 98%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Satisfação</span>
+                            <strong class="text-info">9.4/10</strong>
+                        </div>
+                        <div class="progress mt-1" style="height: 6px;">
+                            <div class="progress-bar bg-info" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-users me-2"></i>Gestão de Leads</h5>
+                    <button class="btn btn-light btn-sm" onclick="addNewLead()">
+                        <i class="fas fa-plus me-1"></i>Novo Lead
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Empresa</th>
+                                    <th>Status</th>
+                                    <th>Valor</th>
+                                    <th>Telefone</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for lead in leads %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle me-2">
+                                                {{ lead.nome[0] }}
+                                            </div>
+                                            <strong>{{ lead.nome }}</strong>
+                                        </div>
+                                    </td>
+                                    <td>{{ lead.empresa }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if lead.status == 'Fechado' %}bg-success
+                                            {% elif lead.status == 'Negociação' %}bg-primary
+                                            {% elif lead.status == 'Proposta' %}bg-warning text-dark
+                                            {% elif lead.status == 'Qualificado' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ lead.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong class="text-success">R$ {{ "%.0f"|format(lead.valor) }}</strong>
+                                    </td>
+                                    <td>
+                                        <a href="https://wa.me/55{{ lead.telefone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '') }}" 
+                                           target="_blank" class="btn btn-sm btn-success">
+                                            <i class="fab fa-whatsapp me-1"></i>{{ lead.telefone }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" onclick="editLead({{ lead.id }})">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-info" onclick="sendFollowUp({{ lead.id }})">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                            <button class="btn btn-outline-warning" onclick="scheduleCall({{ lead.id }})">
+                                                <i class="fas fa-phone"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="btn-group-lg">
+                <button class="btn btn-success btn-lg me-3" onclick="generateCRMReport()">
+                    <i class="fas fa-chart-bar me-2"></i>Relatório de Vendas
+                </button>
+                <button class="btn btn-primary btn-lg me-3" onclick="setupAutomation()">
+                    <i class="fas fa-cogs me-2"></i>Configurar Automação
+                </button>
+                <button class="btn btn-warning btn-lg" onclick="exportContacts()">
+                    <i class="fas fa-download me-2"></i>Exportar Contatos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.pipeline-stage {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.pipeline-stage:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.stage-count {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.lead-item {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.lead-item:hover {
+    background-color: #e9ecef !important;
+    border-color: #007bff;
+}
+
+.automation-item {
+    transition: all 0.3s ease;
+}
+
+.automation-item:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.02);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.metric-item {
+    padding: 0.5rem 0;
+}
+
+.demo-badge {
+    animation: pulse 2s infinite;
+}
+</style>
+
+<script>
+// Demo functions
+function addNewLead() {
+    GLDemos.showNotification('Novo lead adicionado ao pipeline!', 'success');
+}
+
+function editLead(id) {
+    GLDemos.showNotification(`Editando lead #${id}`, 'info');
+}
+
+function sendFollowUp(id) {
+    GLDemos.showNotification('Follow-up automático enviado via WhatsApp!', 'success');
+}
+
+function scheduleCall(id) {
+    GLDemos.showNotification('Ligação agendada para hoje às 15h!', 'info');
+}
+
+function generateCRMReport() {
+    GLDemos.showNotification('Gerando relatório completo de vendas...', 'info');
+    setTimeout(() => {
+        GLDemos.showNotification('Relatório CRM gerado com sucesso! 📊', 'success');
+    }, 2000);
+}
+
+function setupAutomation() {
+    GLDemos.showNotification('Configuração de automação iniciada!', 'primary');
+}
+
+function exportContacts() {
+    GLDemos.showNotification('Contatos exportados em Excel!', 'success');
+}
+
+// Pipeline interaction
+document.querySelectorAll('.pipeline-stage').forEach(stage => {
+    stage.addEventListener('click', function() {
+        const stageName = this.dataset.stage;
+        GLDemos.showNotification(`Visualizando estágio: ${stageName}`, 'info');
+    });
+});
+
+// Initialize demos when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof GLDemos !== 'undefined') {
+        GLDemos.init();
+        GLDemos.showNotification('CRM Sistema carregado! Pipeline automático ativo.', 'success');
+    }
+});
+</script>
+{% endblock %}

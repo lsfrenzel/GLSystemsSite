@@ -11,34 +11,50 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/modern-components.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark modern-navbar fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
-                <i class="fas fa-code-branch me-2"></i>G&L Systems
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}">
+                <div class="logo-container me-2">
+                    <i class="fas fa-cube logo-icon"></i>
+                </div>
+                <span class="logo-text">G&L Systems</span>
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Início</a>
+                        <a class="nav-link modern-nav-link" href="{{ url_for('index') }}">
+                            <i class="fas fa-home me-1"></i>Início
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('solutions') }}">Soluções</a>
+                        <a class="nav-link modern-nav-link" href="{{ url_for('solutions') }}">
+                            <i class="fas fa-rocket me-1"></i>Soluções
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">Sobre Nós</a>
+                        <a class="nav-link modern-nav-link" href="{{ url_for('about') }}">
+                            <i class="fas fa-users me-1"></i>Sobre Nós
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('contact') }}">Contato</a>
+                        <a class="nav-link modern-nav-link" href="{{ url_for('contact') }}">
+                            <i class="fas fa-paper-plane me-1"></i>Contato
+                        </a>
                     </li>
                 </ul>
             </div>

@@ -357,7 +357,7 @@
 {% block scripts %}
 <script>
 // Initialize Financial Demo
-let transacoes = {{ transactions | tojsonfilter }};
+let transacoes = {{ transactions | tojson }};
 let nextTransacaoId = transacoes.length + 1;
 
 const categoriasReceita = ['Vendas', 'Serviços', 'Comissões', 'Investimentos', 'Outros'];

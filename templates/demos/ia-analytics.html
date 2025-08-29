@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+
+{% block title %}IA Analytics & Insights - Demo | G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <div class="d-inline-block p-3 bg-primary rounded-circle mb-3">
+            <i class="fas fa-brain fa-2x text-white"></i>
+        </div>
+        <h1 class="display-5 fw-bold">IA Analytics & Insights</h1>
+        <p class="lead text-muted">Inteligência Artificial para Análise de Dados e Tomada de Decisões</p>
+        <div class="demo-badge">
+            <span class="badge bg-warning text-dark px-3 py-2">🏆 #1 Mais Desejado 2025</span>
+        </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient text-white">
+                    <h4 class="mb-0"><i class="fas fa-upload me-2"></i>Upload de Planilhas</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="upload-zone text-center p-5 border border-2 border-dashed rounded">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                        <h5>Arraste suas planilhas Excel/CSV aqui</h5>
+                        <p class="text-muted">ou clique para selecionar arquivos</p>
+                        <input type="file" class="form-control d-none" id="fileUpload" accept=".xlsx,.xls,.csv" multiple>
+                        <button class="btn btn-primary btn-lg" onclick="document.getElementById('fileUpload').click()">
+                            <i class="fas fa-file-excel me-2"></i>Selecionar Arquivos
+                        </button>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">Formatos suportados: Excel (.xlsx, .xls), CSV (.csv) - Máximo 10MB</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IA Insights Dashboard -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4"><i class="fas fa-robot me-2 text-primary"></i>Insights Gerados por IA</h3>
+        </div>
+        {% for insight in analytics_data.insights %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 insight-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+                        <div class="insight-icon me-3">
+                            {% if insight.tipo == 'Tendência' %}
+                                <i class="fas fa-chart-line text-success"></i>
+                            {% elif insight.tipo == 'Alerta' %}
+                                <i class="fas fa-exclamation-triangle text-warning"></i>
+                            {% elif insight.tipo == 'Oportunidade' %}
+                                <i class="fas fa-lightbulb text-info"></i>
+                            {% else %}
+                                <i class="fas fa-crystal-ball text-primary"></i>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="badge bg-primary mb-2">{{ insight.tipo }}</span>
+                            <h5 class="card-title">{{ insight.titulo }}</h5>
+                            <p class="card-text">{{ insight.descricao }}</p>
+                            <span class="badge 
+                                {% if insight.impacto == 'Alto' %}bg-danger
+                                {% elif insight.impacto == 'Médio' %}bg-warning text-dark
+                                {% else %}bg-info{% endif %}">
+                                Impacto: {{ insight.impacto }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Análise de Vendas com IA</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="vendasChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-target me-2"></i>KPIs Principais</h5>
+                </div>
+                <div class="card-body">
+                    <div class="kpi-item mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">ROI Médio</span>
+                            <span class="h4 text-success mb-0">245%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 8px;">
+                            <div class="progress-bar bg-success" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-item mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Precisão IA</span>
+                            <span class="h4 text-primary mb-0">94.8%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 8px;">
+                            <div class="progress-bar bg-primary" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-item mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Economia de Tempo</span>
+                            <span class="h4 text-warning mb-0">78%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 8px;">
+                            <div class="progress-bar bg-warning" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Satisfação</span>
+                            <span class="h4 text-info mb-0">9.2/10</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 8px;">
+                            <div class="progress-bar bg-info" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-table me-2"></i>Dados Analisados</h5>
+                    <div class="btn-group">
+                        <button class="btn btn-light btn-sm" onclick="exportToPDF()">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                        </button>
+                        <button class="btn btn-light btn-sm" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel me-1"></i>Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Estoque</th>
+                                    <th>Valor Total</th>
+                                    <th>IA Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{ product.nome }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ product.categoria }}</span>
+                                    </td>
+                                    <td>R$ {{ "%.2f"|format(product.preco) }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if product.estoque < 10 %}bg-danger
+                                            {% elif product.estoque < 20 %}bg-warning text-dark
+                                            {% else %}bg-success{% endif %}">
+                                            {{ product.estoque }}
+                                        </span>
+                                    </td>
+                                    <td>R$ {{ "%.2f"|format(product.preco * product.estoque) }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress me-2" style="width: 60px; height: 20px;">
+                                                <div class="progress-bar" style="width: {{ (product.id * 18 + 10) % 100 }}%"></div>
+                                            </div>
+                                            <small>{{ (product.id * 18 + 10) % 100 }}%</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="btn-group-lg">
+                <button class="btn btn-success btn-lg me-3" onclick="generateReport()">
+                    <i class="fas fa-chart-pie me-2"></i>Gerar Relatório Completo
+                </button>
+                <button class="btn btn-primary btn-lg me-3" onclick="scheduleAnalysis()">
+                    <i class="fas fa-clock me-2"></i>Agendar Análise Automática
+                </button>
+                <button class="btn btn-warning btn-lg" onclick="shareInsights()">
+                    <i class="fas fa-share-alt me-2"></i>Compartilhar Insights
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.upload-zone {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-zone:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff !important;
+}
+
+.insight-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.insight-card:hover {
+    transform: translateY(-5px);
+    border-left-color: #007bff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.insight-icon {
+    width: 40px;
+    height: 40px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.kpi-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.kpi-item:hover {
+    background: #e9ecef;
+    transform: scale(1.02);
+}
+
+.demo-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+</style>
+
+<script>
+// Chart.js configuration
+const ctx = document.getElementById('vendasChart').getContext('2d');
+const vendasChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ analytics_data.vendas_mes | map(attribute='mes') | list | tojson }},
+        datasets: [{
+            label: 'Vendas Reais',
+            data: {{ analytics_data.vendas_mes | map(attribute='vendas') | list | tojson }},
+            borderColor: '#28a745',
+            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+        }, {
+            label: 'Meta',
+            data: {{ analytics_data.vendas_mes | map(attribute='meta') | list | tojson }},
+            borderColor: '#ffc107',
+            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Análise Preditiva de Vendas com IA'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return 'R$ ' + value.toLocaleString();
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Demo functions
+function exportToPDF() {
+    GLDemos.showNotification('Relatório PDF gerado com sucesso!', 'success');
+}
+
+function exportToExcel() {
+    GLDemos.showNotification('Planilha Excel exportada!', 'success');
+}
+
+function generateReport() {
+    GLDemos.showNotification('Gerando relatório completo com insights de IA...', 'info');
+    setTimeout(() => {
+        GLDemos.showNotification('Relatório completo gerado! 📊', 'success');
+    }, 2000);
+}
+
+function scheduleAnalysis() {
+    GLDemos.showNotification('Análise automática agendada para todos os dias às 9h!', 'success');
+}
+
+function shareInsights() {
+    GLDemos.showNotification('Insights compartilhados com sua equipe!', 'info');
+}
+
+// File upload simulation
+document.getElementById('fileUpload').addEventListener('change', function(e) {
+    if (e.target.files.length > 0) {
+        GLDemos.showNotification(`${e.target.files.length} arquivo(s) carregado(s)! Analisando com IA...`, 'info');
+        setTimeout(() => {
+            GLDemos.showNotification('Análise completa! Novos insights disponíveis.', 'success');
+        }, 3000);
+    }
+});
+
+// Initialize demos when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof GLDemos !== 'undefined') {
+        GLDemos.init();
+        GLDemos.showNotification('Sistema IA Analytics carregado! Faça upload de suas planilhas para começar.', 'info');
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+Crie um site institucional/marketeiro moderno para uma empresa fictícia chamada G&L Systems (fundada em 2025), que desenvolve sistemas empresariais para otimizar o tempo de pequenas empresas e empreendedores, incluindo sistemas que interagem com planilhas, geram relatórios e gráficos para facilitar decisões e BI. O site deve estar 100% em português do Brasil, com identidade visual moderna, atrativa e responsiva, e com seções claras de marketing digital.
+
+Estrutura do site:
+
+Home (Página Inicial)
+
+Headline forte sobre “Economize tempo na sua empresa com tecnologia”.
+
+CTA: “Testar Demos” e “Solicitar Contato”.
+
+Sessão “Antes x Depois” mostrando como os sistemas otimizam processos e tornam dados mais claros.
+
+Soluções Populares
+
+Liste os sistemas empresariais mais procurados no mercado, mas sinta-se livre para criar outros sistemas que sejam altamente desejados pelos empresários e pequenas empresas, mesmo que não estejam nesta lista.
+
+Exemplos de sistemas:
+
+Sistema de Vendas Online (E-commerce básico)
+
+Agenda Online para Consultórios e Salões
+
+Controle de Estoque Integrado com Planilhas → gera relatórios automáticos de estoque, vendas e alertas de reposição.
+
+Sistema Financeiro com Relatórios e Gráficos → gera planilhas de receitas, despesas, lucro e dashboards simples.
+
+Gestão de Pedidos e Produção para Restaurantes → gera relatórios de vendas diárias e gráficos de itens mais vendidos.
+
+Mini ERP Financeiro → acompanha fluxo de caixa e gera planilhas exportáveis para análise de BI.
+
+Gestão de Ordens de Serviço (para oficinas e assistência técnica) → acompanha serviços, gera relatórios de produtividade e clientes atendidos.
+
+Cadastro de Imóveis (para imobiliárias) → controla propriedades, gera planilhas de disponibilidade e gráficos de vendas/aluguéis.
+
+Gestão de Alunos e Matrículas (academias e escolas) → gera planilhas de frequência, pagamento e gráficos de desempenho.
+
+Além disso, destaque que a G&L Systems também cria sites institucionais modernos, responsivos e prontos para empresas que precisam de presença online profissional.
+
+Demonstrações Funcionais (Obrigatório)
+
+Cada sistema listado acima ou qualquer outro sistema criado pela IA deve ter uma demo funcional limitada, criada pela própria IA do Replit.
+
+As demos podem ser mini projetos independentes (Node.js, Python Flask ou HTML/JS com armazenamento local ou Replit DB).
+
+Cada demo deve permitir visualizar relatórios, exportar planilhas e gerar gráficos simples, simulando como a ferramenta economiza tempo e facilita decisões.
+
+No site principal, cada card de solução deve levar o usuário à demo.
+
+Página Institucional
+
+Quem somos, missão, valores.
+
+Fundada em 2025, foco em economizar tempo com tecnologia acessível e funcional.
+
+Página de Contato
+
+Formulário simples (nome, email, empresa, mensagem).
+
+Mensagem de sucesso simulada: “Mensagem enviada com sucesso”.
+
+Regras importantes:
+
+Todo o site e demos devem estar em português.
+
+As demonstrações devem ser funcionais e interativas, usando apenas tecnologias compatíveis com Replit.
+
+Gerar gráficos, relatórios e planilhas dentro das demos de forma prática, sem depender de software externo.
+
+O site deve ser claro, bonito e responsivo (use Tailwind ou Bootstrap).
+
+A IA pode criar qualquer outro sistema relevante e desejado pelo mercado, além dos listados, com demos prontas para rodar.

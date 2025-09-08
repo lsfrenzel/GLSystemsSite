@@ -74,6 +74,14 @@ def contact():
     
     return render_template('contact.html')
 
+@app.route('/cases')
+def cases():
+    return render_template('cases.html')
+
+@app.route('/vantagens')
+def vantagens():
+    return render_template('vantagens.html')
+
 # Demo Routes
 @app.route('/demo/ecommerce')
 def demo_ecommerce():

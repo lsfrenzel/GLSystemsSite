@@ -1,0 +1,482 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Comunicação Slack Style - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-primary"><i class="fas fa-comments me-2"></i>Comunicação Empresarial - Estilo Slack</h1>
+        <p class="lead">Plataforma de comunicação em tempo real para equipes produtivas</p>
+    </div>
+
+    <div class="slack-container">
+        <!-- Sidebar -->
+        <div class="slack-sidebar">
+            <div class="workspace-header">
+                <h5><i class="fas fa-building me-2"></i>G&L Systems</h5>
+                <div class="user-status">
+                    <span class="status-indicator online"></span>
+                    <span>João Silva</span>
+                </div>
+            </div>
+            
+            <div class="channels-section">
+                <h6><i class="fas fa-hashtag me-2"></i>Canais</h6>
+                <div class="channel-list">
+                    <div class="channel-item active" onclick="selectChannel('geral')">
+                        <i class="fas fa-hashtag me-2"></i>geral
+                        <span class="unread-count">3</span>
+                    </div>
+                    <div class="channel-item" onclick="selectChannel('desenvolvimento')">
+                        <i class="fas fa-hashtag me-2"></i>desenvolvimento
+                    </div>
+                    <div class="channel-item" onclick="selectChannel('marketing')">
+                        <i class="fas fa-hashtag me-2"></i>marketing
+                        <span class="unread-count">1</span>
+                    </div>
+                    <div class="channel-item" onclick="selectChannel('vendas')">
+                        <i class="fas fa-hashtag me-2"></i>vendas
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dms-section">
+                <h6><i class="fas fa-user me-2"></i>Mensagens Diretas</h6>
+                <div class="dm-list">
+                    <div class="dm-item" onclick="selectDM('maria')">
+                        <span class="status-indicator online"></span>
+                        <span>Maria Santos</span>
+                    </div>
+                    <div class="dm-item" onclick="selectDM('carlos')">
+                        <span class="status-indicator away"></span>
+                        <span>Carlos Lima</span>
+                        <span class="unread-count">2</span>
+                    </div>
+                    <div class="dm-item" onclick="selectDM('ana')">
+                        <span class="status-indicator offline"></span>
+                        <span>Ana Costa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="slack-main">
+            <div class="chat-header">
+                <h5 id="current-channel"><i class="fas fa-hashtag me-2"></i>geral</h5>
+                <div class="channel-actions">
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="addMember()">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="pinMessage()">
+                        <i class="fas fa-thumbtack"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="searchMessages()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <!-- Mensagens serão carregadas aqui -->
+            </div>
+            
+            <div class="chat-input">
+                <div class="input-group">
+                    <button class="btn btn-outline-secondary" onclick="attachFile()">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="text" class="form-control" id="message-input" 
+                           placeholder="Enviar mensagem para #geral..." 
+                           onkeypress="handleKeyPress(event)">
+                    <button class="btn btn-outline-secondary" onclick="addEmoji()">
+                        <i class="fas fa-smile"></i>
+                    </button>
+                    <button class="btn btn-primary" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="slack-rightsidebar">
+            <div class="thread-header">
+                <h6><i class="fas fa-comments me-2"></i>Thread</h6>
+            </div>
+            <div class="thread-content">
+                <p class="text-muted text-center">Selecione uma mensagem para ver a thread</p>
+            </div>
+            
+            <div class="team-members mt-4">
+                <h6><i class="fas fa-users me-2"></i>Membros Online (4)</h6>
+                <div class="member-list">
+                    <div class="member-item">
+                        <span class="status-indicator online"></span>
+                        <span>João Silva (você)</span>
+                    </div>
+                    <div class="member-item">
+                        <span class="status-indicator online"></span>
+                        <span>Maria Santos</span>
+                    </div>
+                    <div class="member-item">
+                        <span class="status-indicator away"></span>
+                        <span>Carlos Lima</span>
+                    </div>
+                    <div class="member-item">
+                        <span class="status-indicator online"></span>
+                        <span>Ana Costa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.slack-container {
+    display: flex;
+    height: 70vh;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+}
+
+.slack-sidebar {
+    width: 250px;
+    background: #3f0e40;
+    color: white;
+    padding: 20px 15px;
+    overflow-y: auto;
+}
+
+.workspace-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-indicator.online { background: #2eb886; }
+.status-indicator.away { background: #ecb22e; }
+.status-indicator.offline { background: #868686; }
+
+.channels-section, .dms-section {
+    margin-bottom: 25px;
+}
+
+.channels-section h6, .dms-section h6 {
+    color: #bcabbc;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.channel-item, .dm-item, .member-item {
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    font-size: 14px;
+}
+
+.channel-item:hover, .dm-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.channel-item.active {
+    background: #007bff;
+}
+
+.unread-count {
+    background: #dc3545;
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+.slack-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.message-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    background: #007bff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.message-content {
+    flex: 1;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.message-author {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.message-text {
+    line-height: 1.4;
+}
+
+.chat-input {
+    padding: 15px 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.slack-rightsidebar {
+    width: 250px;
+    background: #f8f9fa;
+    padding: 20px 15px;
+    border-left: 1px solid #dee2e6;
+    overflow-y: auto;
+}
+
+.thread-header {
+    margin-bottom: 15px;
+}
+
+.member-list .member-item {
+    padding: 8px 0;
+    border-radius: 0;
+    cursor: default;
+}
+
+.file-attachment {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+    display: inline-block;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentChannel = 'geral';
+let messages = {
+    'geral': [
+        { author: 'MS', name: 'Maria Santos', time: '10:30', text: 'Bom dia, pessoal! Como estão os projetos?', type: 'text' },
+        { author: 'CL', name: 'Carlos Lima', time: '10:32', text: 'Bom dia! O projeto do cliente ABC está indo bem, vou entregar hoje.', type: 'text' },
+        { author: 'AC', name: 'Ana Costa', time: '10:35', text: 'Ótimo! Preciso de ajuda com o design da landing page.', type: 'text' },
+        { author: 'JS', name: 'João Silva', time: '10:38', text: 'Ana, posso te ajudar! Vou enviar algumas referências.', type: 'text' },
+        { author: 'JS', name: 'João Silva', time: '10:40', text: '', type: 'file', fileName: 'referencias-design.pdf', fileSize: '2.3 MB' }
+    ],
+    'desenvolvimento': [
+        { author: 'CL', name: 'Carlos Lima', time: '09:15', text: 'Deploy da versão 2.1 finalizado com sucesso! ✅', type: 'text' },
+        { author: 'JS', name: 'João Silva', time: '09:20', text: 'Perfeito! Todos os testes passaram?', type: 'text' },
+        { author: 'CL', name: 'Carlos Lima', time: '09:22', text: 'Sim, 100% de cobertura nos testes automatizados.', type: 'text' }
+    ],
+    'marketing': [
+        { author: 'MS', name: 'Maria Santos', time: '11:00', text: 'Nova campanha no Google Ads está performando bem! CTR de 3.2%', type: 'text' }
+    ],
+    'vendas': [
+        { author: 'AC', name: 'Ana Costa', time: '14:30', text: 'Fechamos mais um cliente hoje! R$ 15.000 em MRR 🎉', type: 'text' }
+    ]
+};
+
+function selectChannel(channel) {
+    currentChannel = channel;
+    document.getElementById('current-channel').innerHTML = `<i class="fas fa-hashtag me-2"></i>${channel}`;
+    document.getElementById('message-input').placeholder = `Enviar mensagem para #${channel}...`;
+    
+    // Update active channel
+    document.querySelectorAll('.channel-item').forEach(item => item.classList.remove('active'));
+    event.target.closest('.channel-item').classList.add('active');
+    
+    // Clear unread count
+    const unreadCount = event.target.closest('.channel-item').querySelector('.unread-count');
+    if (unreadCount) unreadCount.remove();
+    
+    loadMessages();
+}
+
+function selectDM(user) {
+    // Implementar mensagens diretas
+    showToast(`Conversa privada com ${user} aberta!`, 'info');
+}
+
+function loadMessages() {
+    const chatMessages = document.getElementById('chat-messages');
+    const channelMessages = messages[currentChannel] || [];
+    
+    chatMessages.innerHTML = '';
+    
+    channelMessages.forEach(message => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message-item';
+        
+        if (message.type === 'file') {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${message.author}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-author">${message.name}</span>
+                        <span class="message-time">${message.time}</span>
+                    </div>
+                    <div class="file-attachment">
+                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                        <strong>${message.fileName}</strong>
+                        <small class="text-muted d-block">${message.fileSize}</small>
+                        <button class="btn btn-sm btn-outline-primary mt-2">
+                            <i class="fas fa-download me-1"></i>Download
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${message.author}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-author">${message.name}</span>
+                        <span class="message-time">${message.time}</span>
+                    </div>
+                    <div class="message-text">${message.text}</div>
+                </div>
+            `;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+    });
+    
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById('message-input');
+    const text = input.value.trim();
+    
+    if (!text) return;
+    
+    const newMessage = {
+        author: 'JS',
+        name: 'João Silva',
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        text: text,
+        type: 'text'
+    };
+    
+    if (!messages[currentChannel]) {
+        messages[currentChannel] = [];
+    }
+    
+    messages[currentChannel].push(newMessage);
+    input.value = '';
+    loadMessages();
+    
+    showToast('Mensagem enviada!', 'success');
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function addMember() {
+    showToast('Convite enviado para novo membro!', 'success');
+}
+
+function pinMessage() {
+    showToast('Mensagem fixada no canal!', 'info');
+}
+
+function searchMessages() {
+    showToast('Busca de mensagens iniciada!', 'info');
+}
+
+function attachFile() {
+    showToast('Seletor de arquivos aberto!', 'info');
+}
+
+function addEmoji() {
+    showToast('Seletor de emojis aberto! 😄', 'info');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', function() {
+    loadMessages();
+});
+</script>
+{% endblock %}

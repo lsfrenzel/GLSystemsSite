@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Marketing HubSpot Style - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-primary"><i class="fas fa-bullhorn me-2"></i>Marketing Automation - Estilo HubSpot</h1>
+        <p class="lead">Plataforma completa de automação de marketing, geração de leads e nutrição de prospects</p>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Inspirado no HubSpot:</strong> A plataforma all-in-one para marketing, vendas e atendimento
+        </div>
+    </div>
+
+    <!-- Dashboard de Marketing -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                    <h4>1,247</h4>
+                    <p class="text-muted">Contatos</p>
+                    <small class="text-success">+15% este mês</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                    <h4>38%</h4>
+                    <p class="text-muted">Taxa de Conversão</p>
+                    <small class="text-success">+5% vs. último mês</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-envelope-open fa-2x text-warning mb-2"></i>
+                    <h4>24.3%</h4>
+                    <p class="text-muted">Taxa de Abertura</p>
+                    <small class="text-warning">-2% vs. último mês</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-mouse-pointer fa-2x text-info mb-2"></i>
+                    <h4>3.8%</h4>
+                    <p class="text-muted">Taxa de Clique</p>
+                    <small class="text-success">+0.5% vs. último mês</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campanhas Ativas -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h5><i class="fas fa-rocket me-2"></i>Campanhas Ativas</h5>
+                    <button class="btn btn-primary btn-sm" onclick="createCampaign()">
+                        <i class="fas fa-plus me-2"></i>Nova Campanha
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="campaign-card">
+                                <div class="campaign-status bg-success"></div>
+                                <h6>Campanha de E-book: "Marketing Digital 2025"</h6>
+                                <p class="text-muted">Landing page + e-mail marketing + nutrição</p>
+                                <div class="campaign-metrics">
+                                    <span class="badge bg-primary">350 leads</span>
+                                    <span class="badge bg-success">25% conversão</span>
+                                    <span class="badge bg-info">R$ 12.500 ROI</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="campaign-card">
+                                <div class="campaign-status bg-warning"></div>
+                                <h6>Webinar: "Automação de Vendas"</h6>
+                                <p class="text-muted">Inscrições + e-mail sequência + follow-up</p>
+                                <div class="campaign-metrics">
+                                    <span class="badge bg-primary">127 inscritos</span>
+                                    <span class="badge bg-warning">Em andamento</span>
+                                    <span class="badge bg-info">R$ 8.300 potencial</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Funil de Marketing -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-funnel-dollar me-2"></i>Funil de Marketing</h5>
+                </div>
+                <div class="card-body">
+                    <div class="funnel-container">
+                        <div class="funnel-stage">
+                            <div class="funnel-section" style="width: 100%; background: #17a2b8;">
+                                <h6>Visitantes</h6>
+                                <span>5,420</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-section" style="width: 60%; background: #28a745;">
+                                <h6>Leads</h6>
+                                <span>1,247</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-section" style="width: 35%; background: #ffc107;">
+                                <h6>Qualificados</h6>
+                                <span>423</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-section" style="width: 15%; background: #dc3545;">
+                                <h6>Clientes</h6>
+                                <span>67</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ferramentas de Marketing -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-envelope me-2"></i>E-mail Marketing</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Newsletter Semanal</span>
+                            <span class="badge bg-success">Enviado</span>
+                        </div>
+                        <div class="progress mb-1">
+                            <div class="progress-bar" style="width: 92%"></div>
+                        </div>
+                        <small class="text-muted">Taxa de abertura: 24.3%</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Sequência de Nutrição</span>
+                            <span class="badge bg-warning">Em andamento</span>
+                        </div>
+                        <div class="progress mb-1">
+                            <div class="progress-bar bg-warning" style="width: 68%"></div>
+                        </div>
+                        <small class="text-muted">5 de 7 e-mails enviados</small>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-sm" onclick="createEmailCampaign()">
+                        <i class="fas fa-plus me-2"></i>Nova Campanha
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar me-2"></i>Analytics e Relatórios</h5>
+                </div>
+                <div class="card-body">
+                    <div class="analytics-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Tráfego Orgânico</span>
+                            <span class="text-success">+23%</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Social Media</span>
+                            <span class="text-info">+15%</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-info" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-item">
+                        <div class="d-flex justify-content-between">
+                            <span>Google Ads</span>
+                            <span class="text-warning">+8%</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-warning" style="width: 32%"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline-primary btn-sm" onclick="viewDetailedAnalytics()">
+                        <i class="fas fa-chart-line me-2"></i>Ver Relatório Completo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.metric-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+.campaign-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+    background: white;
+    transition: all 0.3s;
+}
+
+.campaign-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.campaign-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.campaign-metrics {
+    margin-top: 10px;
+}
+
+.campaign-metrics .badge {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.funnel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.funnel-stage {
+    width: 100%;
+    max-width: 400px;
+}
+
+.funnel-section {
+    padding: 15px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.analytics-item {
+    margin-bottom: 15px;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function createCampaign() {
+    showToast('Nova campanha será criada!', 'success');
+}
+
+function createEmailCampaign() {
+    showToast('Editor de e-mail aberto!', 'info');
+}
+
+function viewDetailedAnalytics() {
+    showToast('Relatório detalhado carregado!', 'primary');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

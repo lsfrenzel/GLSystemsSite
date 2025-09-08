@@ -1,0 +1,486 @@
+{% extends "base.html" %}
+
+{% block title %}Demo CRM Pipedrive Style - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="demo-header text-center mb-4">
+                <h1 class="text-primary"><i class="fas fa-chart-line me-2"></i>CRM Estilo Pipedrive</h1>
+                <p class="lead">Sistema de CRM completo para gestão de vendas com funil visual e automação</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Inspirado no Pipedrive:</strong> O CRM de vendas mais intuitivo e eficiente para fechar negócios
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Visual -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3"><i class="fas fa-funnel-dollar me-2"></i>Pipeline de Vendas</h3>
+            <div class="pipeline-container">
+                <div class="pipeline-stage">
+                    <h5 class="stage-title bg-info text-white p-2 rounded">Primeiro Contato</h5>
+                    <div class="pipeline-cards">
+                        <div class="pipeline-card" data-bs-toggle="modal" data-bs-target="#leadModal" onclick="openLeadModal(3)">
+                            <div class="card-header">Marina Costa</div>
+                            <div class="card-value">R$ 35.000</div>
+                            <div class="card-company">StartUp XYZ</div>
+                            <div class="card-probability">40% prob.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pipeline-stage">
+                    <h5 class="stage-title bg-warning text-dark p-2 rounded">Proposta</h5>
+                    <div class="pipeline-cards">
+                        <div class="pipeline-card" data-bs-toggle="modal" data-bs-target="#leadModal" onclick="openLeadModal(2)">
+                            <div class="card-header">Carlos Santos</div>
+                            <div class="card-value">R$ 15.000</div>
+                            <div class="card-company">Digital Corp</div>
+                            <div class="card-probability">60% prob.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage">
+                    <h5 class="stage-title bg-orange text-white p-2 rounded">Negociação</h5>
+                    <div class="pipeline-cards">
+                        <div class="pipeline-card" data-bs-toggle="modal" data-bs-target="#leadModal" onclick="openLeadModal(1)">
+                            <div class="card-header">Ana Silva</div>
+                            <div class="card-value">R$ 25.000</div>
+                            <div class="card-company">TechStart</div>
+                            <div class="card-probability">75% prob.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage">
+                    <h5 class="stage-title bg-success text-white p-2 rounded">Fechado</h5>
+                    <div class="pipeline-cards">
+                        <div class="pipeline-card success-card" data-bs-toggle="modal" data-bs-target="#leadModal" onclick="openLeadModal(4)">
+                            <div class="card-header">Roberto Lima</div>
+                            <div class="card-value">R$ 50.000</div>
+                            <div class="card-company">Innovation Ltd</div>
+                            <div class="card-probability">100% ganho</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard de Métricas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card metric-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-bullseye fa-2x text-primary mb-2"></i>
+                    <h4 id="totalLeads">{{ leads|length }}</h4>
+                    <p class="text-muted">Leads Ativos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+                    <h4 id="valorTotal">R$ 125.000</h4>
+                    <p class="text-muted">Valor em Pipeline</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-trophy fa-2x text-warning mb-2"></i>
+                    <h4 id="taxaConversao">68%</h4>
+                    <p class="text-muted">Taxa de Conversão</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card metric-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-check fa-2x text-info mb-2"></i>
+                    <h4 id="atividadesPendentes">5</h4>
+                    <p class="text-muted">Atividades Hoje</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Leads -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-users me-2"></i>Todos os Leads</h5>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+                        <i class="fas fa-plus me-2"></i>Novo Lead
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Empresa</th>
+                                    <th>Status</th>
+                                    <th>Valor</th>
+                                    <th>Probabilidade</th>
+                                    <th>Origem</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTable">
+                                {% for lead in leads %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ lead.nome }}</strong><br>
+                                        <small class="text-muted">{{ lead.telefone }}</small>
+                                    </td>
+                                    <td>{{ lead.empresa }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if lead.status == 'Fechado-Ganho' %}bg-success
+                                            {% elif lead.status == 'Negociação' %}bg-warning
+                                            {% elif lead.status == 'Proposta Enviada' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ lead.status }}
+                                        </span>
+                                    </td>
+                                    <td><strong>R$ {{ "{:,.2f}".format(lead.valor) }}</strong></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: {{ lead.probabilidade }}%"
+                                                 aria-valuenow="{{ lead.probabilidade }}" 
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                                {{ lead.probabilidade }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ lead.origem }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editLead({{ lead.id }})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="addActivity({{ lead.id }})">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Detalhes do Lead -->
+<div class="modal fade" id="leadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalhes do Lead</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="leadModalBody">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Adicionar Lead -->
+<div class="modal fade" id="addLeadModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Lead</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLeadForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="leadNome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Empresa</label>
+                        <input type="text" class="form-control" id="leadEmpresa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" id="leadTelefone">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Valor (R$)</label>
+                        <input type="number" class="form-control" id="leadValor" step="0.01">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Origem</label>
+                        <select class="form-select" id="leadOrigem">
+                            <option value="Website">Website</option>
+                            <option value="Indicação">Indicação</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Google Ads">Google Ads</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Evento">Evento</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="addNewLead()">Adicionar Lead</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.pipeline-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px 0;
+    min-height: 300px;
+}
+
+.pipeline-stage {
+    min-width: 280px;
+    flex: 1;
+}
+
+.pipeline-cards {
+    min-height: 200px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
+.pipeline-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 4px solid #007bff;
+}
+
+.pipeline-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.pipeline-card.success-card {
+    border-left-color: #28a745;
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.card-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+    margin: 5px 0;
+}
+
+.card-company {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.card-probability {
+    font-size: 11px;
+    color: #007bff;
+    margin-top: 5px;
+}
+
+.metric-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-orange {
+    background-color: #fd7e14 !important;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let leads = {{ leads | tojsonfilter }};
+let nextLeadId = Math.max(...leads.map(l => l.id)) + 1;
+
+function openLeadModal(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+    
+    const modalBody = document.getElementById('leadModalBody');
+    modalBody.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Informações do Contato</h6>
+                <p><strong>Nome:</strong> ${lead.nome}</p>
+                <p><strong>Empresa:</strong> ${lead.empresa}</p>
+                <p><strong>Telefone:</strong> ${lead.telefone}</p>
+                <p><strong>Origem:</strong> ${lead.origem}</p>
+            </div>
+            <div class="col-md-6">
+                <h6>Informações do Negócio</h6>
+                <p><strong>Status:</strong> <span class="badge bg-primary">${lead.status}</span></p>
+                <p><strong>Valor:</strong> R$ ${lead.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                <p><strong>Probabilidade:</strong> ${lead.probabilidade}%</p>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h6>Histórico de Atividades</h6>
+        <div class="timeline">
+            <div class="timeline-item">
+                <i class="fas fa-phone text-success"></i>
+                <div class="timeline-content">
+                    <h6>Ligação realizada</h6>
+                    <small class="text-muted">Hoje, 14:30</small>
+                    <p>Conversa produtiva sobre necessidades da empresa.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <i class="fas fa-envelope text-info"></i>
+                <div class="timeline-content">
+                    <h6>E-mail enviado</h6>
+                    <small class="text-muted">Ontem, 09:15</small>
+                    <p>Proposta comercial enviada com valores e prazos.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <button class="btn btn-success me-2" onclick="advanceStage(${leadId})">
+                <i class="fas fa-arrow-right me-1"></i>Avançar Etapa
+            </button>
+            <button class="btn btn-primary me-2" onclick="addActivity(${leadId})">
+                <i class="fas fa-calendar-plus me-1"></i>Nova Atividade
+            </button>
+            <button class="btn btn-info" onclick="sendEmail(${leadId})">
+                <i class="fas fa-envelope me-1"></i>Enviar E-mail
+            </button>
+        </div>
+    `;
+}
+
+function addNewLead() {
+    const nome = document.getElementById('leadNome').value;
+    const empresa = document.getElementById('leadEmpresa').value;
+    const telefone = document.getElementById('leadTelefone').value;
+    const valor = parseFloat(document.getElementById('leadValor').value) || 0;
+    const origem = document.getElementById('leadOrigem').value;
+    
+    if (!nome || !empresa) {
+        alert('Por favor, preencha nome e empresa.');
+        return;
+    }
+    
+    const novoLead = {
+        id: nextLeadId++,
+        nome: nome,
+        empresa: empresa,
+        telefone: telefone,
+        valor: valor,
+        status: 'Primeiro Contato',
+        probabilidade: 20,
+        origem: origem
+    };
+    
+    leads.push(novoLead);
+    updateLeadsTable();
+    
+    // Fechar modal e limpar form
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addLeadModal'));
+    modal.hide();
+    document.getElementById('addLeadForm').reset();
+    
+    // Mostrar sucesso
+    showToast('Lead adicionado com sucesso!', 'success');
+}
+
+function updateLeadsTable() {
+    // Atualizar contadores
+    document.getElementById('totalLeads').textContent = leads.length;
+    const valorTotal = leads.reduce((sum, lead) => sum + lead.valor, 0);
+    document.getElementById('valorTotal').textContent = 'R$ ' + valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+}
+
+function advanceStage(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+    
+    const stages = ['Primeiro Contato', 'Proposta Enviada', 'Negociação', 'Fechado-Ganho'];
+    const currentIndex = stages.indexOf(lead.status);
+    
+    if (currentIndex < stages.length - 1) {
+        lead.status = stages[currentIndex + 1];
+        lead.probabilidade = Math.min(lead.probabilidade + 25, 100);
+        showToast('Lead avançou para: ' + lead.status, 'success');
+        updateLeadsTable();
+    }
+}
+
+function addActivity(leadId) {
+    showToast('Atividade agendada para este lead!', 'info');
+}
+
+function sendEmail(leadId) {
+    showToast('E-mail enviado automaticamente!', 'success');
+}
+
+function editLead(leadId) {
+    showToast('Funcionalidade de edição disponível!', 'info');
+}
+
+function showToast(message, type) {
+    // Criar toast notification
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Inicializar ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    updateLeadsTable();
+});
+</script>
+{% endblock %}

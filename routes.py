@@ -122,6 +122,54 @@ def demo_ia_analytics():
 def demo_crm():
     return render_template('demos/crm.html', leads=sample_crm_data)
 
+# Sistemas Famosos - Top 2025
+@app.route('/demo/pipedrive-crm')
+def demo_pipedrive_crm():
+    # Sample Pipedrive-style data with enhanced features
+    sample_pipedrive_data = [
+        {"id": 1, "nome": "Ana Silva", "empresa": "TechStart", "status": "Negociação", "valor": 25000, "probabilidade": 75, "origem": "Website", "telefone": "(11) 99999-1111"},
+        {"id": 2, "nome": "Carlos Santos", "empresa": "Digital Corp", "status": "Proposta Enviada", "valor": 15000, "probabilidade": 60, "origem": "Indicação", "telefone": "(11) 99999-2222"},
+        {"id": 3, "nome": "Marina Costa", "empresa": "StartUp XYZ", "status": "Demo Agendada", "valor": 35000, "probabilidade": 40, "origem": "LinkedIn", "telefone": "(11) 99999-3333"},
+        {"id": 4, "nome": "Roberto Lima", "empresa": "Innovation Ltd", "status": "Fechado-Ganho", "valor": 50000, "probabilidade": 100, "origem": "Google Ads", "telefone": "(11) 99999-4444"}
+    ]
+    return render_template('demos/pipedrive-crm.html', leads=sample_pipedrive_data)
+
+@app.route('/demo/hubspot-marketing')
+def demo_hubspot_marketing():
+    return render_template('demos/hubspot-marketing.html')
+
+@app.route('/demo/slack-comunicacao')
+def demo_slack_comunicacao():
+    return render_template('demos/slack-comunicacao.html')
+
+@app.route('/demo/trello-projetos')
+def demo_trello_projetos():
+    return render_template('demos/trello-projetos.html')
+
+@app.route('/demo/quickbooks-contabilidade')
+def demo_quickbooks_contabilidade():
+    return render_template('demos/quickbooks-contabilidade.html')
+
+@app.route('/demo/shopify-ecommerce')
+def demo_shopify_ecommerce():
+    return render_template('demos/shopify-ecommerce.html')
+
+@app.route('/demo/zoom-videoconferencia')
+def demo_zoom_videoconferencia():
+    return render_template('demos/zoom-videoconferencia.html')
+
+@app.route('/demo/whatsapp-business')
+def demo_whatsapp_business():
+    return render_template('demos/whatsapp-business.html')
+
+@app.route('/demo/google-analytics')
+def demo_google_analytics():
+    return render_template('demos/google-analytics.html')
+
+@app.route('/demo/salesforce-enterprise')
+def demo_salesforce_enterprise():
+    return render_template('demos/salesforce-enterprise.html')
+
 # New systems for different niches
 @app.route('/demo/clinica-medica')
 def demo_clinica_medica():

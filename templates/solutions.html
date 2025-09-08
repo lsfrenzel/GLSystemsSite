@@ -4,10 +4,60 @@
 
 {% block content %}
 <div class="container py-5 mt-5">
-    <!-- Header -->
+    <!-- Hero Section Expandido -->
     <div class="text-center mb-5">
-        <h1 class="fw-bold">Nossas Soluções Empresariais</h1>
-        <p class="lead text-muted">Sistemas completos com demonstrações funcionais para sua empresa</p>
+        <h1 class="display-4 fw-bold">Soluções Empresariais Completas</h1>
+        <p class="lead text-muted">+20 sistemas integrados • IA nativa • ROI comprovado em 90 dias • 500+ ferramentas</p>
+        
+        <!-- Estatísticas Rápidas -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="text-primary fw-bold">500+</h3>
+                    <p class="text-muted">Empresas Atendidas</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="text-success fw-bold">85%</h3>
+                    <p class="text-muted">Aumento Produtividade</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="text-warning fw-bold">24h</h3>
+                    <p class="text-muted">Implementação Rápida</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <h3 class="text-info fw-bold">24/7</h3>
+                    <p class="text-muted">Suporte Especializado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros de Categoria -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="mb-3">Filtrar por Categoria</h5>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        <button class="btn btn-outline-primary filter-btn active" data-filter="all">Todos os Sistemas</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="crm">CRM & Vendas</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="comunicacao">Comunicação</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="projetos">Gestão Projetos</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="financeiro">Financeiro</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="ecommerce">E-commerce</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="saude">Saúde & Clínicas</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="educacao">Educação</button>
+                        <button class="btn btn-outline-primary filter-btn" data-filter="servicos">Serviços</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Sistemas Famosos 2025 -->

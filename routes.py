@@ -82,6 +82,10 @@ def cases():
 def vantagens():
     return render_template('vantagens.html')
 
+@app.route('/estudos')
+def estudos():
+    return render_template('estudos.html')
+
 # Demo Routes
 @app.route('/demo/ecommerce')
 def demo_ecommerce():
@@ -169,6 +173,10 @@ def demo_whatsapp_business():
 @app.route('/demo/zoom-videoconferencia')
 def demo_zoom_videoconferencia():
     return render_template('demos/zoom-videoconferencia.html')
+
+@app.route('/demo/netflix-streaming')
+def demo_netflix_streaming():
+    return render_template('demos/netflix-streaming.html')
 
 @app.route('/demo/google-analytics')
 def demo_google_analytics():

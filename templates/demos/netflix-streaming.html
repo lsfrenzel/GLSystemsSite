@@ -1,0 +1,632 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Streaming Platform - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-danger"><i class="fas fa-play-circle me-2"></i>Plataforma de Streaming G&L</h1>
+        <p class="lead">Sistema completo para gestão de conteúdo digital e streaming como Netflix</p>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="streaming-dashboard">
+                <!-- Header da Plataforma -->
+                <div class="platform-header">
+                    <div class="header-content">
+                        <div class="logo-section">
+                            <h3 class="text-white fw-bold">FlixStream</h3>
+                            <span class="badge bg-success">Live</span>
+                        </div>
+                        <div class="header-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">2.4M</span>
+                                <span class="stat-label">Usuários Ativos</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">15.6K</span>
+                                <span class="stat-label">Horas Assistidas Hoje</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">98.5%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegação de Conteúdo -->
+                <div class="content-navigation">
+                    <div class="nav-tabs-custom">
+                        <button class="nav-tab active" onclick="showContent('trending')">Em Alta</button>
+                        <button class="nav-tab" onclick="showContent('movies')">Filmes</button>
+                        <button class="nav-tab" onclick="showContent('series')">Séries</button>
+                        <button class="nav-tab" onclick="showContent('originals')">Originais</button>
+                        <button class="nav-tab" onclick="showContent('analytics')">Analytics</button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Principal -->
+                <div class="main-content">
+                    <!-- Em Alta -->
+                    <div class="content-section active" id="trending-content">
+                        <div class="section-header">
+                            <h4 class="text-white">🔥 Trending Agora</h4>
+                            <button class="btn btn-outline-light btn-sm" onclick="addContent()">
+                                <i class="fas fa-plus me-1"></i>Adicionar Conteúdo
+                            </button>
+                        </div>
+                        
+                        <div class="content-carousel">
+                            <div class="content-item featured">
+                                <div class="content-poster">
+                                    <div class="poster-placeholder bg-gradient-danger">
+                                        <i class="fas fa-film fa-3x text-white"></i>
+                                    </div>
+                                    <div class="content-overlay">
+                                        <div class="content-info">
+                                            <h6>Série Original: Tech Wars</h6>
+                                            <p>8.9 ⭐ • 2025 • Drama</p>
+                                            <div class="content-stats">
+                                                <span>👁️ 1.2M visualizações</span>
+                                                <span>📈 +350% esta semana</span>
+                                            </div>
+                                        </div>
+                                        <div class="content-actions">
+                                            <button class="btn btn-light btn-sm" onclick="playContent()">
+                                                <i class="fas fa-play me-1"></i>Play
+                                            </button>
+                                            <button class="btn btn-outline-light btn-sm" onclick="editContent()">
+                                                <i class="fas fa-edit me-1"></i>Editar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-item">
+                                <div class="content-poster">
+                                    <div class="poster-placeholder bg-gradient-primary">
+                                        <i class="fas fa-tv fa-2x text-white"></i>
+                                    </div>
+                                    <div class="content-overlay">
+                                        <div class="content-info">
+                                            <h6>Documentário: IA Revolution</h6>
+                                            <p>9.1 ⭐ • 2025 • Documentário</p>
+                                            <div class="content-stats">
+                                                <span>👁️ 850K visualizações</span>
+                                                <span>📈 +180% esta semana</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-item">
+                                <div class="content-poster">
+                                    <div class="poster-placeholder bg-gradient-success">
+                                        <i class="fas fa-video fa-2x text-white"></i>
+                                    </div>
+                                    <div class="content-overlay">
+                                        <div class="content-info">
+                                            <h6>Comédia: Office Life</h6>
+                                            <p>8.5 ⭐ • 2025 • Comédia</p>
+                                            <div class="content-stats">
+                                                <span>👁️ 2.1M visualizações</span>
+                                                <span>📈 +89% esta semana</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-item">
+                                <div class="content-poster">
+                                    <div class="poster-placeholder bg-gradient-warning">
+                                        <i class="fas fa-camera fa-2x text-white"></i>
+                                    </div>
+                                    <div class="content-overlay">
+                                        <div class="content-info">
+                                            <h6>Ação: Cyber Security</h6>
+                                            <p>8.7 ⭐ • 2025 • Ação</p>
+                                            <div class="content-stats">
+                                                <span>👁️ 1.8M visualizações</span>
+                                                <span>📈 +220% esta semana</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics -->
+                    <div class="content-section" id="analytics-content">
+                        <div class="section-header">
+                            <h4 class="text-white">📊 Analytics em Tempo Real</h4>
+                        </div>
+                        
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h6>Audiência em Tempo Real</h6>
+                                <div class="metric-large">145,672</div>
+                                <p class="text-success">+12% vs ontem</p>
+                                <canvas id="realtimeChart" width="300" height="150"></canvas>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h6>Conteúdo Mais Assistido</h6>
+                                <div class="top-content-list">
+                                    <div class="content-rank-item">
+                                        <span class="rank">#1</span>
+                                        <span class="title">Tech Wars S2E05</span>
+                                        <span class="views">2.4M</span>
+                                    </div>
+                                    <div class="content-rank-item">
+                                        <span class="rank">#2</span>
+                                        <span class="title">IA Revolution</span>
+                                        <span class="views">1.8M</span>
+                                    </div>
+                                    <div class="content-rank-item">
+                                        <span class="rank">#3</span>
+                                        <span class="title">Office Life S1E12</span>
+                                        <span class="views">1.6M</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h6>Performance por Região</h6>
+                                <div class="region-stats">
+                                    <div class="region-item">
+                                        <span class="region">🇧🇷 Brasil</span>
+                                        <span class="percentage">45%</span>
+                                    </div>
+                                    <div class="region-item">
+                                        <span class="region">🇺🇸 EUA</span>
+                                        <span class="percentage">25%</span>
+                                    </div>
+                                    <div class="region-item">
+                                        <span class="region">🇲🇽 México</span>
+                                        <span class="percentage">15%</span>
+                                    </div>
+                                    <div class="region-item">
+                                        <span class="region">🌍 Outros</span>
+                                        <span class="percentage">15%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h6>Receita por Assinatura</h6>
+                                <div class="metric-large">R$ 2.8M</div>
+                                <p class="text-success">+18% este mês</p>
+                                <div class="subscription-breakdown">
+                                    <div class="sub-tier">
+                                        <span>Premium</span>
+                                        <span class="text-warning">65%</span>
+                                    </div>
+                                    <div class="sub-tier">
+                                        <span>Standard</span>
+                                        <span class="text-info">30%</span>
+                                    </div>
+                                    <div class="sub-tier">
+                                        <span>Basic</span>
+                                        <span class="text-secondary">5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gestão de Conteúdo -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark text-white">
+                <div class="card-header">
+                    <h5><i class="fas fa-cog me-2"></i>Gestão de Conteúdo & Usuários</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Upload de Conteúdo</h6>
+                            <div class="upload-area" onclick="uploadContent()">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+                                <p>Clique para fazer upload</p>
+                                <small class="text-muted">MP4, AVI, MOV até 50GB</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <h6>Processamento IA</h6>
+                            <div class="processing-status">
+                                <div class="process-item">
+                                    <span>Análise de Conteúdo</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="process-item">
+                                    <span>Geração de Thumbnails</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="process-item">
+                                    <span>Transcodificação</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <h6>Moderação Automática</h6>
+                            <div class="moderation-alerts">
+                                <div class="alert alert-warning">
+                                    <strong>3 conteúdos</strong> aguardando revisão
+                                </div>
+                                <div class="alert alert-success">
+                                    <strong>150 uploads</strong> aprovados hoje
+                                </div>
+                                <div class="alert alert-info">
+                                    <strong>IA detectou</strong> 2 possíveis problemas de copyright
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.streaming-dashboard {
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    min-height: 600px;
+}
+
+.platform-header {
+    background: linear-gradient(90deg, #e50914 0%, #f40612 100%);
+    padding: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.content-navigation {
+    background: rgba(0,0,0,0.3);
+    padding: 0 20px;
+}
+
+.nav-tabs-custom {
+    display: flex;
+    gap: 0;
+}
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tab.active,
+.nav-tab:hover {
+    color: white;
+    border-bottom-color: #e50914;
+    background: rgba(255,255,255,0.1);
+}
+
+.main-content {
+    padding: 30px;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.content-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.content-item {
+    flex: 0 0 280px;
+    cursor: pointer;
+}
+
+.content-item.featured {
+    flex: 0 0 400px;
+}
+
+.content-poster {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 200px;
+    transition: transform 0.3s;
+}
+
+.content-item.featured .content-poster {
+    height: 300px;
+}
+
+.content-poster:hover {
+    transform: scale(1.05);
+}
+
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 20px;
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+}
+
+.content-poster:hover .content-overlay {
+    transform: translateY(0);
+}
+
+.content-info h6 {
+    margin-bottom: 5px;
+}
+
+.content-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    margin: 10px 0;
+}
+
+.content-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.analytics-card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+.metric-large {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #e50914;
+    margin: 10px 0;
+}
+
+.top-content-list {
+    margin-top: 15px;
+}
+
+.content-rank-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.rank {
+    font-weight: bold;
+    color: #e50914;
+    width: 30px;
+}
+
+.title {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.views {
+    color: rgba(255,255,255,0.7);
+}
+
+.region-stats, .subscription-breakdown {
+    margin-top: 15px;
+}
+
+.region-item, .sub-tier {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.upload-area {
+    border: 2px dashed #e50914;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-area:hover {
+    background: rgba(229, 9, 20, 0.1);
+}
+
+.processing-status {
+    margin-top: 15px;
+}
+
+.process-item {
+    margin-bottom: 15px;
+}
+
+.process-item span {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.moderation-alerts .alert {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showContent(type) {
+    // Remove active class from all tabs and content
+    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+    
+    // Show corresponding content
+    document.getElementById(type + '-content').classList.add('active');
+}
+
+function addContent() {
+    showToast('Modal de upload de conteúdo aberto!', 'info');
+}
+
+function playContent() {
+    showToast('Player de vídeo iniciado!', 'success');
+}
+
+function editContent() {
+    showToast('Editor de metadados aberto!', 'info');
+}
+
+function uploadContent() {
+    showToast('Seletor de arquivos aberto para upload!', 'info');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Simular dados em tempo real
+document.addEventListener('DOMContentLoaded', function() {
+    // Criar gráfico em tempo real
+    const ctx = document.getElementById('realtimeChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['14:00', '14:05', '14:10', '14:15', '14:20', '14:25'],
+                datasets: [{
+                    label: 'Usuários Online',
+                    data: [120000, 135000, 145000, 142000, 145672, 148000],
+                    borderColor: '#e50914',
+                    backgroundColor: 'rgba(229, 9, 20, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        display: false
+                    },
+                    x: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

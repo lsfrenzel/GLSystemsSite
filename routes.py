@@ -154,13 +154,13 @@ def demo_quickbooks_contabilidade():
 def demo_shopify_ecommerce():
     return render_template('demos/shopify-ecommerce.html')
 
-@app.route('/demo/zoom-videoconferencia')
-def demo_zoom_videoconferencia():
-    return render_template('demos/zoom-videoconferencia.html')
-
 @app.route('/demo/whatsapp-business')
 def demo_whatsapp_business():
     return render_template('demos/whatsapp-business.html')
+
+@app.route('/demo/zoom-videoconferencia')
+def demo_zoom_videoconferencia():
+    return render_template('demos/zoom-videoconferencia.html')
 
 @app.route('/demo/google-analytics')
 def demo_google_analytics():

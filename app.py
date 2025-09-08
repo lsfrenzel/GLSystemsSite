@@ -13,7 +13,7 @@ app.secret_key = os.environ.get("SESSION_SECRET", "gl-systems-secret-key-2025")
 # Add custom filter for JSON conversion
 @app.template_filter('tojsonfilter')
 def tojson_filter(obj):
-    return json.dumps(obj)
+    return json.dumps(obj, ensure_ascii=False)
 
 # Import routes
 from routes import *

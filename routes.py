@@ -123,8 +123,8 @@ def demo_crm():
     return render_template('demos/crm.html', leads=sample_crm_data)
 
 # Sistemas Famosos - Top 2025
-@app.route('/demo/pipedrive-crm')
-def demo_pipedrive_crm():
+@app.route('/demo/crm-profissional')
+def demo_crm_profissional():
     # Sample Pipedrive-style data with enhanced features
     sample_pipedrive_data = [
         {"id": 1, "nome": "Ana Silva", "empresa": "TechStart", "status": "Negociação", "valor": 25000, "probabilidade": 75, "origem": "Website", "telefone": "(11) 99999-1111"},
@@ -132,7 +132,7 @@ def demo_pipedrive_crm():
         {"id": 3, "nome": "Marina Costa", "empresa": "StartUp XYZ", "status": "Demo Agendada", "valor": 35000, "probabilidade": 40, "origem": "LinkedIn", "telefone": "(11) 99999-3333"},
         {"id": 4, "nome": "Roberto Lima", "empresa": "Innovation Ltd", "status": "Fechado-Ganho", "valor": 50000, "probabilidade": 100, "origem": "Google Ads", "telefone": "(11) 99999-4444"}
     ]
-    return render_template('demos/pipedrive-crm.html', leads=sample_pipedrive_data)
+    return render_template('demos/crm-profissional.html', leads=sample_pipedrive_data)
 
 @app.route('/demo/hubspot-marketing')
 def demo_hubspot_marketing():

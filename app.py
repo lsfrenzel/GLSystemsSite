@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 from flask import Flask
 
@@ -8,6 +9,11 @@ logging.basicConfig(level=logging.DEBUG)
 # Create the app
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "gl-systems-secret-key-2025")
+
+# Add custom filter for JSON conversion
+@app.template_filter('tojsonfilter')
+def tojson_filter(obj):
+    return json.dumps(obj)
 
 # Import routes
 from routes import *

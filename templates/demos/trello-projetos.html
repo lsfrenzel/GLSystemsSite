@@ -1,0 +1,447 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Gestão de Projetos - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-primary"><i class="fas fa-tasks me-2"></i>Gestão de Projetos G&L Systems</h1>
+        <p class="lead">Sistema completo de gestão de projetos com boards visuais e colaboração em equipe</p>
+    </div>
+
+    <!-- Board Principal -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-clipboard-list me-2"></i>Projeto: Desenvolvimento de Site</h3>
+                <div>
+                    <button class="btn btn-success btn-sm me-2" onclick="addCard()">
+                        <i class="fas fa-plus me-1"></i>Novo Card
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="addMember()">
+                        <i class="fas fa-user-plus me-1"></i>Adicionar Membro
+                    </button>
+                </div>
+            </div>
+            
+            <div class="trello-board">
+                <!-- To Do -->
+                <div class="board-column">
+                    <div class="column-header bg-secondary">
+                        <h5 class="text-white mb-0">A Fazer</h5>
+                        <span class="badge bg-light text-dark">3</span>
+                    </div>
+                    <div class="cards-container" id="todo-cards">
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Definir Estrutura do Site</strong>
+                                <span class="priority high">Alta</span>
+                            </div>
+                            <p class="card-description">Criar wireframes e definir arquitetura da informação</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">JS</span>
+                                    <span class="member-avatar">MS</span>
+                                </div>
+                                <span class="due-date">15 Jan</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Pesquisa de Mercado</strong>
+                                <span class="priority medium">Média</span>
+                            </div>
+                            <p class="card-description">Analisar concorrentes e tendências do setor</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">AC</span>
+                                </div>
+                                <span class="due-date">18 Jan</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Configurar Ambiente</strong>
+                                <span class="priority low">Baixa</span>
+                            </div>
+                            <p class="card-description">Setup do servidor e ferramentas de desenvolvimento</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">CL</span>
+                                </div>
+                                <span class="due-date">20 Jan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Em Progresso -->
+                <div class="board-column">
+                    <div class="column-header bg-warning">
+                        <h5 class="text-dark mb-0">Em Progresso</h5>
+                        <span class="badge bg-light text-dark">2</span>
+                    </div>
+                    <div class="cards-container" id="progress-cards">
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Design da Interface</strong>
+                                <span class="priority high">Alta</span>
+                            </div>
+                            <p class="card-description">Criação dos layouts principais e componentes</p>
+                            <div class="progress mb-2">
+                                <div class="progress-bar" style="width: 65%">65%</div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">MS</span>
+                                    <span class="member-avatar">AC</span>
+                                </div>
+                                <span class="due-date">22 Jan</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Desenvolvimento Backend</strong>
+                                <span class="priority high">Alta</span>
+                            </div>
+                            <p class="card-description">APIs e banco de dados</p>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-success" style="width: 40%">40%</div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">JS</span>
+                                    <span class="member-avatar">CL</span>
+                                </div>
+                                <span class="due-date">25 Jan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Revisão -->
+                <div class="board-column">
+                    <div class="column-header bg-info">
+                        <h5 class="text-white mb-0">Em Revisão</h5>
+                        <span class="badge bg-light text-dark">1</span>
+                    </div>
+                    <div class="cards-container" id="review-cards">
+                        <div class="project-card" draggable="true">
+                            <div class="card-header">
+                                <strong>Documentação do Projeto</strong>
+                                <span class="priority medium">Média</span>
+                            </div>
+                            <p class="card-description">Manual do usuário e documentação técnica</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">AC</span>
+                                </div>
+                                <span class="due-date">12 Jan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Concluído -->
+                <div class="board-column">
+                    <div class="column-header bg-success">
+                        <h5 class="text-white mb-0">Concluído</h5>
+                        <span class="badge bg-light text-dark">2</span>
+                    </div>
+                    <div class="cards-container" id="done-cards">
+                        <div class="project-card completed" draggable="true">
+                            <div class="card-header">
+                                <strong>Reunião de Kickoff</strong>
+                                <span class="priority medium">Média</span>
+                            </div>
+                            <p class="card-description">Alinhamento inicial da equipe</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">JS</span>
+                                    <span class="member-avatar">MS</span>
+                                    <span class="member-avatar">AC</span>
+                                    <span class="member-avatar">CL</span>
+                                </div>
+                                <span class="due-date completed">10 Jan ✓</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card completed" draggable="true">
+                            <div class="card-header">
+                                <strong>Definição de Requisitos</strong>
+                                <span class="priority high">Alta</span>
+                            </div>
+                            <p class="card-description">Levantamento completo dos requisitos funcionais</p>
+                            <div class="card-footer">
+                                <div class="card-members">
+                                    <span class="member-avatar">JS</span>
+                                    <span class="member-avatar">MS</span>
+                                </div>
+                                <span class="due-date completed">12 Jan ✓</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline do Projeto -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock me-2"></i>Timeline do Projeto</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6>Projeto Iniciado</h6>
+                                <small>10 Jan 2025</small>
+                                <p>Reunião de kickoff realizada com toda a equipe</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6>Requisitos Definidos</h6>
+                                <small>12 Jan 2025</small>
+                                <p>Documentação completa dos requisitos aprovada</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item active">
+                            <div class="timeline-marker bg-warning"></div>
+                            <div class="timeline-content">
+                                <h6>Desenvolvimento em Andamento</h6>
+                                <small>15 Jan 2025 - Em progresso</small>
+                                <p>Fase de desenvolvimento ativo do projeto</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-light"></div>
+                            <div class="timeline-content">
+                                <h6>Testes e QA</h6>
+                                <small>28 Jan 2025 - Planejado</small>
+                                <p>Fase de testes e garantia de qualidade</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-light"></div>
+                            <div class="timeline-content">
+                                <h6>Entrega Final</h6>
+                                <small>05 Fev 2025 - Planejado</small>
+                                <p>Entrega do projeto completo ao cliente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.trello-board {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px 0;
+    min-height: 500px;
+}
+
+.board-column {
+    min-width: 280px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.column-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cards-container {
+    padding: 15px;
+    min-height: 400px;
+}
+
+.project-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: grab;
+    transition: all 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.project-card.completed {
+    opacity: 0.8;
+    background: #f8f9fa;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.priority {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.priority.high { background: #ffeaa7; color: #d63031; }
+.priority.medium { background: #fab1a0; color: #e17055; }
+.priority.low { background: #81ecec; color: #00b894; }
+
+.card-description {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-members {
+    display: flex;
+    gap: 5px;
+}
+
+.member-avatar {
+    width: 24px;
+    height: 24px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.due-date {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.due-date.completed {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -37px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.timeline-content h6 {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.timeline-content small {
+    color: #6c757d;
+    font-weight: bold;
+}
+
+.timeline-content p {
+    margin: 5px 0 0 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addCard() {
+    showToast('Novo card criado! Arraste para a coluna desejada.', 'success');
+}
+
+function addMember() {
+    showToast('Convite enviado para novo membro da equipe!', 'info');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Drag and Drop (simulado)
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach(card => {
+        card.addEventListener('dragstart', function() {
+            this.style.opacity = '0.5';
+        });
+        
+        card.addEventListener('dragend', function() {
+            this.style.opacity = '1';
+            showToast('Card movido com sucesso!', 'success');
+        });
+    });
+});
+</script>
+{% endblock %}

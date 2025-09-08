@@ -1,0 +1,773 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Videoconferência - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-info"><i class="fas fa-video me-2"></i>Videoconferência G&L Systems</h1>
+        <p class="lead">Plataforma completa de reuniões online com recursos avançados para trabalho remoto</p>
+    </div>
+
+    <!-- Interface de Videoconferência -->
+    <div class="row">
+        <div class="col-12">
+            <div class="video-container">
+                <!-- Video Principal -->
+                <div class="main-video">
+                    <div class="video-screen">
+                        <div class="video-placeholder">
+                            <i class="fas fa-user fa-4x text-white"></i>
+                            <h5 class="text-white mt-3">João Silva (Você)</h5>
+                            <p class="text-white">Apresentando: Relatório Mensal</p>
+                        </div>
+                        <div class="screen-controls">
+                            <button class="btn btn-sm btn-outline-light" onclick="togglePin()">
+                                <i class="fas fa-thumbtack"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light" onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Participantes em Grid -->
+                    <div class="participants-grid">
+                        <div class="participant-video">
+                            <div class="video-frame">
+                                <div class="participant-info">MS</div>
+                                <div class="participant-name">Maria Santos</div>
+                                <div class="participant-status">
+                                    <i class="fas fa-microphone text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="participant-video">
+                            <div class="video-frame">
+                                <div class="participant-info">AC</div>
+                                <div class="participant-name">Ana Costa</div>
+                                <div class="participant-status">
+                                    <i class="fas fa-microphone-slash text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="participant-video">
+                            <div class="video-frame">
+                                <div class="participant-info">CL</div>
+                                <div class="participant-name">Carlos Lima</div>
+                                <div class="participant-status">
+                                    <i class="fas fa-microphone text-success"></i>
+                                    <i class="fas fa-video text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="participant-video">
+                            <div class="video-frame">
+                                <div class="participant-info">RP</div>
+                                <div class="participant-name">Roberto Pereira</div>
+                                <div class="participant-status">
+                                    <i class="fas fa-microphone text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Painel Lateral -->
+                <div class="side-panel" id="sidePanel">
+                    <div class="panel-tabs">
+                        <button class="tab-btn active" onclick="showTab('chat')">
+                            <i class="fas fa-comments me-1"></i>Chat
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <button class="tab-btn" onclick="showTab('participants')">
+                            <i class="fas fa-users me-1"></i>Participantes
+                        </button>
+                        <button class="tab-btn" onclick="showTab('screen')">
+                            <i class="fas fa-desktop me-1"></i>Compartilhar
+                        </button>
+                    </div>
+                    
+                    <!-- Chat Tab -->
+                    <div class="tab-content active" id="chat-tab">
+                        <div class="chat-messages" id="meeting-chat">
+                            <div class="chat-message">
+                                <div class="message-author">Maria Santos</div>
+                                <div class="message-text">Boa tarde a todos! 👋</div>
+                                <div class="message-time">14:00</div>
+                            </div>
+                            
+                            <div class="chat-message">
+                                <div class="message-author">Ana Costa</div>
+                                <div class="message-text">Posso compartilhar os slides agora?</div>
+                                <div class="message-time">14:02</div>
+                            </div>
+                            
+                            <div class="chat-message">
+                                <div class="message-author">Carlos Lima</div>
+                                <div class="message-text">Perfeito! Estamos prontos.</div>
+                                <div class="message-time">14:03</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" class="form-control" id="chatMessage" 
+                                   placeholder="Digite sua mensagem..." 
+                                   onkeypress="handleChatKeyPress(event)">
+                            <button class="btn btn-primary" onclick="sendChatMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Participantes Tab -->
+                    <div class="tab-content" id="participants-tab">
+                        <div class="participants-list">
+                            <div class="participant-item">
+                                <div class="participant-avatar">JS</div>
+                                <div class="participant-details">
+                                    <div class="participant-name">João Silva (Você)</div>
+                                    <div class="participant-role">Host</div>
+                                </div>
+                                <div class="participant-actions">
+                                    <i class="fas fa-microphone text-success"></i>
+                                    <i class="fas fa-video text-success"></i>
+                                    <i class="fas fa-crown text-warning"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="participant-item">
+                                <div class="participant-avatar">MS</div>
+                                <div class="participant-details">
+                                    <div class="participant-name">Maria Santos</div>
+                                    <div class="participant-role">Participante</div>
+                                </div>
+                                <div class="participant-actions">
+                                    <i class="fas fa-microphone text-success"></i>
+                                    <i class="fas fa-video text-success"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="participant-item">
+                                <div class="participant-avatar">AC</div>
+                                <div class="participant-details">
+                                    <div class="participant-name">Ana Costa</div>
+                                    <div class="participant-role">Participante</div>
+                                </div>
+                                <div class="participant-actions">
+                                    <i class="fas fa-microphone-slash text-danger"></i>
+                                    <i class="fas fa-video text-success"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="participant-item">
+                                <div class="participant-avatar">CL</div>
+                                <div class="participant-details">
+                                    <div class="participant-name">Carlos Lima</div>
+                                    <div class="participant-role">Participante</div>
+                                </div>
+                                <div class="participant-actions">
+                                    <i class="fas fa-microphone text-success"></i>
+                                    <i class="fas fa-video text-success"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="participant-item">
+                                <div class="participant-avatar">RP</div>
+                                <div class="participant-details">
+                                    <div class="participant-name">Roberto Pereira</div>
+                                    <div class="participant-role">Participante</div>
+                                </div>
+                                <div class="participant-actions">
+                                    <i class="fas fa-microphone text-success"></i>
+                                    <i class="fas fa-video-slash text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="invite-section">
+                            <button class="btn btn-primary w-100 mb-2" onclick="inviteParticipants()">
+                                <i class="fas fa-user-plus me-2"></i>Convidar Participantes
+                            </button>
+                            <button class="btn btn-outline-secondary w-100" onclick="copyMeetingLink()">
+                                <i class="fas fa-link me-2"></i>Copiar Link da Reunião
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Compartilhar Tela Tab -->
+                    <div class="tab-content" id="screen-tab">
+                        <div class="screen-share-options">
+                            <div class="share-option" onclick="shareScreen()">
+                                <i class="fas fa-desktop fa-2x text-primary mb-2"></i>
+                                <h6>Tela Inteira</h6>
+                                <p class="text-muted">Compartilhar toda a tela</p>
+                            </div>
+                            
+                            <div class="share-option" onclick="shareWindow()">
+                                <i class="fas fa-window-restore fa-2x text-success mb-2"></i>
+                                <h6>Janela Específica</h6>
+                                <p class="text-muted">Compartilhar uma janela</p>
+                            </div>
+                            
+                            <div class="share-option" onclick="shareTab()">
+                                <i class="fas fa-globe fa-2x text-info mb-2"></i>
+                                <h6>Aba do Navegador</h6>
+                                <p class="text-muted">Compartilhar aba do Chrome</p>
+                            </div>
+                            
+                            <div class="share-option" onclick="shareWhiteboard()">
+                                <i class="fas fa-chalkboard fa-2x text-warning mb-2"></i>
+                                <h6>Quadro Branco</h6>
+                                <p class="text-muted">Abrir quadro colaborativo</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recording-section">
+                            <h6>Gravação</h6>
+                            <button class="btn btn-danger w-100 mb-2" onclick="startRecording()">
+                                <i class="fas fa-record-vinyl me-2"></i>Iniciar Gravação
+                            </button>
+                            <small class="text-muted">A gravação será salva na nuvem</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles da Reunião -->
+            <div class="meeting-controls">
+                <div class="left-controls">
+                    <div class="meeting-info">
+                        <strong>Reunião: Relatório Mensal</strong>
+                        <span class="meeting-time" id="meetingTime">00:45:23</span>
+                    </div>
+                </div>
+                
+                <div class="center-controls">
+                    <button class="control-btn" id="muteBtn" onclick="toggleMute()">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    
+                    <button class="control-btn" id="videoBtn" onclick="toggleVideo()">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    
+                    <button class="control-btn" onclick="shareScreenFromControls()">
+                        <i class="fas fa-desktop"></i>
+                    </button>
+                    
+                    <button class="control-btn" onclick="toggleChat()">
+                        <i class="fas fa-comments"></i>
+                    </button>
+                    
+                    <button class="control-btn" onclick="toggleParticipants()">
+                        <i class="fas fa-users"></i>
+                    </button>
+                    
+                    <button class="control-btn control-danger" onclick="leaveMeeting()">
+                        <i class="fas fa-phone-slash"></i>
+                    </button>
+                </div>
+                
+                <div class="right-controls">
+                    <button class="btn btn-outline-secondary" onclick="openSettings()">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.video-container {
+    display: flex;
+    height: 70vh;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.main-video {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.video-screen {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.video-placeholder {
+    text-align: center;
+}
+
+.screen-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 5px;
+}
+
+.participants-grid {
+    display: flex;
+    height: 120px;
+    background: #2a2a2a;
+    padding: 10px;
+    gap: 10px;
+}
+
+.participant-video {
+    flex: 1;
+    min-width: 160px;
+}
+
+.video-frame {
+    height: 100px;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+}
+
+.participant-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.participant-name {
+    font-size: 12px;
+    position: absolute;
+    bottom: 5px;
+    left: 8px;
+}
+
+.participant-status {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+}
+
+.side-panel {
+    width: 320px;
+    background: white;
+    border-left: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    border: none;
+    background: transparent;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.tab-btn.active {
+    background: white;
+    border-bottom-color: #007bff;
+    color: #007bff;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+.tab-content {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.chat-message {
+    margin-bottom: 15px;
+}
+
+.message-author {
+    font-weight: bold;
+    font-size: 12px;
+    color: #007bff;
+    margin-bottom: 2px;
+}
+
+.message-text {
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 15px;
+    display: inline-block;
+    max-width: 90%;
+}
+
+.message-time {
+    font-size: 10px;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+.chat-input {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+}
+
+.participants-list {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.participant-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.participant-avatar {
+    width: 40px;
+    height: 40px;
+    background: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+.participant-details {
+    flex: 1;
+}
+
+.participant-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.participant-role {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.participant-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.invite-section {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.screen-share-options {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.share-option {
+    text-align: center;
+    padding: 20px 10px;
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.share-option:hover {
+    border-color: #007bff;
+    background: #f8f9fa;
+}
+
+.recording-section {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.meeting-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #2a2a2a;
+    color: white;
+}
+
+.left-controls .meeting-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.meeting-time {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.center-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: #4a4a4a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-btn:hover {
+    background: #5a5a5a;
+}
+
+.control-btn.active {
+    background: #007bff;
+}
+
+.control-btn.control-danger {
+    background: #dc3545;
+}
+
+.control-btn.control-danger:hover {
+    background: #c82333;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let isMuted = false;
+let isVideoOn = true;
+let isRecording = false;
+
+function showTab(tabName) {
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    // Add active class to selected tab
+    event.target.classList.add('active');
+    document.getElementById(tabName + '-tab').classList.add('active');
+}
+
+function sendChatMessage() {
+    const input = document.getElementById('chatMessage');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    const chatMessages = document.getElementById('meeting-chat');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message';
+    
+    const now = new Date();
+    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    
+    messageDiv.innerHTML = `
+        <div class="message-author">Você</div>
+        <div class="message-text">${message}</div>
+        <div class="message-time">${time}</div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    input.value = '';
+}
+
+function handleChatKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendChatMessage();
+    }
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    const btn = document.getElementById('muteBtn');
+    const icon = btn.querySelector('i');
+    
+    if (isMuted) {
+        icon.className = 'fas fa-microphone-slash';
+        btn.classList.add('control-danger');
+        showToast('Microfone desligado', 'warning');
+    } else {
+        icon.className = 'fas fa-microphone';
+        btn.classList.remove('control-danger');
+        showToast('Microfone ligado', 'success');
+    }
+}
+
+function toggleVideo() {
+    isVideoOn = !isVideoOn;
+    const btn = document.getElementById('videoBtn');
+    const icon = btn.querySelector('i');
+    
+    if (!isVideoOn) {
+        icon.className = 'fas fa-video-slash';
+        btn.classList.add('control-danger');
+        showToast('Câmera desligada', 'warning');
+    } else {
+        icon.className = 'fas fa-video';
+        btn.classList.remove('control-danger');
+        showToast('Câmera ligada', 'success');
+    }
+}
+
+function shareScreen() {
+    showToast('Compartilhamento de tela iniciado!', 'info');
+}
+
+function shareWindow() {
+    showToast('Seletor de janela aberto!', 'info');
+}
+
+function shareTab() {
+    showToast('Seletor de aba aberto!', 'info');
+}
+
+function shareWhiteboard() {
+    showToast('Quadro branco aberto!', 'success');
+}
+
+function startRecording() {
+    if (!isRecording) {
+        isRecording = true;
+        event.target.innerHTML = '<i class="fas fa-stop me-2"></i>Parar Gravação';
+        event.target.classList.remove('btn-danger');
+        event.target.classList.add('btn-warning');
+        showToast('Gravação iniciada!', 'success');
+    } else {
+        isRecording = false;
+        event.target.innerHTML = '<i class="fas fa-record-vinyl me-2"></i>Iniciar Gravação';
+        event.target.classList.remove('btn-warning');
+        event.target.classList.add('btn-danger');
+        showToast('Gravação finalizada e salva!', 'info');
+    }
+}
+
+function inviteParticipants() {
+    showToast('Convites enviados por e-mail!', 'success');
+}
+
+function copyMeetingLink() {
+    showToast('Link da reunião copiado!', 'success');
+}
+
+function shareScreenFromControls() {
+    showTab('screen');
+}
+
+function toggleChat() {
+    showTab('chat');
+}
+
+function toggleParticipants() {
+    showTab('participants');
+}
+
+function leaveMeeting() {
+    if (confirm('Tem certeza que deseja sair da reunião?')) {
+        showToast('Você saiu da reunião', 'info');
+    }
+}
+
+function openSettings() {
+    showToast('Configurações de áudio e vídeo abertas!', 'info');
+}
+
+function togglePin() {
+    showToast('Vídeo fixado na tela!', 'info');
+}
+
+function toggleFullscreen() {
+    showToast('Modo tela cheia ativado!', 'info');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Timer da reunião
+let meetingStartTime = new Date(Date.now() - 45 * 60 * 1000 - 23 * 1000); // 45:23 atrás
+
+function updateMeetingTimer() {
+    const now = new Date();
+    const elapsed = now - meetingStartTime;
+    const hours = Math.floor(elapsed / (1000 * 60 * 60));
+    const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+    
+    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('meetingTime').textContent = timeString;
+}
+
+// Atualizar timer a cada segundo
+setInterval(updateMeetingTimer, 1000);
+</script>
+{% endblock %}

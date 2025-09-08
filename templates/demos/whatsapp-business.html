@@ -1,0 +1,684 @@
+{% extends "base.html" %}
+
+{% block title %}Demo WhatsApp Business - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-4">
+    <div class="demo-header text-center mb-4">
+        <h1 class="text-success"><i class="fab fa-whatsapp me-2"></i>WhatsApp Business G&L Systems</h1>
+        <p class="lead">Plataforma completa de atendimento via WhatsApp com automação e múltiplos operadores</p>
+    </div>
+
+    <!-- Interface do WhatsApp -->
+    <div class="row">
+        <div class="col-12">
+            <div class="whatsapp-container">
+                <!-- Sidebar de Conversas -->
+                <div class="whatsapp-sidebar">
+                    <div class="sidebar-header">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <h6>G&L Systems</h6>
+                                <small class="text-success">Online</small>
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-success" onclick="newConversation()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" class="form-control" placeholder="Buscar conversas...">
+                    </div>
+                    
+                    <div class="conversations-list">
+                        <div class="conversation-item active" onclick="selectConversation(1)">
+                            <div class="conversation-avatar">
+                                <span class="avatar-text">JS</span>
+                                <span class="status-dot online"></span>
+                            </div>
+                            <div class="conversation-info">
+                                <div class="conversation-name">João Silva</div>
+                                <div class="last-message">Olá! Gostaria de saber sobre os preços...</div>
+                                <div class="message-time">10:30</div>
+                            </div>
+                            <div class="conversation-actions">
+                                <span class="unread-count">2</span>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-item" onclick="selectConversation(2)">
+                            <div class="conversation-avatar">
+                                <span class="avatar-text">MS</span>
+                                <span class="status-dot away"></span>
+                            </div>
+                            <div class="conversation-info">
+                                <div class="conversation-name">Maria Santos</div>
+                                <div class="last-message">Perfeito! Vou testar o sistema...</div>
+                                <div class="message-time">09:45</div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-item" onclick="selectConversation(3)">
+                            <div class="conversation-avatar">
+                                <span class="avatar-text">AC</span>
+                                <span class="status-dot offline"></span>
+                            </div>
+                            <div class="conversation-info">
+                                <div class="conversation-name">Ana Costa</div>
+                                <div class="last-message">Obrigada pelo atendimento!</div>
+                                <div class="message-time">Ontem</div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-item" onclick="selectConversation(4)">
+                            <div class="conversation-avatar">
+                                <span class="avatar-text">CL</span>
+                                <span class="status-dot online"></span>
+                            </div>
+                            <div class="conversation-info">
+                                <div class="conversation-name">Carlos Lima</div>
+                                <div class="last-message">Quando posso agendar uma demonstração?</div>
+                                <div class="message-time">08:20</div>
+                            </div>
+                            <div class="conversation-actions">
+                                <span class="unread-count">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Principal -->
+                <div class="whatsapp-chat">
+                    <div class="chat-header">
+                        <div class="contact-info">
+                            <div class="contact-avatar">
+                                <span class="avatar-text">JS</span>
+                            </div>
+                            <div>
+                                <h6>João Silva</h6>
+                                <small class="text-muted">Online agora</small>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="searchInChat()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="moreOptions()">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message-group">
+                            <div class="message received">
+                                <div class="message-bubble">
+                                    <p>Olá! Boa tarde! 👋</p>
+                                    <div class="message-time">10:25</div>
+                                </div>
+                            </div>
+                            
+                            <div class="message received">
+                                <div class="message-bubble">
+                                    <p>Gostaria de saber mais sobre os sistemas de gestão empresarial de vocês. Poderiam me ajudar?</p>
+                                    <div class="message-time">10:26</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-group">
+                            <div class="message sent">
+                                <div class="message-bubble">
+                                    <p>Olá João! Claro, ficaremos felizes em ajudá-lo! 😊</p>
+                                    <div class="message-time">10:27 ✓✓</div>
+                                </div>
+                            </div>
+                            
+                            <div class="message sent">
+                                <div class="message-bubble">
+                                    <p>Temos vários sistemas disponíveis. Qual tipo de negócio você possui?</p>
+                                    <div class="message-time">10:27 ✓✓</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-group">
+                            <div class="message received">
+                                <div class="message-bubble">
+                                    <p>Tenho uma loja de roupas e estou querendo automatizar o controle de estoque e vendas</p>
+                                    <div class="message-time">10:30</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-group">
+                            <div class="message received">
+                                <div class="message-bubble">
+                                    <p>Vocês têm algo específico para esse tipo de negócio?</p>
+                                    <div class="message-time">10:30</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Respostas Rápidas -->
+                    <div class="quick-replies" id="quickReplies">
+                        <div class="quick-reply-item" onclick="sendQuickReply('Perfeito! Temos o sistema ideal para lojas de roupas!')">
+                            <i class="fas fa-bolt me-1"></i>
+                            Resposta para loja de roupas
+                        </div>
+                        <div class="quick-reply-item" onclick="sendQuickReply('Gostaria de agendar uma demonstração gratuita?')">
+                            <i class="fas fa-calendar me-1"></i>
+                            Agendar demonstração
+                        </div>
+                        <div class="quick-reply-item" onclick="sendQuickReply('Posso enviar mais informações sobre nossos preços')">
+                            <i class="fas fa-dollar-sign me-1"></i>
+                            Informações de preço
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" onclick="attachFile()">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="text" class="form-control" id="messageInput" 
+                                   placeholder="Digite sua mensagem..." 
+                                   onkeypress="handleKeyPress(event)">
+                            <button class="btn btn-outline-secondary" onclick="sendAudio()">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="btn btn-success" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Painel de Informações -->
+                <div class="whatsapp-info">
+                    <div class="info-header">
+                        <h6>Informações do Contato</h6>
+                    </div>
+                    
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <strong>Nome:</strong> João Silva
+                        </div>
+                        <div class="detail-item">
+                            <strong>Telefone:</strong> (11) 99999-1111
+                        </div>
+                        <div class="detail-item">
+                            <strong>Última atividade:</strong> Agora
+                        </div>
+                        <div class="detail-item">
+                            <strong>Origem:</strong> Website
+                        </div>
+                        <div class="detail-item">
+                            <strong>Interesse:</strong> Sistema de estoque
+                        </div>
+                    </div>
+                    
+                    <div class="tags-section">
+                        <h6>Tags</h6>
+                        <div class="tags">
+                            <span class="tag tag-primary">Lead Quente</span>
+                            <span class="tag tag-success">Loja de Roupas</span>
+                            <span class="tag tag-warning">Primeira Conversa</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notes-section">
+                        <h6>Anotações</h6>
+                        <textarea class="form-control" rows="3" placeholder="Adicionar anotações sobre o cliente..."></textarea>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="saveNotes()">
+                            <i class="fas fa-save me-1"></i>Salvar
+                        </button>
+                    </div>
+                    
+                    <div class="automations-section">
+                        <h6>Automações</h6>
+                        <div class="automation-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoResponse" checked>
+                                <label class="form-check-label" for="autoResponse">
+                                    Resposta automática ativa
+                                </label>
+                            </div>
+                        </div>
+                        <div class="automation-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="followUp">
+                                <label class="form-check-label" for="followUp">
+                                    Follow-up automático
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.whatsapp-container {
+    display: flex;
+    height: 70vh;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f0f2f5;
+}
+
+.whatsapp-sidebar {
+    width: 300px;
+    background: white;
+    border-right: 1px solid #e1e1e1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 15px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 10px;
+}
+
+.search-box {
+    padding: 10px 15px;
+    background: #f0f2f5;
+}
+
+.conversations-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.conversation-item:hover {
+    background: #f5f5f5;
+}
+
+.conversation-item.active {
+    background: #e3f2fd;
+}
+
+.conversation-avatar {
+    position: relative;
+    margin-right: 15px;
+}
+
+.avatar-text {
+    width: 50px;
+    height: 50px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.status-dot.online { background: #25d366; }
+.status-dot.away { background: #ffa500; }
+.status-dot.offline { background: #ccc; }
+
+.conversation-info {
+    flex: 1;
+}
+
+.conversation-name {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.last-message {
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.unread-count {
+    background: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.whatsapp-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #e5ddd5;
+}
+
+.chat-header {
+    padding: 15px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.contact-avatar {
+    margin-right: 15px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0 11.046 8.954 20 20 20s20-8.954 20-20-8.954-20-20-20-20 8.954-20 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.message-group {
+    margin-bottom: 20px;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.message.sent {
+    justify-content: flex-end;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    position: relative;
+}
+
+.message.received .message-bubble {
+    background: white;
+    border-bottom-left-radius: 5px;
+}
+
+.message.sent .message-bubble {
+    background: #dcf8c6;
+    border-bottom-right-radius: 5px;
+}
+
+.message-time {
+    font-size: 11px;
+    color: #999;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.quick-replies {
+    padding: 10px 15px;
+    background: white;
+    border-top: 1px solid #e1e1e1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-reply-item {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.quick-reply-item:hover {
+    background: #2196f3;
+    color: white;
+}
+
+.chat-input {
+    padding: 15px;
+    background: #f0f2f5;
+}
+
+.whatsapp-info {
+    width: 300px;
+    background: white;
+    border-left: 1px solid #e1e1e1;
+    overflow-y: auto;
+}
+
+.info-header {
+    padding: 15px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.contact-details {
+    padding: 15px;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.tags-section, .notes-section, .automations-section {
+    padding: 15px;
+    border-top: 1px solid #f0f2f5;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tag-primary { background: #e3f2fd; color: #1976d2; }
+.tag-success { background: #e8f5e8; color: #388e3c; }
+.tag-warning { background: #fff3e0; color: #f57c00; }
+
+.automation-item {
+    margin-bottom: 10px;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentConversation = 1;
+
+function selectConversation(id) {
+    currentConversation = id;
+    // Remove active class from all conversations
+    document.querySelectorAll('.conversation-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    // Add active class to selected conversation
+    event.target.closest('.conversation-item').classList.add('active');
+    
+    // Update chat header and messages based on selected conversation
+    updateChatView(id);
+}
+
+function updateChatView(id) {
+    const conversations = {
+        1: { name: 'João Silva', status: 'Online agora' },
+        2: { name: 'Maria Santos', status: 'Visto por último há 15 min' },
+        3: { name: 'Ana Costa', status: 'Visto por último ontem' },
+        4: { name: 'Carlos Lima', status: 'Online agora' }
+    };
+    
+    const conv = conversations[id];
+    document.querySelector('.contact-info h6').textContent = conv.name;
+    document.querySelector('.contact-info small').textContent = conv.status;
+}
+
+function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    const chatMessages = document.getElementById('chatMessages');
+    const messageGroup = document.createElement('div');
+    messageGroup.className = 'message-group';
+    
+    const now = new Date();
+    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    
+    messageGroup.innerHTML = `
+        <div class="message sent">
+            <div class="message-bubble">
+                <p>${message}</p>
+                <div class="message-time">${time} ✓✓</div>
+            </div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageGroup);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    input.value = '';
+    
+    showToast('Mensagem enviada!', 'success');
+}
+
+function sendQuickReply(message) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageGroup = document.createElement('div');
+    messageGroup.className = 'message-group';
+    
+    const now = new Date();
+    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    
+    messageGroup.innerHTML = `
+        <div class="message sent">
+            <div class="message-bubble">
+                <p>${message}</p>
+                <div class="message-time">${time} ✓✓</div>
+            </div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageGroup);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    showToast('Resposta rápida enviada!', 'success');
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function newConversation() {
+    showToast('Nova conversa iniciada!', 'info');
+}
+
+function attachFile() {
+    showToast('Seletor de arquivos aberto!', 'info');
+}
+
+function sendAudio() {
+    showToast('Gravação de áudio iniciada!', 'info');
+}
+
+function searchInChat() {
+    showToast('Busca no chat ativada!', 'info');
+}
+
+function moreOptions() {
+    showToast('Menu de opções aberto!', 'info');
+}
+
+function saveNotes() {
+    showToast('Anotações salvas com sucesso!', 'success');
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

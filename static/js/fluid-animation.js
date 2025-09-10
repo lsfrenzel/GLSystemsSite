@@ -1,26 +1,44 @@
-// Fluid Animation for Hero Background
+// Enhanced Fluid Animation with WebGL - Complete Implementation
+// Based on advanced liquid simulation principles from SplashCursor
+
 class FluidAnimation {
-    constructor(canvas) {
+    constructor(canvas, options = {}) {
         this.canvas = canvas;
         this.config = {
-            SIM_RESOLUTION: 128,
-            DYE_RESOLUTION: 1440,
-            DENSITY_DISSIPATION: 2.0,
-            VELOCITY_DISSIPATION: 0.3,
-            PRESSURE: 0.15,
-            PRESSURE_ITERATIONS: 20,
-            CURL: 35,
-            SPLAT_RADIUS: 0.3,
-            SPLAT_FORCE: 8000,
-            SHADING: true,
-            COLOR_UPDATE_SPEED: 15,
-            BACK_COLOR: { r: 0.02, g: 0.02, b: 0.05 },
-            TRANSPARENT: true,
+            SIM_RESOLUTION: options.SIM_RESOLUTION || 128,
+            DYE_RESOLUTION: options.DYE_RESOLUTION || 1440,
+            CAPTURE_RESOLUTION: options.CAPTURE_RESOLUTION || 512,
+            DENSITY_DISSIPATION: options.DENSITY_DISSIPATION || 3.5,
+            VELOCITY_DISSIPATION: options.VELOCITY_DISSIPATION || 2,
+            PRESSURE: options.PRESSURE || 0.1,
+            PRESSURE_ITERATIONS: options.PRESSURE_ITERATIONS || 20,
+            CURL: options.CURL || 3,
+            SPLAT_RADIUS: options.SPLAT_RADIUS || 0.2,
+            SPLAT_FORCE: options.SPLAT_FORCE || 6000,
+            SHADING: options.SHADING !== undefined ? options.SHADING : true,
+            COLOR_UPDATE_SPEED: options.COLOR_UPDATE_SPEED || 10,
+            BACK_COLOR: options.BACK_COLOR || { r: 0.02, g: 0.02, b: 0.05 },
+            TRANSPARENT: options.TRANSPARENT !== undefined ? options.TRANSPARENT : true,
+            PAUSED: false
         };
 
         this.pointers = [this.createPointer()];
-        this.initWebGL();
+        this.init();
+    }
+
+    init() {
+        const { gl, ext } = this.getWebGLContext();
+        this.gl = gl;
+        this.ext = ext;
+        
+        if (!ext.supportLinearFiltering) {
+            this.config.DYE_RESOLUTION = 256;
+            this.config.SHADING = false;
+        }
+
+        this.initShaders();
         this.initFramebuffers();
+        this.setupEventListeners();
         this.startAnimation();
     }
 
@@ -35,11 +53,11 @@ class FluidAnimation {
             deltaY: 0,
             down: false,
             moved: false,
-            color: [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2]
+            color: [0, 0, 0]
         };
     }
 
-    initWebGL() {
+    getWebGLContext() {
         const params = {
             alpha: true,
             depth: false,
@@ -47,31 +65,140 @@ class FluidAnimation {
             antialias: false,
             preserveDrawingBuffer: false,
         };
+        
+        let gl = this.canvas.getContext("webgl2", params);
+        const isWebGL2 = !!gl;
+        
+        if (!isWebGL2) {
+            gl = this.canvas.getContext("webgl", params) ||
+                 this.canvas.getContext("experimental-webgl", params);
+        }
+        
+        let halfFloat;
+        let supportLinearFiltering;
+        
+        if (isWebGL2) {
+            gl.getExtension("EXT_color_buffer_float");
+            supportLinearFiltering = gl.getExtension("OES_texture_float_linear");
+        } else {
+            halfFloat = gl.getExtension("OES_texture_half_float");
+            supportLinearFiltering = gl.getExtension("OES_texture_half_float_linear");
+        }
+        
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        const halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat && halfFloat.HALF_FLOAT_OES;
+        
+        let formatRGBA, formatRG, formatR;
 
-        this.gl = this.canvas.getContext("webgl2", params) ||
-                   this.canvas.getContext("webgl", params) ||
-                   this.canvas.getContext("experimental-webgl", params);
-
-        if (!this.gl) {
-            console.error("WebGL not supported");
-            return;
+        if (isWebGL2) {
+            formatRGBA = this.getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, halfFloatTexType);
+            formatRG = this.getSupportedFormat(gl, gl.RG16F, gl.RG, halfFloatTexType);
+            formatR = this.getSupportedFormat(gl, gl.R16F, gl.RED, halfFloatTexType);
+        } else {
+            formatRGBA = this.getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+            formatRG = this.getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+            formatR = this.getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
         }
 
-        this.isWebGL2 = !!this.canvas.getContext("webgl2", params);
-        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        this.ext = {
-            supportLinearFiltering: this.gl.getExtension("OES_texture_float_linear"),
-            halfFloatTexType: this.isWebGL2 ? this.gl.HALF_FLOAT : 
-                             (this.gl.getExtension("OES_texture_half_float") || {}).HALF_FLOAT_OES
+        return {
+            gl,
+            ext: {
+                formatRGBA,
+                formatRG,
+                formatR,
+                halfFloatTexType,
+                supportLinearFiltering,
+            },
         };
+    }
 
-        this.initShaders();
-        this.setupEventListeners();
+    getSupportedFormat(gl, internalFormat, format, type) {
+        if (!this.supportRenderTextureFormat(gl, internalFormat, format, type)) {
+            switch (internalFormat) {
+                case gl.R16F:
+                    return this.getSupportedFormat(gl, gl.RG16F, gl.RG, type);
+                case gl.RG16F:
+                    return this.getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, type);
+                default:
+                    return null;
+            }
+        }
+        return { internalFormat, format };
+    }
+
+    supportRenderTextureFormat(gl, internalFormat, format, type) {
+        const texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, 4, 4, 0, format, type, null);
+        
+        const fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        
+        const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+        return status === gl.FRAMEBUFFER_COMPLETE;
     }
 
     initShaders() {
-        const vertexShader = this.compileShader(this.gl.VERTEX_SHADER, `
+        const gl = this.gl;
+        const ext = this.ext;
+
+        // Utility functions
+        this.hashCode = (s) => {
+            if (s.length == 0) return 0;
+            let hash = 0;
+            for (let i = 0; i < s.length; i++) {
+                hash = ((hash << 5) - hash) + s.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash;
+        };
+
+        this.compileShader = (type, source, keywords) => {
+            source = this.addKeywords(source, keywords);
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+                console.trace(gl.getShaderInfoLog(shader));
+            return shader;
+        };
+
+        this.addKeywords = (source, keywords) => {
+            if (!keywords) return source;
+            let keywordsString = "";
+            keywords.forEach((keyword) => {
+                keywordsString += "#define " + keyword + "\\n";
+            });
+            return keywordsString + source;
+        };
+
+        this.createProgram = (vertexShader, fragmentShader) => {
+            let program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS))
+                console.trace(gl.getProgramInfoLog(program));
+            return program;
+        };
+
+        this.getUniforms = (program) => {
+            let uniforms = [];
+            let uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+            for (let i = 0; i < uniformCount; i++) {
+                let uniformName = gl.getActiveUniform(program, i).name;
+                uniforms[uniformName] = gl.getUniformLocation(program, uniformName);
+            }
+            return uniforms;
+        };
+
+        // Base vertex shader
+        const baseVertexShader = this.compileShader(gl.VERTEX_SHADER, `
             precision highp float;
             attribute vec2 aPosition;
             varying vec2 vUv;
@@ -91,20 +218,31 @@ class FluidAnimation {
             }
         `);
 
-        const displayShader = this.compileShader(this.gl.FRAGMENT_SHADER, `
-            precision highp float;
-            precision highp sampler2D;
-            varying vec2 vUv;
+        // Fragment shaders
+        const copyShader = this.compileShader(gl.FRAGMENT_SHADER, `
+            precision mediump float;
+            precision mediump sampler2D;
+            varying highp vec2 vUv;
             uniform sampler2D uTexture;
 
             void main () {
-                vec3 c = texture2D(uTexture, vUv).rgb;
-                float a = max(c.r, max(c.g, c.b));
-                gl_FragColor = vec4(c, a * 0.8);
+                gl_FragColor = texture2D(uTexture, vUv);
             }
         `);
 
-        const splatShader = this.compileShader(this.gl.FRAGMENT_SHADER, `
+        const clearShader = this.compileShader(gl.FRAGMENT_SHADER, `
+            precision mediump float;
+            precision mediump sampler2D;
+            varying highp vec2 vUv;
+            uniform sampler2D uTexture;
+            uniform float value;
+
+            void main () {
+                gl_FragColor = value * texture2D(uTexture, vUv);
+            }
+        `);
+
+        const splatShader = this.compileShader(gl.FRAGMENT_SHADER, `
             precision highp float;
             precision highp sampler2D;
             varying vec2 vUv;
@@ -123,141 +261,213 @@ class FluidAnimation {
             }
         `);
 
-        const advectionShader = this.compileShader(this.gl.FRAGMENT_SHADER, `
+        const advectionShader = this.compileShader(gl.FRAGMENT_SHADER, `
             precision highp float;
             precision highp sampler2D;
             varying vec2 vUv;
             uniform sampler2D uVelocity;
             uniform sampler2D uSource;
             uniform vec2 texelSize;
+            uniform vec2 dyeTexelSize;
             uniform float dt;
             uniform float dissipation;
 
+            vec4 bilerp (sampler2D sam, vec2 uv, vec2 tsize) {
+                vec2 st = uv / tsize - 0.5;
+                vec2 iuv = floor(st);
+                vec2 fuv = fract(st);
+
+                vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tsize);
+                vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tsize);
+                vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tsize);
+                vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tsize);
+
+                return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+            }
+
             void main () {
-                vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
-                vec4 result = texture2D(uSource, coord);
+                #ifdef MANUAL_FILTERING
+                    vec2 coord = vUv - dt * bilerp(uVelocity, vUv, texelSize).xy * texelSize;
+                    vec4 result = bilerp(uSource, coord, dyeTexelSize);
+                #else
+                    vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
+                    vec4 result = texture2D(uSource, coord);
+                #endif
                 float decay = 1.0 + dissipation * dt;
                 gl_FragColor = result / decay;
             }
-        `);
+        `, ext.supportLinearFiltering ? null : ["MANUAL_FILTERING"]);
 
-        this.programs = {
-            display: this.createProgram(vertexShader, displayShader),
-            splat: this.createProgram(vertexShader, splatShader),
-            advection: this.createProgram(vertexShader, advectionShader)
-        };
+        const displayShaderSource = `
+            precision highp float;
+            precision highp sampler2D;
+            varying vec2 vUv;
+            varying vec2 vL;
+            varying vec2 vR;
+            varying vec2 vT;
+            varying vec2 vB;
+            uniform sampler2D uTexture;
+            uniform sampler2D uDithering;
+            uniform vec2 ditherScale;
+            uniform vec2 texelSize;
 
-        // Setup vertex buffer
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
-        this.gl.bufferData(
-            this.gl.ARRAY_BUFFER,
-            new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]),
-            this.gl.STATIC_DRAW
-        );
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.gl.createBuffer());
-        this.gl.bufferData(
-            this.gl.ELEMENT_ARRAY_BUFFER,
-            new Uint16Array([0, 1, 2, 0, 2, 3]),
-            this.gl.STATIC_DRAW
-        );
-        this.gl.vertexAttribPointer(0, 2, this.gl.FLOAT, false, 0, 0);
-        this.gl.enableVertexAttribArray(0);
-    }
+            vec3 linearToGamma (vec3 color) {
+                color = max(color, vec3(0));
+                return max(1.055 * pow(color, vec3(0.416666667)) - 0.055, vec3(0));
+            }
 
-    compileShader(type, source) {
-        const shader = this.gl.createShader(type);
-        this.gl.shaderSource(shader, source);
-        this.gl.compileShader(shader);
-        
-        if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-            console.error('Shader compilation error:', this.gl.getShaderInfoLog(shader));
+            void main () {
+                vec3 c = texture2D(uTexture, vUv).rgb;
+                #ifdef SHADING
+                    vec3 lc = texture2D(uTexture, vL).rgb;
+                    vec3 rc = texture2D(uTexture, vR).rgb;
+                    vec3 tc = texture2D(uTexture, vT).rgb;
+                    vec3 bc = texture2D(uTexture, vB).rgb;
+
+                    float dx = length(rc) - length(lc);
+                    float dy = length(tc) - length(bc);
+
+                    vec3 n = normalize(vec3(dx, dy, length(texelSize)));
+                    vec3 l = vec3(0.0, 0.0, 1.0);
+
+                    float diffuse = clamp(dot(n, l) + 0.7, 0.7, 1.0);
+                    c *= diffuse;
+                #endif
+
+                float a = max(c.r, max(c.g, c.b));
+                gl_FragColor = vec4(c, a);
+            }
+        `;
+
+        // Program and Material classes
+        class Program {
+            constructor(vertexShader, fragmentShader) {
+                this.uniforms = {};
+                this.program = this.createProgram(vertexShader, fragmentShader);
+                this.uniforms = this.getUniforms(this.program);
+            }
+            bind() { gl.useProgram(this.program); }
+            createProgram = this.createProgram.bind(this);
+            getUniforms = this.getUniforms.bind(this);
         }
-        return shader;
-    }
 
-    createProgram(vertexShader, fragmentShader) {
-        const program = this.gl.createProgram();
-        this.gl.attachShader(program, vertexShader);
-        this.gl.attachShader(program, fragmentShader);
-        this.gl.linkProgram(program);
-        
-        if (!this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
-            console.error('Program linking error:', this.gl.getProgramInfoLog(program));
+        class Material {
+            constructor(vertexShader, fragmentShaderSource) {
+                this.vertexShader = vertexShader;
+                this.fragmentShaderSource = fragmentShaderSource;
+                this.programs = [];
+                this.activeProgram = null;
+                this.uniforms = [];
+            }
+            setKeywords(keywords) {
+                let hash = 0;
+                for (let i = 0; i < keywords.length; i++) hash += this.hashCode(keywords[i]);
+                let program = this.programs[hash];
+                if (program == null) {
+                    let fragmentShader = this.compileShader(gl.FRAGMENT_SHADER, this.fragmentShaderSource, keywords);
+                    program = this.createProgram(this.vertexShader, fragmentShader);
+                    this.programs[hash] = program;
+                }
+                if (program === this.activeProgram) return;
+                this.uniforms = this.getUniforms(program);
+                this.activeProgram = program;
+            }
+            bind() { gl.useProgram(this.activeProgram); }
+            compileShader = this.compileShader.bind(this);
+            createProgram = this.createProgram.bind(this);
+            getUniforms = this.getUniforms.bind(this);
         }
-        
-        const uniforms = {};
-        const uniformCount = this.gl.getProgramParameter(program, this.gl.ACTIVE_UNIFORMS);
-        for (let i = 0; i < uniformCount; i++) {
-            const uniformName = this.gl.getActiveUniform(program, i).name;
-            uniforms[uniformName] = this.gl.getUniformLocation(program, uniformName);
-        }
-        
-        return { program, uniforms };
+
+        // Store shaders and programs
+        this.baseVertexShader = baseVertexShader;
+        this.copyProgram = new Program(baseVertexShader, copyShader);
+        this.clearProgram = new Program(baseVertexShader, clearShader);
+        this.splatProgram = new Program(baseVertexShader, splatShader);
+        this.advectionProgram = new Program(baseVertexShader, advectionShader);
+        this.displayMaterial = new Material(baseVertexShader, displayShaderSource);
     }
 
     initFramebuffers() {
-        const simRes = this.getResolution(this.config.SIM_RESOLUTION);
-        const dyeRes = this.getResolution(this.config.DYE_RESOLUTION);
+        const gl = this.gl;
+        const ext = this.ext;
         
-        this.dye = this.createDoubleFBO(dyeRes.width, dyeRes.height, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.gl.LINEAR);
-        this.velocity = this.createDoubleFBO(simRes.width, simRes.height, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.gl.LINEAR);
+        // Buffer setup
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2, 0, 2, 3]), gl.STATIC_DRAW);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(0);
+
+        this.blit = (target, clear = false) => {
+            if (target == null) {
+                gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            } else {
+                gl.viewport(0, 0, target.width, target.height);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+            }
+            if (clear) {
+                gl.clearColor(0.0, 0.0, 0.0, 1.0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+            }
+            gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        };
+
+        this.resizeCanvas();
     }
 
-    getResolution(resolution) {
-        let aspectRatio = this.gl.drawingBufferWidth / this.gl.drawingBufferHeight;
-        if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
-        
-        let min = Math.round(resolution);
-        let max = Math.round(resolution * aspectRatio);
-        
-        if (this.gl.drawingBufferWidth > this.gl.drawingBufferHeight) {
-            return { width: max, height: min };
-        } else {
-            return { width: min, height: max };
-        }
+    createFBO(w, h, internalFormat, format, type, param) {
+        const gl = this.gl;
+        gl.activeTexture(gl.TEXTURE0);
+        let texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+
+        let fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        gl.viewport(0, 0, w, h);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        let texelSizeX = 1.0 / w;
+        let texelSizeY = 1.0 / h;
+        return { texture, fbo, width: w, height: h, texelSizeX, texelSizeY };
     }
 
     createDoubleFBO(w, h, internalFormat, format, type, param) {
         let fbo1 = this.createFBO(w, h, internalFormat, format, type, param);
         let fbo2 = this.createFBO(w, h, internalFormat, format, type, param);
-        
         return {
-            width: w,
-            height: h,
-            texelSizeX: 1.0 / w,
-            texelSizeY: 1.0 / h,
-            read: fbo1,
-            write: fbo2,
-            swap() {
-                let temp = fbo1;
-                fbo1 = fbo2;
-                fbo2 = temp;
-                this.read = fbo1;
-                this.write = fbo2;
-            }
+            width: w, height: h,
+            texelSizeX: fbo1.texelSizeX, texelSizeY: fbo1.texelSizeY,
+            get read() { return fbo1; },
+            set read(value) { fbo1 = value; },
+            get write() { return fbo2; },
+            set write(value) { fbo2 = value; },
+            swap() { let temp = fbo1; fbo1 = fbo2; fbo2 = temp; }
         };
     }
 
-    createFBO(w, h, internalFormat, format, type, param) {
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        let texture = this.gl.createTexture();
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, param);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, param);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+    getResolution(resolution) {
+        let aspectRatio = this.gl.drawingBufferWidth / this.gl.drawingBufferHeight;
+        if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
 
-        let fbo = this.gl.createFramebuffer();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, fbo);
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
-        this.gl.viewport(0, 0, w, h);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+        let max = Math.round(resolution * aspectRatio);
+        let min = Math.round(resolution);
 
-        return { texture, fbo, width: w, height: h };
+        if (this.gl.drawingBufferWidth > this.gl.drawingBufferHeight)
+            return { width: max, height: min };
+        else
+            return { width: min, height: max };
     }
 
     setupEventListeners() {
+        // Mouse movement with neon colors
         this.canvas.addEventListener('mousemove', (e) => {
             if (!this.gl) return;
             const rect = this.canvas.getBoundingClientRect();
@@ -283,14 +493,6 @@ class FluidAnimation {
                 this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX * 100, pointer.deltaY * 100, randomColor);
             }
         });
-        
-        this.canvas.addEventListener('mouseenter', () => {
-            this.pointers[0].down = true;
-        });
-        
-        this.canvas.addEventListener('mouseleave', () => {
-            this.pointers[0].down = false;
-        });
 
         // Auto-splat effect with neon colors
         setInterval(() => {
@@ -313,118 +515,136 @@ class FluidAnimation {
             pointer.color = randomColor;
             this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX || 0.1, pointer.deltaY || 0.1, pointer.color);
         }, 1500);
-        
-        // Additional random splats for more activity
-        setInterval(() => {
-            const pointer = this.pointers[0];
-            pointer.texcoordX = Math.random();
-            pointer.texcoordY = Math.random();
-            pointer.color = [0.0, Math.random() * 0.8 + 0.2, 1.0]; // Blue variations
-            this.splat(pointer.texcoordX, pointer.texcoordY, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, pointer.color);
-        }, 3000);
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+        });
     }
 
     splat(x, y, dx, dy, color) {
-        this.gl.viewport(0, 0, this.velocity.width, this.velocity.height);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.velocity.write.fbo);
-        this.gl.useProgram(this.programs.splat.program);
-        this.gl.uniform1i(this.programs.splat.uniforms.uTarget, this.velocity.read.texture);
-        this.gl.uniform1f(this.programs.splat.uniforms.aspectRatio, this.canvas.width / this.canvas.height);
-        this.gl.uniform2f(this.programs.splat.uniforms.point, x, y);
-        this.gl.uniform3f(this.programs.splat.uniforms.color, dx, dy, 0.0);
-        this.gl.uniform1f(this.programs.splat.uniforms.radius, this.config.SPLAT_RADIUS / 100.0);
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.velocity.read.texture);
-        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
-        this.velocity.swap();
-
-        this.gl.viewport(0, 0, this.dye.width, this.dye.height);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.dye.write.fbo);
-        this.gl.uniform1i(this.programs.splat.uniforms.uTarget, this.dye.read.texture);
-        this.gl.uniform3f(this.programs.splat.uniforms.color, color[0] * 0.3, color[1] * 0.3, color[2] * 0.3);
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.dye.read.texture);
-        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
+        const gl = this.gl;
+        if (!this.dye) return;
+        
+        this.splatProgram.bind();
+        gl.uniform1i(this.splatProgram.uniforms.uTarget, this.dye.read.attach(0));
+        gl.uniform1f(this.splatProgram.uniforms.aspectRatio, this.canvas.width / this.canvas.height);
+        gl.uniform2f(this.splatProgram.uniforms.point, x, y);
+        gl.uniform3f(this.splatProgram.uniforms.color, dx, dy, 0);
+        gl.uniform1f(this.splatProgram.uniforms.radius, this.correctRadius(this.config.SPLAT_RADIUS / 100.0));
+        
+        this.blit(this.dye.write);
+        this.dye.swap();
+        
+        // Apply color
+        gl.uniform3f(this.splatProgram.uniforms.color, color[0] * 0.3, color[1] * 0.3, color[2] * 0.3);
+        this.blit(this.dye.write);
         this.dye.swap();
     }
 
-    step(dt) {
-        this.gl.disable(this.gl.BLEND);
-
-        // Advection
-        this.gl.viewport(0, 0, this.velocity.width, this.velocity.height);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.velocity.write.fbo);
-        this.gl.useProgram(this.programs.advection.program);
-        this.gl.uniform2f(this.programs.advection.uniforms.texelSize, this.velocity.texelSizeX, this.velocity.texelSizeY);
-        this.gl.uniform1i(this.programs.advection.uniforms.uVelocity, this.velocity.read.texture);
-        this.gl.uniform1i(this.programs.advection.uniforms.uSource, this.velocity.read.texture);
-        this.gl.uniform1f(this.programs.advection.uniforms.dt, dt);
-        this.gl.uniform1f(this.programs.advection.uniforms.dissipation, this.config.VELOCITY_DISSIPATION);
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.velocity.read.texture);
-        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
-        this.velocity.swap();
-
-        this.gl.viewport(0, 0, this.dye.width, this.dye.height);
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.dye.write.fbo);
-        this.gl.uniform2f(this.programs.advection.uniforms.texelSize, this.velocity.texelSizeX, this.velocity.texelSizeY);
-        this.gl.uniform1i(this.programs.advection.uniforms.uVelocity, this.velocity.read.texture);
-        this.gl.uniform1i(this.programs.advection.uniforms.uSource, this.dye.read.texture);
-        this.gl.uniform1f(this.programs.advection.uniforms.dissipation, this.config.DENSITY_DISSIPATION);
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.velocity.read.texture);
-        this.gl.activeTexture(this.gl.TEXTURE1);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.dye.read.texture);
-        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
-        this.dye.swap();
+    correctRadius(radius) {
+        let aspectRatio = this.canvas.width / this.canvas.height;
+        if (aspectRatio > 1) radius *= aspectRatio;
+        return radius;
     }
 
-    render() {
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-        this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    update() {
+        const gl = this.gl;
+        if (!this.dye || !this.velocity) return;
 
-        this.gl.useProgram(this.programs.display.program);
-        this.gl.uniform1i(this.programs.display.uniforms.uTexture, this.dye.read.texture);
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.dye.read.texture);
-        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
+        const dt = 0.016; // 60fps
+        
+        if (!this.config.PAUSED) {
+            this.advectionProgram.bind();
+            gl.uniform2f(this.advectionProgram.uniforms.texelSize, this.velocity.texelSizeX, this.velocity.texelSizeY);
+            gl.uniform1i(this.advectionProgram.uniforms.uVelocity, this.velocity.read.attach(0));
+            gl.uniform1i(this.advectionProgram.uniforms.uSource, this.velocity.read.attach(0));
+            gl.uniform1f(this.advectionProgram.uniforms.dt, dt);
+            gl.uniform1f(this.advectionProgram.uniforms.dissipation, this.config.VELOCITY_DISSIPATION);
+            this.blit(this.velocity.write);
+            this.velocity.swap();
+
+            gl.uniform1i(this.advectionProgram.uniforms.uVelocity, this.velocity.read.attach(0));
+            gl.uniform1i(this.advectionProgram.uniforms.uSource, this.dye.read.attach(1));
+            gl.uniform2f(this.advectionProgram.uniforms.dyeTexelSize, this.dye.texelSizeX, this.dye.texelSizeY);
+            gl.uniform1f(this.advectionProgram.uniforms.dissipation, this.config.DENSITY_DISSIPATION);
+            this.blit(this.dye.write);
+            this.dye.swap();
+        }
+
+        this.render(null);
+    }
+
+    render(target) {
+        const gl = this.gl;
+        if (!this.dye) return;
+
+        if (this.config.SHADING)
+            this.displayMaterial.setKeywords(['SHADING']);
+        else
+            this.displayMaterial.setKeywords([]);
+
+        this.displayMaterial.bind();
+        gl.uniform2f(this.displayMaterial.uniforms.texelSize, this.dye.texelSizeX, this.dye.texelSizeY);
+        gl.uniform1i(this.displayMaterial.uniforms.uTexture, this.dye.read.attach(0));
+        this.blit(target);
     }
 
     resizeCanvas() {
         const pixelRatio = window.devicePixelRatio || 1;
         this.canvas.width = this.canvas.clientWidth * pixelRatio;
         this.canvas.height = this.canvas.clientHeight * pixelRatio;
+        
         if (this.gl) {
-            this.initFramebuffers();
+            const gl = this.gl;
+            const ext = this.ext;
+            
+            let simRes = this.getResolution(this.config.SIM_RESOLUTION);
+            let dyeRes = this.getResolution(this.config.DYE_RESOLUTION);
+            const texType = ext.halfFloatTexType;
+            const rgba = ext.formatRGBA;
+            const rg = ext.formatRG;
+            const filtering = ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+            
+            gl.disable(gl.BLEND);
+
+            this.dye = this.createDoubleFBO(dyeRes.width, dyeRes.height, rgba.internalFormat, rgba.format, texType, filtering);
+            this.velocity = this.createDoubleFBO(simRes.width, simRes.height, rg.internalFormat, rg.format, texType, filtering);
         }
     }
 
     startAnimation() {
         let lastTime = 0;
         const animate = (time) => {
-            const dt = Math.min((time - lastTime) / 1000, 0.016);
-            lastTime = time;
-
-            this.step(dt);
-            this.render();
-
+            if (time - lastTime >= 16) { // ~60fps
+                this.update();
+                lastTime = time;
+            }
             requestAnimationFrame(animate);
         };
         requestAnimationFrame(animate);
     }
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('fluid-background');
     if (canvas) {
-        new FluidAnimation(canvas);
-        
-        // Handle resize
-        window.addEventListener('resize', () => {
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
+        // Enhanced configuration for hero section
+        const fluidAnimation = new FluidAnimation(canvas, {
+            SIM_RESOLUTION: 128,
+            DYE_RESOLUTION: 1440,
+            DENSITY_DISSIPATION: 3.5,
+            VELOCITY_DISSIPATION: 2,
+            PRESSURE: 0.1,
+            PRESSURE_ITERATIONS: 20,
+            CURL: 3,
+            SPLAT_RADIUS: 0.2,
+            SPLAT_FORCE: 6000,
+            SHADING: true,
+            COLOR_UPDATE_SPEED: 10,
+            BACK_COLOR: { r: 0.02, g: 0.02, b: 0.05 },
+            TRANSPARENT: true
         });
     }
 });

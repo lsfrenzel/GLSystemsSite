@@ -1002,7 +1002,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    z-index: 30;
+    z-index: 9999;
     transition: all 0.3s ease;
     animation: whatsapp-pulse 2s infinite;
 }

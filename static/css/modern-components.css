@@ -1,5 +1,272 @@
 /* G&L Systems - Modern Components CSS */
 
+/* ======================
+   DESIGN SYSTEM COMPONENTS
+   ====================== */
+
+/* Remove conflicting definitions - moved to style.css */
+
+/* Utility Classes */
+.text-gradient {
+    background: var(--gradient-tech);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.text-neon {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+/* Section Header Component */
+.section-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.section-badge {
+    display: inline-block;
+    background: var(--gradient-tech);
+    color: white;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    box-shadow: var(--shadow-neon);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.section-title {
+    font-size: var(--text-4xl);
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
+    font-family: 'Orbitron', monospace;
+}
+
+.section-subtitle {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--secondary-color);
+    font-size: var(--text-lg);
+}
+
+/* Button System */
+.btn-system {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-6);
+    transition: var(--transition-all);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary-neon {
+    background: var(--gradient-primary);
+    color: white;
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--shadow-neon);
+}
+
+.btn-primary-neon:hover {
+    background: var(--primary-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-secondary-neon {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary-neon:hover {
+    background: var(--primary-color);
+    color: var(--dark-color);
+    box-shadow: var(--shadow-neon);
+}
+
+.btn-cta {
+    background: var(--gradient-neon);
+    color: white;
+    border: none;
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-neon);
+    animation: cta-pulse 2s infinite;
+}
+
+.btn-cta:hover {
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-glow);
+}
+
+@keyframes cta-pulse {
+    0% { box-shadow: var(--shadow-neon); }
+    50% { box-shadow: var(--shadow-glow); }
+    100% { box-shadow: var(--shadow-neon); }
+}
+
+/* Card System */
+.card-system {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-all);
+    border: 2px solid transparent;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-system:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl), var(--shadow-neon);
+    border-color: var(--primary-color);
+}
+
+.card-system::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-tech);
+    opacity: 0;
+    transition: var(--transition-all);
+}
+
+.card-system:hover::before {
+    opacity: 1;
+}
+
+.card-dark {
+    background: var(--gradient-dark);
+    color: white;
+    border-color: rgba(0, 255, 255, 0.2);
+}
+
+.card-dark:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-xl), var(--shadow-neon);
+}
+
+/* Form System */
+.form-system .form-control {
+    border-radius: var(--radius-lg);
+    border: 2px solid #e2e8f0;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-base);
+    transition: var(--transition-colors);
+}
+
+.form-system .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-neon);
+    outline: none;
+}
+
+.form-system .form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: var(--space-2);
+}
+
+.form-system .btn {
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-6);
+    font-weight: 600;
+}
+
+/* Statistics Component */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+}
+
+.stat-item {
+    text-align: center;
+    padding: var(--space-6);
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-all);
+    border: 2px solid transparent;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.stat-number {
+    font-size: var(--text-4xl);
+    font-weight: 800;
+    font-family: 'Orbitron', monospace;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.stat-label {
+    color: var(--secondary-color);
+    font-weight: 500;
+    margin-top: var(--space-2);
+}
+
+/* CTA Banner Component */
+.cta-banner {
+    background: var(--gradient-dark);
+    padding: var(--space-12) var(--space-8);
+    border-radius: var(--radius-2xl);
+    text-align: center;
+    color: white;
+    margin: var(--space-16) 0;
+    border: 2px solid rgba(0, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-tech);
+    animation: scan 3s infinite linear;
+}
+
+@keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.cta-banner h3 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+    color: var(--primary-color);
+}
+
+.cta-banner p {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-6);
+    opacity: 0.9;
+}
+
 /* Tech Dashboard */
 .tech-dashboard {
     position: relative;

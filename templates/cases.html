@@ -1,63 +1,45 @@
 {% extends "base.html" %}
+{% from "components/section_header.html" import section_header %}
+{% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
+{% from "components/cta_banner.html" import cta_banner %}
 
 {% block title %}Cases de Sucesso - G&L Systems{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="display-4 fw-bold mb-4">Cases de Sucesso</h1>
-            <p class="lead text-muted">Empresas reais que transformaram seus resultados com nossos sistemas</p>
-        </div>
-    </div>
+    {{ section_header(
+        badge_text="📈 Resultados Comprovados",
+        title="Cases de Sucesso",
+        subtitle="Empresas reais que transformaram seus resultados com nossos sistemas"
+    ) }}
 
     <!-- Métricas Gerais -->
-    <div class="row mb-5">
-        <div class="col-md-3 mb-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body">
-                    <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
-                    <h3 class="text-success fw-bold">85%</h3>
-                    <p class="text-muted">Aumento médio na produtividade</p>
-                </div>
-            </div>
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">85%</div>
+            <div class="stat-label">Aumento Produtividade</div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body">
-                    <i class="fas fa-clock fa-3x text-primary mb-3"></i>
-                    <h3 class="text-primary fw-bold">12h</h3>
-                    <p class="text-muted">Horas economizadas por semana</p>
-                </div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-number">12h</div>
+            <div class="stat-label">Horas Economizadas</div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body">
-                    <i class="fas fa-dollar-sign fa-3x text-warning mb-3"></i>
-                    <h3 class="text-warning fw-bold">45%</h3>
-                    <p class="text-muted">Redução de custos operacionais</p>
-                </div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-number">45%</div>
+            <div class="stat-label">Redução de Custos</div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body">
-                    <i class="fas fa-users fa-3x text-info mb-3"></i>
-                    <h3 class="text-info fw-bold">500+</h3>
-                    <p class="text-muted">Empresas atendidas</p>
-                </div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Empresas Atendidas</div>
         </div>
     </div>
 
     <!-- Cases Detalhados -->
-    <div class="row">
-        <div class="col-12">
-            <h2 class="text-center mb-5">Histórias de Transformação</h2>
-        </div>
-    </div>
+    {{ section_header(
+        badge_text="💼 Cases Reais",
+        title="Histórias de Transformação",
+        subtitle="Veja como cada empresa alcançou seus objetivos"
+    ) }}
 
     <!-- Case 1: E-commerce -->
     <div class="row mb-5">
@@ -340,12 +322,8 @@
                         Transforme sua gestão empresarial e junte-se a centenas de empresas que já revolucionaram seus resultados
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="{{ url_for('solutions') }}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-rocket me-2"></i>Ver Soluções
-                        </a>
-                        <a href="{{ url_for('contact') }}" class="btn btn-success btn-lg">
-                            <i class="fas fa-phone me-2"></i>Falar com Especialista
-                        </a>
+                        {{ btn_cta("Ver Soluções", url_for('solutions'), "fas fa-rocket", "lg") }}
+                        {{ btn_secondary_neon("Falar com Especialista", url_for('contact'), "fas fa-phone", "lg") }}
                     </div>
                 </div>
             </div>

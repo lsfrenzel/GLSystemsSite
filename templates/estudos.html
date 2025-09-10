@@ -1,21 +1,25 @@
 {% extends "base.html" %}
+{% from "components/section_header.html" import section_header %}
+{% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
+{% from "components/cta_banner.html" import cta_banner %}
 
 {% block title %}Estudos e Referências - G&L Systems{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="display-4 fw-bold mb-4">Estudos & Referências</h1>
-            <p class="lead text-muted">Pesquisas, dados e evidências que comprovam a eficácia dos nossos sistemas</p>
-        </div>
-    </div>
+    {{ section_header(
+        badge_text="📊 Evidências Científicas",
+        title="Estudos & Referências",
+        subtitle="Pesquisas, dados e evidências que comprovam a eficácia dos nossos sistemas"
+    ) }}
 
     <!-- Pesquisas de Mercado -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <h2 class="text-center mb-5">Pesquisas de Mercado</h2>
+    {{ section_header(
+        badge_text="🔬 Pesquisas",
+        title="Pesquisas de Mercado",
+        subtitle="Dados científicos que fundamentam nossa abordagem"
+    ) }}
             <div class="row">
                 <div class="col-lg-6 mb-4">
                     <div class="study-card h-100">
@@ -296,27 +300,19 @@
         </div>
     </div>
 
-    <!-- CTA Final -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-dark text-white">
-                <div class="card-body p-5 text-center">
-                    <h2 class="fw-bold mb-3">Dados Não Mentem</h2>
-                    <p class="lead mb-4">
-                        Com base em evidências científicas sólidas, nossos sistemas entregam resultados comprovados
-                    </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="{{ url_for('cases') }}" class="btn btn-warning btn-lg">
-                            <i class="fas fa-chart-bar me-2"></i>Ver Cases Reais
-                        </a>
-                        <a href="{{ url_for('solutions') }}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-flask me-2"></i>Testar Sistemas
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- CTA Banner -->
+    {{ cta_banner(
+        title="Dados Não Mentem",
+        description="Com base em evidências científicas sólidas, nossos sistemas entregam resultados comprovados. Veja casos reais e teste você mesmo.",
+        btn_text="Ver Cases Reais",
+        btn_href=url_for('cases'),
+        btn_icon="fas fa-chart-bar",
+        secondary_btn={
+            "text": "Testar Sistemas",
+            "href": url_for('solutions'),
+            "icon": "fas fa-flask"
+        }
+    ) }}
 </div>
 
 <style>

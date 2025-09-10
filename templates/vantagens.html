@@ -1,16 +1,18 @@
 {% extends "base.html" %}
+{% from "components/section_header.html" import section_header %}
+{% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
+{% from "components/cta_banner.html" import cta_banner %}
 
 {% block title %}Vantagens e Benefícios - G&L Systems{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="display-4 fw-bold mb-4">Vantagens Competitivas</h1>
-            <p class="lead text-muted">Por que escolher G&L Systems para transformar sua empresa</p>
-        </div>
-    </div>
+    {{ section_header(
+        badge_text="🏆 Vantagens Exclusivas",
+        title="Vantagens Competitivas",
+        subtitle="Por que escolher G&L Systems para transformar sua empresa"
+    ) }}
 
     <!-- Principais Vantagens -->
     <div class="row mb-5">
@@ -290,27 +292,19 @@
         </div>
     </div>
 
-    <!-- CTA Final -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-dark text-white">
-                <div class="card-body p-5 text-center">
-                    <h2 class="fw-bold mb-3">Pronto para Ter Essas Vantagens?</h2>
-                    <p class="lead mb-4">
-                        Junte-se a mais de 500 empresas que já transformaram seus resultados
-                    </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="{{ url_for('solutions') }}" class="btn btn-warning btn-lg">
-                            <i class="fas fa-play me-2"></i>Testar Grátis Agora
-                        </a>
-                        <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-calendar me-2"></i>Agendar Demonstração
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- CTA Banner -->
+    {{ cta_banner(
+        title="Pronto para Ter Essas Vantagens?",
+        description="Junte-se a mais de 500 empresas que já transformaram seus resultados com nossos sistemas inteligentes.",
+        btn_text="Testar Grátis Agora",
+        btn_href=url_for('solutions'),
+        btn_icon="fas fa-play",
+        secondary_btn={
+            "text": "Agendar Demonstração",
+            "href": url_for('contact'),
+            "icon": "fas fa-calendar"
+        }
+    ) }}
 </div>
 
 <style>

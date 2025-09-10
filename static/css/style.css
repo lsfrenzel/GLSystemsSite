@@ -952,46 +952,10 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-/* Spline Overlay Badge */
-.spline-overlay-badge {
-    position: absolute;
-    bottom: 21px;
-    right: 21px;
-    display: flex;
-    align-items: center;
-    background: rgba(33, 33, 33, 0.9);
-    padding: 8px 12px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 20;
-    transition: all 0.3s ease;
-}
 
-.spline-overlay-badge:hover {
-    background: rgba(33, 33, 33, 1);
-    transform: scale(1.05);
-}
-
-.spline-logo-circle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff0080, #7928ca, #0070f3);
-    margin-right: 8px;
-    flex-shrink: 0;
-}
-
-.spline-text {
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-/* WhatsApp Button - Fixed positioning above animation */
+/* WhatsApp Button - Positioned where Spline badge was */
 .whatsapp-btn {
-    position: fixed;
+    position: absolute;
     bottom: 21px;
     right: 21px;
     background: linear-gradient(135deg, #25D366, #128C7E);
@@ -1038,11 +1002,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* Adjust Spline badge position to not overlap with WhatsApp */
-.spline-overlay-badge {
-    bottom: 21px;
-    right: 200px;
-}
 
 /* Next section overlap styling */
 .spline-fullwidth-container + .container section,

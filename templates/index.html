@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+<!-- Spline 3D Viewer - Only for homepage -->
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js"></script>
+{% endblock %}
+
 {% block content %}
 <!-- Modern Hero Section -->
 <section class="modern-hero-section text-white py-5">
@@ -10,8 +15,8 @@
         <div class="row align-items-center justify-content-center min-vh-100">
             <div class="col-lg-8 text-center">
                 <div class="hero-content animate__animated animate__fadeInUp">
-                    <span class="hero-badge">🚀 Tecnologia 2025</span>
-                    <h1 class="hero-title display-2 fw-bold mb-4">
+                    <span class="section-badge">🚀 Tecnologia 2025</span>
+                    <h1 class="section-title display-2 fw-bold mb-4">
                         IA e Automação para sua 
                         <span class="text-gradient">Empresa Digital</span>
                     </h1>
@@ -19,33 +24,25 @@
                         Revolucione sua gestão empresarial com sistemas inteligentes que utilizam IA, 
                         análise de dados avançada e automação completa para maximizar resultados.
                     </p>
-                    <div class="hero-stats mb-4">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <h3 class="stat-number">80%</h3>
-                                    <p class="stat-label">Tempo Economizado</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <h3 class="stat-number">500+</h3>
-                                    <p class="stat-label">Empresas Atendidas</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <h3 class="stat-number">24/7</h3>
-                                    <p class="stat-label">Automação</p>
-                                </div>
-                            </div>
+                    <div class="stats-grid mb-4">
+                        <div class="stat-item">
+                            <div class="stat-number">80%</div>
+                            <div class="stat-label">Tempo Economizado</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Empresas Atendidas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Automação</div>
                         </div>
                     </div>
                     <div class="hero-buttons">
-                        <a href="#top-systems" class="btn btn-hero-primary btn-lg me-3">
+                        <a href="#top-systems" class="btn btn-cta me-3">
                             <i class="fas fa-rocket me-2"></i>Explorar Sistemas 2025
                         </a>
-                        <a href="{{ url_for('contact') }}" class="btn btn-hero-outline btn-lg">
+                        <a href="{{ url_for('contact') }}" class="btn btn-secondary-neon btn-lg">
                             <i class="fas fa-calendar me-2"></i>Agendar Demo
                         </a>
                     </div>

@@ -172,7 +172,7 @@ class FluidAnimation {
             if (!keywords) return source;
             let keywordsString = "";
             keywords.forEach((keyword) => {
-                keywordsString += "#define " + keyword + "\\n";
+                keywordsString += "#define " + keyword + "\n";
             });
             return keywordsString + source;
         };

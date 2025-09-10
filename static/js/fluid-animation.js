@@ -4,17 +4,17 @@ class FluidAnimation {
         this.canvas = canvas;
         this.config = {
             SIM_RESOLUTION: 128,
-            DYE_RESOLUTION: 1024,
-            DENSITY_DISSIPATION: 1.5,
-            VELOCITY_DISSIPATION: 0.2,
-            PRESSURE: 0.1,
+            DYE_RESOLUTION: 1440,
+            DENSITY_DISSIPATION: 2.0,
+            VELOCITY_DISSIPATION: 0.3,
+            PRESSURE: 0.15,
             PRESSURE_ITERATIONS: 20,
-            CURL: 30,
-            SPLAT_RADIUS: 0.25,
-            SPLAT_FORCE: 6000,
+            CURL: 35,
+            SPLAT_RADIUS: 0.3,
+            SPLAT_FORCE: 8000,
             SHADING: true,
-            COLOR_UPDATE_SPEED: 10,
-            BACK_COLOR: { r: 0.1, g: 0.1, b: 0.2 },
+            COLOR_UPDATE_SPEED: 15,
+            BACK_COLOR: { r: 0.02, g: 0.02, b: 0.05 },
             TRANSPARENT: true,
         };
 
@@ -268,14 +268,36 @@ class FluidAnimation {
             pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
         });
 
-        // Auto-splat effect
+        // Auto-splat effect with neon colors
         setInterval(() => {
             const pointer = this.pointers[0];
             pointer.texcoordX = Math.random();
             pointer.texcoordY = Math.random();
-            pointer.color = [Math.random() * 0.3 + 0.2, Math.random() * 0.3 + 0.2, Math.random() * 0.3 + 0.5];
-            this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX, pointer.deltaY, pointer.color);
-        }, 2000);
+            
+            // Neon color palette
+            const neonColors = [
+                [0.0, 1.0, 1.0],    // Cyan neon
+                [1.0, 0.0, 1.0],    // Magenta neon
+                [0.0, 1.0, 0.3],    // Green neon
+                [1.0, 0.2, 0.8],    // Pink neon
+                [0.2, 0.8, 1.0],    // Blue neon
+                [1.0, 1.0, 0.0],    // Yellow neon
+                [0.8, 0.0, 1.0]     // Purple neon
+            ];
+            
+            const randomColor = neonColors[Math.floor(Math.random() * neonColors.length)];
+            pointer.color = randomColor;
+            this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX || 0.1, pointer.deltaY || 0.1, pointer.color);
+        }, 1500);
+        
+        // Additional random splats for more activity
+        setInterval(() => {
+            const pointer = this.pointers[0];
+            pointer.texcoordX = Math.random();
+            pointer.texcoordY = Math.random();
+            pointer.color = [0.0, Math.random() * 0.8 + 0.2, 1.0]; // Blue variations
+            this.splat(pointer.texcoordX, pointer.texcoordY, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, pointer.color);
+        }, 3000);
     }
 
     splat(x, y, dx, dy, color) {

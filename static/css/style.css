@@ -918,10 +918,10 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.2rem;
 }
 
-/* Spline 3D Container */
+/* Spline 3D Container - Widescreen */
 .spline-3d-container {
-    max-width: 600px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
@@ -942,4 +942,29 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 80px rgba(0, 255, 255, 0.4);
     border-color: rgba(255, 0, 255, 0.5);
     transform: translateY(-5px);
+}
+
+/* Hide Spline watermark */
+.spline-3d-container spline-viewer::part(watermark),
+.spline-3d-container spline-viewer::part(logo),
+spline-viewer .spline-watermark,
+spline-viewer #spline-watermark,
+spline-viewer [class*="watermark"],
+spline-viewer [class*="logo"],
+spline-viewer [data-name="watermark"],
+spline-viewer [data-name="logo"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Additional CSS to target various watermark selectors */
+.spline-3d-container spline-viewer canvas + div,
+.spline-3d-container spline-viewer > div:last-child {
+    position: relative;
+}
+
+.spline-3d-container spline-viewer > div:last-child > div:last-child {
+    display: none !important;
 }

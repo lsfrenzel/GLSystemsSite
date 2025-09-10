@@ -917,3 +917,26 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
     font-size: 1.2rem;
 }
+
+/* Spline 3D Container */
+.spline-3d-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 50px rgba(0, 255, 255, 0.2);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.spline-3d-container spline-viewer {
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.spline-3d-container:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 80px rgba(0, 255, 255, 0.4);
+    border-color: rgba(255, 0, 255, 0.5);
+    transform: translateY(-5px);
+}

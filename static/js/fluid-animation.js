@@ -18,23 +18,25 @@ class FluidAnimation {
             TRANSPARENT: true,
         };
 
-        this.pointers = [new this.PointerPrototype()];
+        this.pointers = [this.createPointer()];
         this.initWebGL();
         this.initFramebuffers();
         this.startAnimation();
     }
 
-    PointerPrototype() {
-        this.id = -1;
-        this.texcoordX = 0;
-        this.texcoordY = 0;
-        this.prevTexcoordX = 0;
-        this.prevTexcoordY = 0;
-        this.deltaX = 0;
-        this.deltaY = 0;
-        this.down = false;
-        this.moved = false;
-        this.color = [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2];
+    createPointer() {
+        return {
+            id: -1,
+            texcoordX: 0,
+            texcoordY: 0,
+            prevTexcoordX: 0,
+            prevTexcoordY: 0,
+            deltaX: 0,
+            deltaY: 0,
+            down: false,
+            moved: false,
+            color: [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2]
+        };
     }
 
     initWebGL() {
@@ -266,6 +268,27 @@ class FluidAnimation {
             pointer.deltaX = pointer.texcoordX - pointer.prevTexcoordX;
             pointer.deltaY = pointer.texcoordY - pointer.prevTexcoordY;
             pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
+            
+            // Create splat effect on mouse move
+            if (pointer.moved) {
+                const neonColors = [
+                    [0.0, 1.0, 1.0],    // Cyan neon
+                    [1.0, 0.0, 1.0],    // Magenta neon
+                    [0.0, 1.0, 0.3],    // Green neon
+                    [1.0, 0.2, 0.8],    // Pink neon
+                    [0.2, 0.8, 1.0],    // Blue neon
+                ];
+                const randomColor = neonColors[Math.floor(Math.random() * neonColors.length)];
+                this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX * 50, pointer.deltaY * 50, randomColor);
+            }
+        });
+        
+        this.canvas.addEventListener('mouseenter', () => {
+            this.pointers[0].down = true;
+        });
+        
+        this.canvas.addEventListener('mouseleave', () => {
+            this.pointers[0].down = false;
         });
 
         // Auto-splat effect with neon colors
@@ -371,7 +394,9 @@ class FluidAnimation {
         const pixelRatio = window.devicePixelRatio || 1;
         this.canvas.width = this.canvas.clientWidth * pixelRatio;
         this.canvas.height = this.canvas.clientHeight * pixelRatio;
-        this.initFramebuffers();
+        if (this.gl) {
+            this.initFramebuffers();
+        }
     }
 
     startAnimation() {

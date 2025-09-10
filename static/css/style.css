@@ -918,7 +918,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.2rem;
 }
 
-/* Full Width Spline Container */
+/* Full Width Spline Container - Expanded to edges */
 .spline-fullwidth-container {
     width: 100vw;
     margin: 0;
@@ -926,16 +926,21 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     z-index: 2;
     margin-bottom: -50px;
+    padding: 0;
+    left: 0;
+    right: 0;
 }
 
-/* Black Frame with 5px margin */
+/* Black Frame with 5px margin - Full expansion */
 .spline-black-frame {
     position: relative;
-    width: 100%;
+    width: calc(100vw);
     height: 450px;
     background: #000000;
     border: 5px solid #000000;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .spline-black-frame spline-viewer {
@@ -984,9 +989,9 @@ h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
 }
 
-/* WhatsApp Button */
+/* WhatsApp Button - Fixed positioning above animation */
 .whatsapp-btn {
-    position: absolute;
+    position: fixed;
     bottom: 21px;
     right: 21px;
     background: linear-gradient(135deg, #25D366, #128C7E);
@@ -1002,9 +1007,10 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    z-index: 9999;
+    z-index: 99999;
     transition: all 0.3s ease;
     animation: whatsapp-pulse 2s infinite;
+    pointer-events: auto;
 }
 
 .whatsapp-btn:hover {

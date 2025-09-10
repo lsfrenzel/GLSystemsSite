@@ -259,6 +259,7 @@ class FluidAnimation {
 
     setupEventListeners() {
         this.canvas.addEventListener('mousemove', (e) => {
+            if (!this.gl) return;
             const rect = this.canvas.getBoundingClientRect();
             const pointer = this.pointers[0];
             pointer.prevTexcoordX = pointer.texcoordX;
@@ -270,7 +271,7 @@ class FluidAnimation {
             pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
             
             // Create splat effect on mouse move
-            if (pointer.moved) {
+            if (pointer.moved && (Math.abs(pointer.deltaX) > 0.001 || Math.abs(pointer.deltaY) > 0.001)) {
                 const neonColors = [
                     [0.0, 1.0, 1.0],    // Cyan neon
                     [1.0, 0.0, 1.0],    // Magenta neon
@@ -279,7 +280,7 @@ class FluidAnimation {
                     [0.2, 0.8, 1.0],    // Blue neon
                 ];
                 const randomColor = neonColors[Math.floor(Math.random() * neonColors.length)];
-                this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX * 50, pointer.deltaY * 50, randomColor);
+                this.splat(pointer.texcoordX, pointer.texcoordY, pointer.deltaX * 100, pointer.deltaY * 100, randomColor);
             }
         });
         

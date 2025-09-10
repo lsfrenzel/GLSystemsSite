@@ -150,7 +150,7 @@ body {
     height: 100%;
     z-index: 1;
     opacity: 0.8;
-    pointer-events: none;
+    pointer-events: all;
     mix-blend-mode: screen;
     filter: blur(0.5px) brightness(1.2);
 }

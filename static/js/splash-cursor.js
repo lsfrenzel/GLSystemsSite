@@ -172,9 +172,11 @@ class RevolutionarySplashCursor {
 
     createExplosion(x, y) {
         const colors = [
-            { r: 255, g: 255, b: 255 },
-            { r: 0, g: 255, b: 255 },
-            { r: 255, g: 0, b: 255 }
+            { r: 0, g: 255, b: 255 },    // Cyan
+            { r: 255, g: 0, b: 255 },    // Magenta
+            { r: 0, g: 255, b: 128 },    // Neon Green
+            { r: 255, g: 128, b: 255 },  // Hot Pink
+            { r: 255, g: 255, b: 0 }     // Electric Yellow
         ];
 
         // Main explosion burst
@@ -203,7 +205,7 @@ class RevolutionarySplashCursor {
             y: y,
             radius: 0,
             maxRadius: 150,
-            color: { r: 255, g: 255, b: 255 },
+            color: { r: 0, g: 255, b: 255 }, // Neon cyan instead of white
             opacity: 0.8,
             life: 1,
             decay: 0.015
@@ -314,9 +316,13 @@ class RevolutionarySplashCursor {
     }
 
     draw() {
-        // Clear with slight trail effect for smoother motion
-        this.ctx.fillStyle = 'rgba(10, 10, 15, 0.1)';
+        // Proper fade effect that works with additive blending
+        this.ctx.save();
+        this.ctx.globalCompositeOperation = 'destination-out';
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.08)'; // Controls trail length
         this.ctx.fillRect(0, 0, this.width, this.height);
+        this.ctx.restore();
+        this.ctx.globalCompositeOperation = 'lighter';
 
         // Draw ripples
         for (const ripple of this.ripples) {

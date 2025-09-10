@@ -984,6 +984,60 @@ h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
 }
 
+/* WhatsApp Button */
+.whatsapp-btn {
+    position: absolute;
+    bottom: 21px;
+    right: 21px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 30;
+    transition: all 0.3s ease;
+    animation: whatsapp-pulse 2s infinite;
+}
+
+.whatsapp-btn:hover {
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-btn i {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+@keyframes whatsapp-pulse {
+    0% {
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5), 0 0 20px rgba(37, 211, 102, 0.3);
+    }
+    100% {
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    }
+}
+
+/* Adjust Spline badge position to not overlap with WhatsApp */
+.spline-overlay-badge {
+    bottom: 21px;
+    right: 200px;
+}
+
 /* Next section overlap styling */
 .spline-fullwidth-container + .container section,
 section.py-5.bg-dark {

@@ -1,0 +1,12 @@
+{# Section Header Component - Reusable across pages #}
+{% macro section_header(badge_text, title, subtitle=none, center=true) %}
+<div class="{% if center %}text-center{% endif %} mb-5">
+    {% if badge_text %}
+    <span class="section-badge">{{ badge_text }}</span>
+    {% endif %}
+    <h2 class="section-title">{{ title }}</h2>
+    {% if subtitle %}
+    <p class="text-muted lead">{{ subtitle }}</p>
+    {% endif %}
+</div>
+{% endmacro %}

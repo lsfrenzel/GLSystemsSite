@@ -1,0 +1,25 @@
+{# Button Components - Standardized CTA and Secondary buttons #}
+
+{% macro btn_cta(text, href, icon=none, size="") %}
+<a href="{{ href }}" class="btn btn-cta{% if size %} btn-{{ size }}{% endif %}">
+    {% if icon %}<i class="{{ icon }} me-2"></i>{% endif %}{{ text }}
+</a>
+{% endmacro %}
+
+{% macro btn_secondary_neon(text, href, icon=none, size="") %}
+<a href="{{ href }}" class="btn btn-secondary-neon{% if size %} btn-{{ size }}{% endif %}">
+    {% if icon %}<i class="{{ icon }} me-2"></i>{% endif %}{{ text }}
+</a>
+{% endmacro %}
+
+{% macro btn_outline_light(text, href, icon=none, size="") %}
+<a href="{{ href }}" class="btn btn-outline-light{% if size %} btn-{{ size }}{% endif %}">
+    {% if icon %}<i class="{{ icon }} me-2"></i>{% endif %}{{ text }}
+</a>
+{% endmacro %}
+
+{% macro btn_filter(text, filter_value, active=false) %}
+<button type="button" class="btn btn-outline-primary filter-btn{% if active %} active{% endif %}" data-filter="{{ filter_value }}">
+    {{ text }}
+</button>
+{% endmacro %}

@@ -1,40 +1,36 @@
 {% extends "base.html" %}
+{% from "components/section_header.html" import section_header %}
+{% from "components/buttons.html" import btn_cta, btn_secondary_neon, btn_filter %}
+{% from "components/cta_banner.html" import cta_banner %}
 
 {% block title %}Soluções - G&L Systems{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section Expandido -->
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Soluções Empresariais Completas</h1>
-        <p class="lead text-muted">+20 sistemas integrados • IA nativa • ROI comprovado em 90 dias • 500+ ferramentas</p>
+    {{ section_header(
+        badge_text="🚀 Sistemas Empresariais 2025",
+        title="Soluções Empresariais Completas", 
+        subtitle="+20 sistemas integrados • IA nativa • ROI comprovado em 90 dias • 500+ ferramentas"
+    ) }}
         
-        <!-- Estatísticas Rápidas -->
-        <div class="row mt-4">
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <h3 class="text-primary fw-bold">500+</h3>
-                    <p class="text-muted">Empresas Atendidas</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <h3 class="text-success fw-bold">85%</h3>
-                    <p class="text-muted">Aumento Produtividade</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <h3 class="text-warning fw-bold">24h</h3>
-                    <p class="text-muted">Implementação Rápida</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-item">
-                    <h3 class="text-info fw-bold">24/7</h3>
-                    <p class="text-muted">Suporte Especializado</p>
-                </div>
-            </div>
+    <!-- Estatísticas Rápidas -->
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Empresas Atendidas</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">85%</div>
+            <div class="stat-label">Aumento Produtividade</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24h</div>
+            <div class="stat-label">Implementação Rápida</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Suporte Especializado</div>
         </div>
     </div>
 
@@ -45,15 +41,15 @@
                 <div class="card-body">
                     <h5 class="mb-3">Filtrar por Categoria</h5>
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
-                        <button class="btn btn-outline-primary filter-btn active" data-filter="all">Todos os Sistemas</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="crm">CRM & Vendas</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="comunicacao">Comunicação</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="projetos">Gestão Projetos</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="financeiro">Financeiro</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="ecommerce">E-commerce</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="saude">Saúde & Clínicas</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="educacao">Educação</button>
-                        <button class="btn btn-outline-primary filter-btn" data-filter="servicos">Serviços</button>
+                        {{ btn_filter("Todos os Sistemas", "all", active=true) }}
+                        {{ btn_filter("CRM & Vendas", "crm") }}
+                        {{ btn_filter("Comunicação", "comunicacao") }}
+                        {{ btn_filter("Gestão Projetos", "projetos") }}
+                        {{ btn_filter("Financeiro", "financeiro") }}
+                        {{ btn_filter("E-commerce", "ecommerce") }}
+                        {{ btn_filter("Saúde & Clínicas", "saude") }}
+                        {{ btn_filter("Educação", "educacao") }}
+                        {{ btn_filter("Serviços", "servicos") }}
                     </div>
                 </div>
             </div>
@@ -61,10 +57,11 @@
     </div>
 
     <!-- Sistemas Famosos 2025 -->
-    <div class="text-center mb-5">
-        <h2 class="text-primary fw-bold">🚀 Sistemas Famosos 2025</h2>
-        <p class="lead text-muted">Versões completas dos sistemas mais utilizados pelas empresas modernas</p>
-    </div>
+    {{ section_header(
+        badge_text="⭐ Sistemas Populares",
+        title="Sistemas Famosos 2025",
+        subtitle="Versões completas dos sistemas mais utilizados pelas empresas modernas"
+    ) }}
     
     <div class="row mb-5">
         <!-- Pipedrive CRM -->
@@ -84,9 +81,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_crm_profissional') }}" class="btn btn-primary">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_crm_profissional'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -108,9 +103,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_hubspot_marketing') }}" class="btn btn-info">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_hubspot_marketing'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -132,9 +125,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_slack_comunicacao') }}" class="btn btn-success">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_slack_comunicacao'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -156,9 +147,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_trello_projetos') }}" class="btn btn-warning">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_trello_projetos'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -180,9 +169,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_whatsapp_business') }}" class="btn btn-success">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_whatsapp_business'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -204,9 +191,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_zoom_videoconferencia') }}" class="btn btn-info">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_zoom_videoconferencia'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -216,10 +201,11 @@
     <hr class="my-5">
     
     <!-- Nossas Soluções Tradicionais -->
-    <div class="text-center mb-5">
-        <h2 class="fw-bold">💼 Nossas Soluções Tradicionais</h2>
-        <p class="lead text-muted">Sistemas completos com demonstrações funcionais para sua empresa</p>
-    </div>
+    {{ section_header(
+        badge_text="💼 Soluções Tradicionais",
+        title="Nossas Soluções Tradicionais",
+        subtitle="Sistemas completos com demonstrações funcionais para sua empresa"
+    ) }}
 
     <!-- Solutions Grid -->
     <div class="row">
@@ -240,9 +226,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_ecommerce') }}" class="btn btn-primary">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_ecommerce'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -264,9 +248,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_agenda') }}" class="btn btn-success">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_agenda'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -288,9 +270,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_estoque') }}" class="btn btn-warning">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_estoque'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -312,9 +292,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_financeiro') }}" class="btn btn-info">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_financeiro'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -336,9 +314,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_restaurante') }}" class="btn btn-danger">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_restaurante'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -360,9 +336,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_erp') }}" class="btn btn-dark">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_erp'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -384,9 +358,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_oficina') }}" class="btn btn-secondary">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_oficina'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -408,9 +380,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_imoveis') }}" class="btn btn-primary">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_cta("Testar Demo", url_for('demo_imoveis'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -432,9 +402,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ url_for('demo_academia') }}" class="btn btn-success">
-                        <i class="fas fa-play me-2"></i>Testar Demo
-                    </a>
+                    {{ btn_secondary_neon("Testar Demo", url_for('demo_academia'), "fas fa-play") }}
                 </div>
             </div>
         </div>
@@ -469,12 +437,24 @@
                             <p><strong>100% Seguro</strong></p>
                         </div>
                     </div>
-                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg mt-3">
-                        <i class="fas fa-envelope me-2"></i>Solicitar Orçamento
-                    </a>
+                    {{ btn_cta("Solicitar Orçamento", url_for('contact'), "fas fa-envelope", "lg") }}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- CTA Banner -->
+    {{ cta_banner(
+        title="Pronto para Revolucionar sua Empresa?",
+        description="Mais de 500 empresas já transformaram suas operações com nossos sistemas. Agende uma demonstração personalizada e veja como podemos otimizar seus processos.",
+        btn_text="Agendar Demonstração",
+        btn_href=url_for('contact'),
+        btn_icon="fas fa-calendar",
+        secondary_btn={
+            "text": "Ver Todos os Cases",
+            "href": url_for('cases'),
+            "icon": "fas fa-chart-line"
+        }
+    ) }}
 </div>
 {% endblock %}

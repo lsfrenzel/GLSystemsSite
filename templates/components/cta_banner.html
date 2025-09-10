@@ -1,0 +1,17 @@
+{# CTA Banner Component - Reusable call-to-action banner #}
+{% macro cta_banner(title, description, btn_text, btn_href, btn_icon=none, secondary_btn=none) %}
+<div class="cta-banner">
+    <h3>{{ title }}</h3>
+    <p>{{ description }}</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{{ btn_href }}" class="btn btn-cta">
+            {% if btn_icon %}<i class="{{ btn_icon }} me-2"></i>{% endif %}{{ btn_text }}
+        </a>
+        {% if secondary_btn %}
+        <a href="{{ secondary_btn.href }}" class="btn btn-secondary-neon">
+            {% if secondary_btn.icon %}<i class="{{ secondary_btn.icon }} me-2"></i>{% endif %}{{ secondary_btn.text }}
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}

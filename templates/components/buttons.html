@@ -23,3 +23,15 @@
     {{ text }}
 </button>
 {% endmacro %}
+
+{% macro btn_submit(text, icon=none, size="") %}
+<button type="submit" class="btn btn-cta{% if size %} btn-{{ size }}{% endif %}">
+    {% if icon %}<i class="{{ icon }} me-2"></i>{% endif %}{{ text }}
+</button>
+{% endmacro %}
+
+{% macro btn_whatsapp(text, phone, message="", icon="fab fa-whatsapp") %}
+<a href="https://wa.me/{{ phone }}?text={{ message | urlencode }}" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+    <i class="{{ icon }} me-2"></i>{{ text }}
+</a>
+{% endmacro %}

@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block scripts %}
-<!-- Spline 3D Viewer - Only for homepage -->
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js"></script>
-{% endblock %}
 
 {% block content %}
 <!-- Modern Hero Section -->
@@ -423,7 +419,8 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Script is now loaded in base.html -->
+<!-- Spline 3D Viewer - Only for homepage -->
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.57/build/spline-viewer.js"></script>
 <script>
 // Spline 3D animation is now handled by the spline-viewer component
 document.addEventListener('DOMContentLoaded', function() {

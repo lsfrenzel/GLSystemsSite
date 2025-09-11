@@ -767,6 +767,59 @@
     left: 100%;
 }
 
+/* Filter Animation Classes */
+.filtering-out {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(30px) scale(0.8);
+    opacity: 0;
+    filter: blur(2px);
+}
+
+.filtering-in {
+    animation: filterIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes filterIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.85);
+        filter: blur(3px);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.02);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .filtering-out,
+    .filtering-in {
+        transition: none;
+        animation: none;
+    }
+    .top-system-card,
+    .system-icon,
+    .rank-badge,
+    .btn-system-demo {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Performance optimizations */
+.top-system-card,
+.btn-system-demo,
+.system-icon {
+    will-change: transform;
+}
+
 /* Responsive Design for Modern Components */
 @media (max-width: 768px) {
     .section-title {

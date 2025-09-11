@@ -454,20 +454,127 @@ def convert_file_to_pdf(file_path, filename):
             image.save(output_path, 'PDF')
             
         elif ext in ['doc', 'docx']:
-            # Convert Word document to PDF (simplified)
+            # Convert Word document to PDF with images preserved
             doc = docx.Document(file_path)
             
-            # Create PDF with text content
+            # Create PDF with text and image content
             c = canvas.Canvas(output_path, pagesize=letter)
             y_position = 750
+            page_width, page_height = letter
             
+            # Extract and save images from document
+            image_counter = 0
+            temp_images = []
+            
+            # Process document relationships to extract images
+            if hasattr(doc, 'part') and hasattr(doc.part, 'related_parts'):
+                for rel_id, related_part in doc.part.related_parts.items():
+                    if "image" in related_part.content_type:
+                        image_counter += 1
+                        img_filename = f"temp_img_{image_counter}.{related_part.content_type.split('/')[-1]}"
+                        img_path = os.path.join(TEMP_FOLDER, img_filename)
+                        
+                        with open(img_path, 'wb') as img_file:
+                            img_file.write(related_part.blob)
+                        temp_images.append(img_path)
+            
+            # Process paragraphs and inline shapes
             for paragraph in doc.paragraphs:
+                # Check if paragraph has text
                 if paragraph.text.strip():
-                    c.drawString(50, y_position, paragraph.text[:80])  # Limit line length
-                    y_position -= 20
-                    if y_position < 50:
+                    # Wrap text if too long
+                    text = paragraph.text.strip()
+                    words = text.split()
+                    line = ""
+                    
+                    for word in words:
+                        if len(line + word) > 80:
+                            if line:
+                                c.drawString(50, y_position, line)
+                                y_position -= 20
+                                line = word + " "
+                            else:
+                                c.drawString(50, y_position, word[:80])
+                                y_position -= 20
+                        else:
+                            line += word + " "
+                        
+                        if y_position < 100:
+                            c.showPage()
+                            y_position = 750
+                    
+                    if line.strip():
+                        c.drawString(50, y_position, line.strip())
+                        y_position -= 20
+                
+                # Check for inline shapes (images)
+                if hasattr(paragraph, '_element'):
+                    for run in paragraph.runs:
+                        if hasattr(run, '_element'):
+                            for child in run._element:
+                                if 'graphic' in str(child.tag).lower() or 'drawing' in str(child.tag).lower():
+                                    # Add space for image and place available images
+                                    if temp_images and image_counter > 0:
+                                        try:
+                                            img_path = temp_images.pop(0)
+                                            img = Image.open(img_path)
+                                            
+                                            # Calculate image size to fit page
+                                            img_width, img_height = img.size
+                                            max_width = page_width - 100
+                                            max_height = 200
+                                            
+                                            # Scale image proportionally
+                                            if img_width > max_width or img_height > max_height:
+                                                ratio = min(max_width / img_width, max_height / img_height)
+                                                img_width = int(img_width * ratio)
+                                                img_height = int(img_height * ratio)
+                                            
+                                            # Check if image fits on current page
+                                            if y_position - img_height < 50:
+                                                c.showPage()
+                                                y_position = 750
+                                            
+                                            # Draw image
+                                            c.drawImage(img_path, 50, y_position - img_height, 
+                                                       width=img_width, height=img_height)
+                                            y_position -= (img_height + 20)
+                                            
+                                            # Clean up temp image
+                                            os.remove(img_path)
+                                        except Exception as e:
+                                            print(f"Error processing image: {e}")
+                                            c.drawString(50, y_position, "[Imagem não pôde ser processada]")
+                                            y_position -= 20
+                
+                if y_position < 100:
+                    c.showPage()
+                    y_position = 750
+            
+            # Add any remaining images at the end
+            for img_path in temp_images:
+                try:
+                    img = Image.open(img_path)
+                    img_width, img_height = img.size
+                    max_width = page_width - 100
+                    max_height = 300
+                    
+                    if img_width > max_width or img_height > max_height:
+                        ratio = min(max_width / img_width, max_height / img_height)
+                        img_width = int(img_width * ratio)
+                        img_height = int(img_height * ratio)
+                    
+                    if y_position - img_height < 50:
                         c.showPage()
                         y_position = 750
+                    
+                    c.drawImage(img_path, 50, y_position - img_height, 
+                               width=img_width, height=img_height)
+                    y_position -= (img_height + 30)
+                    
+                    os.remove(img_path)
+                except Exception as e:
+                    print(f"Error processing remaining image: {e}")
             
             c.save()
             

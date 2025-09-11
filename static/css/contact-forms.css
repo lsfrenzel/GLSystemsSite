@@ -8,9 +8,10 @@
 }
 
 .contact-form .card-header {
-    background: linear-gradient(135deg, #c0c0c0, #8a2be2);
+    background: linear-gradient(135deg, #8a2be2, #6a1b9a);
     border-radius: 16px 16px 0 0;
     border: none;
+    color: #fff;
 }
 
 /* Enhanced Form Fields */

@@ -2,7 +2,7 @@
 
 :root {
     /* Colors - Cyberpunk Theme */
-    --primary-color: #c0c0c0;
+    --primary-color: #8a2be2;
     --primary-dark: #a0a0a0;
     --primary-light: #e0e0e0;
     --secondary-color: #ff0080;
@@ -16,12 +16,12 @@
     --accent-light: #ff66b3;
     
     /* Silver Gradients */
-    --gradient-primary: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
-    --gradient-tech: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 50%, #6f42c1 100%);
-    --gradient-neon: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
+    --gradient-primary: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 100%);
+    --gradient-tech: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 50%, #6f42c1 100%);
+    --gradient-neon: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 100%);
     --gradient-success: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
     --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(192,192,192,0.1) 0%, rgba(138,43,226,0.05) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(138,43,226,0.1) 0%, rgba(106,27,154,0.05) 100%);
     
     /* Spacing Scale - 4px base */
     --space-1: 0.25rem; /* 4px */
@@ -52,9 +52,9 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-neon: 0 0 20px rgba(192, 192, 192, 0.4);
+    --shadow-neon: 0 0 20px rgba(138, 43, 226, 0.4);
     --shadow-neon-pink: 0 0 20px rgba(138, 43, 226, 0.4);
-    --shadow-glow: 0 0 30px rgba(192, 192, 192, 0.3);
+    --shadow-glow: 0 0 30px rgba(138, 43, 226, 0.3);
     
     /* Border Radius */
     --radius-sm: 0.375rem;
@@ -234,12 +234,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .bg-shape {
     position: absolute;
-    background: radial-gradient(circle, rgba(192, 192, 192, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%);
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, rgba(106, 27, 154, 0.05) 100%);
     border-radius: 50%;
     animation: float 6s ease-in-out infinite;
     backdrop-filter: blur(3px);
-    border: 1px solid rgba(192, 192, 192, 0.2);
-    box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
 }
 
 .bg-shape.shape-1 {
@@ -273,7 +273,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-badge {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(106, 27, 154, 0.15) 100%);
     color: #8a2be2;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-2xl);
@@ -297,7 +297,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-gradient {
     font-family: 'Orbitron', monospace;
-    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 50%, #6f42c1 100%);
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 50%, #6f42c1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -311,9 +311,9 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(26, 10, 46, 0.4) 100%);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
-    border: 1px solid rgba(192, 192, 192, 0.3);
+    border: 1px solid rgba(138, 43, 226, 0.3);
     backdrop-filter: blur(25px);
-    box-shadow: 0 0 25px rgba(192, 192, 192, 0.2), inset 0 0 25px rgba(138, 43, 226, 0.1);
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.2), inset 0 0 25px rgba(106, 27, 154, 0.1);
 }
 
 .stat-item {
@@ -339,14 +339,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-hero-primary {
-    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
-    color: #000;
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 100%);
+    color: #fff;
     border: none;
     padding: 1rem 2rem;
     border-radius: var(--radius-2xl);
     font-weight: 700;
     transition: var(--transition-all);
-    box-shadow: 0 0 20px rgba(192, 192, 192, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3);
     text-shadow: none;
     position: relative;
     overflow: hidden;
@@ -354,8 +354,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-hero-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 30px rgba(192, 192, 192, 0.6), 0 15px 40px rgba(0, 0, 0, 0.4);
-    color: #000;
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6), 0 15px 40px rgba(0, 0, 0, 0.4);
+    color: #fff;
     filter: brightness(1.1);
 }
 
@@ -376,24 +376,24 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-hero-outline {
     background: transparent;
-    color: #c0c0c0;
-    border: 2px solid rgba(192, 192, 192, 0.5);
+    color: #8a2be2;
+    border: 2px solid rgba(138, 43, 226, 0.5);
     padding: 1rem 2rem;
     border-radius: var(--radius-2xl);
     font-weight: 600;
     transition: var(--transition-all);
     backdrop-filter: blur(15px);
-    box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
-    text-shadow: 0 0 8px rgba(192, 192, 192, 0.6);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
+    text-shadow: 0 0 8px rgba(138, 43, 226, 0.6);
 }
 
 .btn-hero-outline:hover {
-    background: rgba(192, 192, 192, 0.1);
-    border-color: rgba(192, 192, 192, 0.8);
+    background: rgba(138, 43, 226, 0.1);
+    border-color: rgba(138, 43, 226, 0.8);
     transform: translateY(-3px);
-    color: #c0c0c0;
-    box-shadow: 0 0 25px rgba(192, 192, 192, 0.4);
-    text-shadow: 0 0 12px rgba(192, 192, 192, 0.8);
+    color: #8a2be2;
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.4);
+    text-shadow: 0 0 12px rgba(138, 43, 226, 0.8);
 }
 
 .bg-gradient-primary {
@@ -531,7 +531,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .table tbody tr:hover {
-    background-color: rgba(192, 192, 192, 0.05);
+    background-color: rgba(138, 43, 226, 0.05);
 }
 
 /* Buttons */
@@ -559,7 +559,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus, .form-select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(192, 192, 192, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(138, 43, 226, 0.25);
 }
 
 /* Modals */
@@ -875,6 +875,165 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Cores específicas por segmento - Psicologia das Cores */
+/* CRM & Vendas - Laranja (energia, conversão) */
+.segment-crm .card-header {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+    color: #fff !important;
+}
+
+/* Marketing - Rosa/Magenta (criatividade, emoção) */
+.segment-marketing .card-header {
+    background: linear-gradient(135deg, #c2185b 0%, #880e4f 100%) !important;
+    color: #fff !important;
+}
+
+/* Comunicação - Verde (harmonia, crescimento) */
+.segment-comunicacao .card-header {
+    background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%) !important;
+    color: #fff !important;
+}
+
+/* Projetos - Azul escuro (confiança, profissionalismo) */
+.segment-projetos .card-header {
+    background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%) !important;
+    color: #fff !important;
+}
+
+/* Financeiro - Verde escuro (dinheiro, estabilidade) */
+.segment-financeiro .card-header {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%) !important;
+    color: #fff !important;
+}
+
+/* E-commerce - Roxo (luxo, exclusividade) */
+.segment-ecommerce .card-header {
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%) !important;
+    color: #fff !important;
+}
+
+/* Saúde - Azul claro (calma, higiene) */
+.segment-saude .card-header {
+    background: linear-gradient(135deg, #0097a7 0%, #00838f 100%) !important;
+    color: #fff !important;
+}
+
+/* Educação - Amarelo/Dourado (conhecimento, sabedoria) */
+.segment-educacao .card-header {
+    background: linear-gradient(135deg, #f57c00 0%, #e65100 100%) !important;
+    color: #fff !important;
+}
+
+/* Serviços - Indigo (profissionalismo) */
+.segment-servicos .card-header {
+    background: linear-gradient(135deg, #3f51b5 0%, #283593 100%) !important;
+    color: #fff !important;
+}
+
+/* Garantir precedência sobre classes Bootstrap */
+.solution-card.segment-crm .card-header,
+.solution-card.segment-marketing .card-header,
+.solution-card.segment-comunicacao .card-header,
+.solution-card.segment-projetos .card-header,
+.solution-card.segment-financeiro .card-header,
+.solution-card.segment-ecommerce .card-header,
+.solution-card.segment-saude .card-header,
+.solution-card.segment-educacao .card-header,
+.solution-card.segment-servicos .card-header {
+    border-color: transparent !important;
+    border-bottom: none !important;
+}
+
+/* Títulos específicos dos cards devem herdar a cor */
+.solution-card.segment-crm .card-header h1,
+.solution-card.segment-crm .card-header h2,
+.solution-card.segment-crm .card-header h3,
+.solution-card.segment-crm .card-header h4,
+.solution-card.segment-crm .card-header h5,
+.solution-card.segment-crm .card-header h6,
+.solution-card.segment-marketing .card-header h1,
+.solution-card.segment-marketing .card-header h2,
+.solution-card.segment-marketing .card-header h3,
+.solution-card.segment-marketing .card-header h4,
+.solution-card.segment-marketing .card-header h5,
+.solution-card.segment-marketing .card-header h6,
+.solution-card.segment-comunicacao .card-header h1,
+.solution-card.segment-comunicacao .card-header h2,
+.solution-card.segment-comunicacao .card-header h3,
+.solution-card.segment-comunicacao .card-header h4,
+.solution-card.segment-comunicacao .card-header h5,
+.solution-card.segment-comunicacao .card-header h6,
+.solution-card.segment-projetos .card-header h1,
+.solution-card.segment-projetos .card-header h2,
+.solution-card.segment-projetos .card-header h3,
+.solution-card.segment-projetos .card-header h4,
+.solution-card.segment-projetos .card-header h5,
+.solution-card.segment-projetos .card-header h6,
+.solution-card.segment-financeiro .card-header h1,
+.solution-card.segment-financeiro .card-header h2,
+.solution-card.segment-financeiro .card-header h3,
+.solution-card.segment-financeiro .card-header h4,
+.solution-card.segment-financeiro .card-header h5,
+.solution-card.segment-financeiro .card-header h6,
+.solution-card.segment-ecommerce .card-header h1,
+.solution-card.segment-ecommerce .card-header h2,
+.solution-card.segment-ecommerce .card-header h3,
+.solution-card.segment-ecommerce .card-header h4,
+.solution-card.segment-ecommerce .card-header h5,
+.solution-card.segment-ecommerce .card-header h6,
+.solution-card.segment-saude .card-header h1,
+.solution-card.segment-saude .card-header h2,
+.solution-card.segment-saude .card-header h3,
+.solution-card.segment-saude .card-header h4,
+.solution-card.segment-saude .card-header h5,
+.solution-card.segment-saude .card-header h6,
+.solution-card.segment-educacao .card-header h1,
+.solution-card.segment-educacao .card-header h2,
+.solution-card.segment-educacao .card-header h3,
+.solution-card.segment-educacao .card-header h4,
+.solution-card.segment-educacao .card-header h5,
+.solution-card.segment-educacao .card-header h6,
+.solution-card.segment-servicos .card-header h1,
+.solution-card.segment-servicos .card-header h2,
+.solution-card.segment-servicos .card-header h3,
+.solution-card.segment-servicos .card-header h4,
+.solution-card.segment-servicos .card-header h5,
+.solution-card.segment-servicos .card-header h6 {
+    color: inherit !important;
+}
+
+/* Títulos em branco devem ser roxos */
+.card-header h1, 
+.card-header h2, 
+.card-header h3, 
+.card-header h4, 
+.card-header h5, 
+.card-header h6,
+.section-title,
+h1, h2, h3, h4, h5, h6 {
+    color: inherit !important;
+}
+
+.text-white h1,
+.text-white h2, 
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6 {
+    color: #8a2be2 !important;
+}
+
+/* Corrigir títulos brancos gerais */
+body h1, body h2, body h3, body h4, body h5, body h6 {
+    color: #8a2be2 !important;
+}
+
+/* Exceto quando em fundos escuros */
+.bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6,
+.card-dark h1, .card-dark h2, .card-dark h3, .card-dark h4, .card-dark h5, .card-dark h6 {
+    color: #fff !important;
+}
+
 /* Dark Theme Styles for Main Page */
 .bg-dark {
     background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 100%) !important;
@@ -893,7 +1052,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-badge {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(106, 27, 154, 0.15) 100%);
     color: #8a2be2;
     padding: 0.5rem 1rem;
     border-radius: 1.5rem;
@@ -948,8 +1107,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .rank-badge {
-    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
-    color: #000;
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 100%);
+    color: #fff;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -964,7 +1123,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .system-icon {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(106, 27, 154, 0.2) 100%);
     border: 2px solid rgba(138, 43, 226, 0.4);
     border-radius: 50%;
     width: 80px;
@@ -983,7 +1142,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .stat-mini strong {
-    color: #c0c0c0;
+    color: #8a2be2;
     text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
     display: block;
     font-size: 1.2rem;

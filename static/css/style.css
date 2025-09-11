@@ -126,7 +126,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Logo Styles */
 .navbar-logo {
-    height: 35px;
+    height: 45px;
     width: auto;
     transition: all 0.3s ease;
 }
@@ -135,47 +135,62 @@ h1, h2, h3, h4, h5, h6 {
     filter: brightness(1.1) drop-shadow(0 0 5px rgba(138, 43, 226, 0.5));
 }
 
-/* Enhanced Hero Section */
-.hero-highlight {
+/* Enhanced Hero Section - Neon Text */
+.neon-text {
+    color: #00ff88;
+    text-shadow: 
+        0 0 5px #00ff88,
+        0 0 10px #00ff88,
+        0 0 15px #00ff88,
+        0 0 20px #00ff88,
+        0 0 35px #00ff88,
+        0 0 40px #00ff88;
+    animation: neonPulse 2s ease-in-out infinite alternate;
+    font-weight: 800;
     position: relative;
     display: inline-block;
 }
 
-.hero-highlight::after {
-    content: '';
+.neon-text::before {
+    content: attr(data-text);
     position: absolute;
-    bottom: -5px;
+    top: 0;
     left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #8a2be2, #ff0080, #00ff88);
-    border-radius: 2px;
-    animation: highlightGlow 2s ease-in-out infinite alternate;
+    width: 100%;
+    height: 100%;
+    color: #8a2be2;
+    text-shadow: 
+        0 0 5px #8a2be2,
+        0 0 10px #8a2be2,
+        0 0 15px #8a2be2;
+    animation: neonFlicker 3s linear infinite;
+    z-index: -1;
 }
 
-.hero-tech-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #8a2be2, #6a1b9a);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    margin-left: 15px;
-    margin-top: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
-    animation: techBadgePulse 3s ease-in-out infinite;
+@keyframes neonPulse {
+    0% { 
+        text-shadow: 
+            0 0 5px #00ff88,
+            0 0 10px #00ff88,
+            0 0 15px #00ff88,
+            0 0 20px #00ff88,
+            0 0 35px #00ff88,
+            0 0 40px #00ff88;
+    }
+    100% { 
+        text-shadow: 
+            0 0 10px #00ff88,
+            0 0 20px #00ff88,
+            0 0 30px #00ff88,
+            0 0 40px #00ff88,
+            0 0 70px #00ff88,
+            0 0 80px #00ff88;
+    }
 }
 
-@keyframes highlightGlow {
-    0% { opacity: 0.7; transform: scaleX(1); }
-    100% { opacity: 1; transform: scaleX(1.05); }
-}
-
-@keyframes techBadgePulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
-    50% { box-shadow: 0 0 30px rgba(138, 43, 226, 0.5); }
+@keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
 }
 
 .logo-container {

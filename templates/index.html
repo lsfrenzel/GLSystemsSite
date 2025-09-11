@@ -11,35 +11,34 @@
         <div class="row align-items-center justify-content-center min-vh-100">
             <div class="col-lg-8 text-center">
                 <div class="hero-content animate__animated animate__fadeInUp">
-                    <span class="section-badge">🚀 Tecnologia 2025</span>
+                    <span class="section-badge">{{ t('hero_badge') }}</span>
                     <h1 class="hero-title display-2 fw-bold mb-4">
-                        IA e Automação para sua 
-                        <span class="neon-text">Empresa Digital</span>
+                        {{ t('hero_title_1') }} 
+                        <span class="neon-text">{{ t('hero_title_2') }}</span>
                     </h1>
                     <p class="hero-subtitle lead mb-4">
-                        Revolucione sua gestão empresarial com sistemas inteligentes que utilizam IA, 
-                        análise de dados avançada e automação completa para maximizar resultados.
+                        {{ t('hero_subtitle') }}
                     </p>
                     <div class="stats-grid mb-4">
                         <div class="stat-item">
                             <div class="stat-number">80%</div>
-                            <div class="stat-label">Tempo Economizado</div>
+                            <div class="stat-label">{{ t('hero_stat_1') }}</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number">500+</div>
-                            <div class="stat-label">Empresas Atendidas</div>
+                            <div class="stat-label">{{ t('hero_stat_2') }}</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number">24/7</div>
-                            <div class="stat-label">Automação</div>
+                            <div class="stat-label">{{ t('hero_stat_3') }}</div>
                         </div>
                     </div>
                     <div class="hero-buttons">
                         <a href="#top-systems" class="btn btn-cta me-3">
-                            <i class="fas fa-rocket me-2"></i>Explorar Sistemas 2025
+                            <i class="fas fa-rocket me-2"></i>{{ t('hero_btn_explore') }}
                         </a>
                         <a href="{{ url_for('contact') }}" class="btn btn-secondary-neon btn-lg">
-                            <i class="fas fa-calendar me-2"></i>Agendar Demo
+                            <i class="fas fa-calendar me-2"></i>{{ t('hero_btn_demo') }}
                         </a>
                     </div>
                 </div>
@@ -60,9 +59,9 @@
             <div class="col-lg-12">
                 <div class="tech-dashboard-preview animate__animated animate__fadeInUp">
                     <div class="text-center mb-4">
-                        <span class="section-badge">🎯 Dashboard IA em Ação</span>
-                        <h3 class="fw-bold mb-3">Veja Como Nossos Sistemas Funcionam</h3>
-                        <p class="text-muted">Visualização em tempo real dos seus dados empresariais</p>
+                        <span class="section-badge">{{ t('dashboard_badge') }}</span>
+                        <h3 class="fw-bold mb-3">{{ t('dashboard_title') }}</h3>
+                        <p class="text-muted">{{ t('dashboard_subtitle') }}</p>
                     </div>
                 </div>
             </div>
@@ -108,12 +107,12 @@
 <section id="top-systems" class="py-5 bg-dark">
     <div class="container">
         <div class="text-center mb-5">
-            <span class="section-badge">🏆 Mais Desejados de 2025</span>
+            <span class="section-badge">{{ t('top_systems_badge') }}</span>
             <h2 class="section-title fw-bold mb-3">
-                Os 3 Sistemas Empresariais <span class="text-gradient">Mais Populares</span>
+                {{ t('top_systems_title') }} <span class="text-gradient">{{ t('top_systems_title_highlight') }}</span>
             </h2>
             <p class="section-subtitle lead text-muted">
-                Escolhidos por mais de 10.000 empresas por sua eficiência e resultados comprovados
+                {{ t('top_systems_subtitle') }}
             </p>
         </div>
         
@@ -131,16 +130,16 @@
                         <div class="system-icon">
                             <i class="fas fa-brain"></i>
                         </div>
-                        <h3 class="system-title">IA Analytics & Insights</h3>
-                        <p class="system-subtitle">Inteligência Artificial para Decisões</p>
+                        <h3 class="system-title">{{ t('system1_title') }}</h3>
+                        <p class="system-subtitle">{{ t('system1_subtitle') }}</p>
                     </div>
                     <div class="system-features">
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Upload de planilhas Excel/CSV</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Análise automática com IA</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Gráficos inteligentes</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Relatórios PDF automáticos</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Previsões e tendências</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system1_feature1') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system1_feature2') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system1_feature3') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system1_feature4') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system1_feature5') }}</li>
                         </ul>
                     </div>
                     <div class="system-stats">
@@ -148,26 +147,26 @@
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>95%</strong>
-                                    <small>Precisão</small>
+                                    <small>{{ t('system1_stat1') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>3x</strong>
-                                    <small>Mais Rápido</small>
+                                    <small>{{ t('system1_stat2') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>24/7</strong>
-                                    <small>Automático</small>
+                                    <small>{{ t('system1_stat3') }}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="system-action">
                         <a href="/demo/ia-analytics" target="_blank" class="btn btn-system-demo w-100">
-                            <i class="fas fa-play me-2"></i>Testar Demo Grátis
+                            <i class="fas fa-play me-2"></i>{{ t('demo_btn') }}
                         </a>
                     </div>
                 </div>
@@ -183,16 +182,16 @@
                         <div class="system-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
-                        <h3 class="system-title">E-commerce Inteligente</h3>
-                        <p class="system-subtitle">Vendas Online com IA</p>
+                        <h3 class="system-title">{{ t('system2_title') }}</h3>
+                        <p class="system-subtitle">{{ t('system2_subtitle') }}</p>
                     </div>
                     <div class="system-features">
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Catálogo inteligente</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Recomendações por IA</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Gestão automática de estoque</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Analytics de vendas</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Chatbot integrado</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system2_feature1') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system2_feature2') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system2_feature3') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system2_feature4') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system2_feature5') }}</li>
                         </ul>
                     </div>
                     <div class="system-stats">
@@ -200,26 +199,26 @@
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>150%</strong>
-                                    <small>+ Vendas</small>
+                                    <small>{{ t('system2_stat1') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>5min</strong>
-                                    <small>Setup</small>
+                                    <small>{{ t('system2_stat2') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>100+</strong>
-                                    <small>Recursos</small>
+                                    <small>{{ t('system2_stat3') }}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="system-action">
                         <a href="/demo/ecommerce" target="_blank" class="btn btn-system-demo w-100">
-                            <i class="fas fa-play me-2"></i>Testar Demo Grátis
+                            <i class="fas fa-play me-2"></i>{{ t('demo_btn') }}
                         </a>
                     </div>
                 </div>
@@ -235,16 +234,16 @@
                         <div class="system-icon">
                             <i class="fas fa-users-cog"></i>
                         </div>
-                        <h3 class="system-title">CRM + Automação</h3>
-                        <p class="system-subtitle">Gestão Completa de Clientes</p>
+                        <h3 class="system-title">{{ t('system3_title') }}</h3>
+                        <p class="system-subtitle">{{ t('system3_subtitle') }}</p>
                     </div>
                     <div class="system-features">
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Pipeline automático</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Follow-ups inteligentes</li>
-                            <li><i class="fas fa-check text-success me-2"></i>WhatsApp integrado</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Dashboard executivo</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system3_feature1') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system3_feature2') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system3_feature3') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system3_feature4') }}</li>
+                            <li><i class="fas fa-check text-success me-2"></i>{{ t('system3_feature5') }}</li>
                         </ul>
                     </div>
                     <div class="system-stats">
@@ -252,26 +251,26 @@
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>300%</strong>
-                                    <small>+ Conversão</small>
+                                    <small>{{ t('system3_stat1') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>0</strong>
-                                    <small>Lead Perdido</small>
+                                    <small>{{ t('system3_stat2') }}</small>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-mini">
                                     <strong>Auto</strong>
-                                    <small>Follow-up</small>
+                                    <small>{{ t('system3_stat3') }}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="system-action">
                         <a href="/demo/crm" target="_blank" class="btn btn-system-demo w-100">
-                            <i class="fas fa-play me-2"></i>Testar Demo Grátis
+                            <i class="fas fa-play me-2"></i>{{ t('demo_btn') }}
                         </a>
                     </div>
                 </div>
@@ -279,9 +278,9 @@
         </div>
         
         <div class="text-center mt-5">
-            <p class="lead mb-4">Quer ver todos os nossos sistemas empresariais?</p>
+            <p class="lead mb-4">{{ t('see_all_systems') }}</p>
             <a href="{{ url_for('solutions') }}" class="btn btn-outline-primary btn-lg">
-                <i class="fas fa-rocket me-2"></i>Ver Todos os Sistemas
+                <i class="fas fa-rocket me-2"></i>{{ t('see_all_systems_btn') }}
             </a>
         </div>
     </div>
@@ -291,38 +290,38 @@
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <span class="section-badge">📈 Transformação</span>
-            <h2 class="fw-bold">Antes x Depois da G&L Systems</h2>
-            <p class="lead text-muted">Veja como nossos sistemas transformam a gestão da sua empresa</p>
+            <span class="section-badge">{{ t('before_after_badge') }}</span>
+            <h2 class="fw-bold">{{ t('before_after_title') }}</h2>
+            <p class="lead text-muted">{{ t('before_after_subtitle') }}</p>
         </div>
         
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <div class="card h-100 border-danger">
                     <div class="card-header bg-danger text-white text-center">
-                        <h4><i class="fas fa-times-circle me-2"></i><span class="text-white">ANTES</span></h4>
+                        <h4><i class="fas fa-times-circle me-2"></i><span class="text-white">{{ t('before_title') }}</span></h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
                             <li class="mb-3">
                                 <i class="fas fa-times text-danger me-2"></i>
-                                <strong>Planilhas desorganizadas</strong> espalhadas em vários arquivos
+                                {{ t('before_item1') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-times text-danger me-2"></i>
-                                <strong>Relatórios manuais</strong> que demoram horas para criar
+                                {{ t('before_item2') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-times text-danger me-2"></i>
-                                <strong>Decisões baseadas</strong> em informações incompletas
+                                {{ t('before_item3') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-times text-danger me-2"></i>
-                                <strong>Perda de tempo</strong> com tarefas repetitivas
+                                {{ t('before_item4') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-times text-danger me-2"></i>
-                                <strong>Erros frequentes</strong> em cálculos e controles
+                                {{ t('before_item5') }}
                             </li>
                         </ul>
                     </div>
@@ -332,29 +331,29 @@
             <div class="col-lg-6 mb-4">
                 <div class="card h-100 border-success">
                     <div class="card-header bg-success text-white text-center">
-                        <h4><i class="fas fa-check-circle me-2"></i>DEPOIS</h4>
+                        <h4><i class="fas fa-check-circle me-2"></i>{{ t('after_title') }}</h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
                             <li class="mb-3">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Dados centralizados</strong> em sistema único e organizado
+                                {{ t('after_item1') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Relatórios automáticos</strong> gerados em segundos
+                                {{ t('after_item2') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Gráficos e dashboards</strong> para decisões inteligentes
+                                {{ t('after_item3') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Mais tempo</strong> para focar no crescimento
+                                {{ t('after_item4') }}
                             </li>
                             <li class="mb-3">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Precisão total</strong> com automação inteligente
+                                {{ t('after_item5') }}
                             </li>
                         </ul>
                     </div>
@@ -368,8 +367,8 @@
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Por que Escolher a G&L Systems?</h2>
-            <p class="lead text-muted">Tecnologia acessível e funcional para empresas modernas</p>
+            <h2 class="fw-bold">{{ t('features_title') }}</h2>
+            <p class="lead text-muted">{{ t('features_subtitle') }}</p>
         </div>
         
         <div class="row">
@@ -378,8 +377,8 @@
                     <div class="feature-icon mb-3">
                         <i class="fas fa-rocket fa-3x text-primary"></i>
                     </div>
-                    <h4>Implementação Rápida</h4>
-                    <p class="text-muted">Sistemas prontos para usar em minutos, sem complicações técnicas.</p>
+                    <h4>{{ t('feature1_title') }}</h4>
+                    <p class="text-muted">{{ t('feature1_desc') }}</p>
                 </div>
             </div>
             
@@ -388,8 +387,8 @@
                     <div class="feature-icon mb-3">
                         <i class="fas fa-chart-pie fa-3x text-success"></i>
                     </div>
-                    <h4>Relatórios Inteligentes</h4>
-                    <p class="text-muted">Gráficos automáticos e planilhas exportáveis para análise completa.</p>
+                    <h4>{{ t('feature2_title') }}</h4>
+                    <p class="text-muted">{{ t('feature2_desc') }}</p>
                 </div>
             </div>
             
@@ -398,8 +397,8 @@
                     <div class="feature-icon mb-3">
                         <i class="fas fa-mobile-alt fa-3x text-warning"></i>
                     </div>
-                    <h4>100% Responsivo</h4>
-                    <p class="text-muted">Acesse seus sistemas de qualquer dispositivo, a qualquer hora.</p>
+                    <h4>{{ t('feature3_title') }}</h4>
+                    <p class="text-muted">{{ t('feature3_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -409,10 +408,10 @@
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white">
     <div class="container text-center">
-        <h2 class="fw-bold mb-4">Pronto para Revolucionar sua Empresa?</h2>
-        <p class="lead mb-4">Teste nossos sistemas agora e veja a diferença na prática!</p>
+        <h2 class="fw-bold mb-4">{{ t('cta_title') }}</h2>
+        <p class="lead mb-4">{{ t('cta_subtitle') }}</p>
         <a href="{{ url_for('solutions') }}" class="btn btn-warning btn-lg">
-            <i class="fas fa-play me-2"></i>Explorar Soluções
+            <i class="fas fa-play me-2"></i>{{ t('cta_btn') }}
         </a>
     </div>
 </section>

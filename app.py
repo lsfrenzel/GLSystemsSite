@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Create the app
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET")
+app.secret_key = os.environ.get("SESSION_SECRET", "gl-systems-dev-key-2025")
 
 # Add custom filter for JSON conversion
 @app.template_filter('tojsonfilter')

@@ -1,9 +1,18 @@
 import csv
 import io
 import json
+import os
 from datetime import datetime, timedelta
-from flask import render_template, request, flash, redirect, url_for, make_response, jsonify
+from flask import render_template, request, flash, redirect, url_for, make_response, jsonify, send_file
+from werkzeug.utils import secure_filename
 from app import app
+from PIL import Image
+import PyPDF2
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+import docx
+import openpyxl
+from pptx import Presentation
 
 # Sample data for demos (realistic business data)
 sample_products = [
@@ -55,6 +64,10 @@ def index():
 @app.route('/solucoes')
 def solutions():
     return render_template('solutions.html')
+
+@app.route('/dia-a-dia')
+def dia_a_dia():
+    return render_template('dia_a_dia.html')
 
 @app.route('/sobre')
 def about():
@@ -276,3 +289,249 @@ def get_chart_data(chart_type):
         })
     
     return jsonify({'error': 'Tipo de gráfico não encontrado'})
+
+# API Routes for Dia-a-dia Tools
+UPLOAD_FOLDER = 'uploads'
+TEMP_FOLDER = 'temp'
+ALLOWED_EXTENSIONS = {
+    'pdf': {'pdf'},
+    'document': {'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'},
+    'image': {'png', 'jpg', 'jpeg'}
+}
+
+def allowed_file(filename, file_type):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS[file_type]
+
+@app.route('/api/convert-to-pdf', methods=['POST'])
+def convert_to_pdf():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not allowed_file(file.filename, 'document') and not allowed_file(file.filename, 'image'):
+            return jsonify({'error': 'Invalid file type'}), 400
+        
+        filename = secure_filename(file.filename or 'file')
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        
+        # Convert to PDF based on file type
+        pdf_path = convert_file_to_pdf(file_path, filename)
+        
+        if pdf_path:
+            return send_file(pdf_path, as_attachment=True, 
+                           download_name=filename.rsplit('.', 1)[0] + '.pdf',
+                           mimetype='application/pdf')
+        else:
+            return jsonify({'error': 'Conversion failed'}), 500
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/compress-pdf', methods=['POST'])
+def compress_pdf():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not allowed_file(file.filename, 'pdf'):
+            return jsonify({'error': 'Only PDF files allowed'}), 400
+        
+        filename = secure_filename(file.filename or 'file')
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        
+        # Compress PDF
+        compressed_path = compress_pdf_file(file_path, filename)
+        
+        if compressed_path:
+            return send_file(compressed_path, as_attachment=True,
+                           download_name=filename.rsplit('.', 1)[0] + '_compressed.pdf',
+                           mimetype='application/pdf')
+        else:
+            return jsonify({'error': 'Compression failed'}), 500
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/remove-background', methods=['POST'])
+def remove_background():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        if not allowed_file(file.filename, 'image'):
+            return jsonify({'error': 'Only image files allowed'}), 400
+        
+        filename = secure_filename(file.filename or 'file')
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        
+        # Remove background (simplified version)
+        output_path = remove_image_background(file_path, filename)
+        
+        if output_path:
+            return send_file(output_path, as_attachment=True,
+                           download_name=filename.rsplit('.', 1)[0] + '_no_bg.png',
+                           mimetype='image/png')
+        else:
+            return jsonify({'error': 'Background removal failed'}), 500
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Helper functions for file processing
+def convert_file_to_pdf(file_path, filename):
+    try:
+        ext = filename.rsplit('.', 1)[1].lower()
+        output_path = os.path.join(TEMP_FOLDER, filename.rsplit('.', 1)[0] + '.pdf')
+        
+        if ext in ['jpg', 'jpeg', 'png']:
+            # Convert image to PDF
+            image = Image.open(file_path)
+            if image.mode == 'RGBA':
+                image = image.convert('RGB')
+            image.save(output_path, 'PDF')
+            
+        elif ext in ['doc', 'docx']:
+            # Convert Word document to PDF (simplified)
+            doc = docx.Document(file_path)
+            
+            # Create PDF with text content
+            c = canvas.Canvas(output_path, pagesize=letter)
+            y_position = 750
+            
+            for paragraph in doc.paragraphs:
+                if paragraph.text.strip():
+                    c.drawString(50, y_position, paragraph.text[:80])  # Limit line length
+                    y_position -= 20
+                    if y_position < 50:
+                        c.showPage()
+                        y_position = 750
+            
+            c.save()
+            
+        elif ext in ['xls', 'xlsx']:
+            # Convert Excel to PDF (simplified)
+            wb = openpyxl.load_workbook(file_path)
+            ws = wb.active
+            
+            c = canvas.Canvas(output_path, pagesize=letter)
+            y_position = 750
+            
+            if ws:
+                for row in ws.iter_rows(values_only=True, max_row=50):  # Limit rows
+                    row_text = ' | '.join([str(cell) if cell else '' for cell in row])
+                    if row_text.strip():
+                        c.drawString(50, y_position, row_text[:80])
+                        y_position -= 20
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = 750
+            
+            c.save()
+            
+        elif ext in ['ppt', 'pptx']:
+            # Convert PowerPoint to PDF (simplified)
+            prs = Presentation(file_path)
+            
+            c = canvas.Canvas(output_path, pagesize=letter)
+            y_position = 750
+            
+            for slide in prs.slides:
+                c.drawString(50, y_position, f"Slide {prs.slides.index(slide) + 1}")
+                y_position -= 30
+                
+                for shape in slide.shapes:
+                    if hasattr(shape, "text") and hasattr(shape, "text") and getattr(shape, "text", "").strip():
+                        c.drawString(70, y_position, getattr(shape, "text", "")[:70])
+                        y_position -= 20
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = 750
+                
+                if y_position < 700:  # New slide
+                    c.showPage()
+                    y_position = 750
+            
+            c.save()
+        
+        # Clean up uploaded file
+        os.remove(file_path)
+        return output_path
+        
+    except Exception as e:
+        print(f"Conversion error: {e}")
+        return None
+
+def compress_pdf_file(file_path, filename):
+    try:
+        output_path = os.path.join(TEMP_FOLDER, filename.rsplit('.', 1)[0] + '_compressed.pdf')
+        
+        # Simple PDF compression using PyPDF2
+        with open(file_path, 'rb') as input_file:
+            reader = PyPDF2.PdfReader(input_file)
+            writer = PyPDF2.PdfWriter()
+            
+            for page in reader.pages:
+                page.compress_content_streams()
+                writer.add_page(page)
+            
+            with open(output_path, 'wb') as output_file:
+                writer.write(output_file)
+        
+        # Clean up uploaded file
+        os.remove(file_path)
+        return output_path
+        
+    except Exception as e:
+        print(f"Compression error: {e}")
+        return None
+
+def remove_image_background(file_path, filename):
+    try:
+        output_path = os.path.join(TEMP_FOLDER, filename.rsplit('.', 1)[0] + '_no_bg.png')
+        
+        # Simplified background removal (for demo - in real app would use rembg or similar)
+        # This just converts to PNG with transparency for demo purposes
+        image = Image.open(file_path)
+        
+        if image.mode != 'RGBA':
+            image = image.convert('RGBA')
+        
+        # Very basic edge detection as placeholder for real background removal
+        # In production, this would use rembg or similar AI model
+        data = image.getdata()
+        new_data = []
+        
+        for item in data:
+            # Simple background removal based on color similarity to corners
+            # This is just for demo - real implementation would use AI
+            if item[0] > 240 and item[1] > 240 and item[2] > 240:  # White-ish pixels
+                new_data.append((255, 255, 255, 0))  # Make transparent
+            else:
+                new_data.append(item)
+        
+        image.putdata(new_data)
+        image.save(output_path, 'PNG')
+        
+        # Clean up uploaded file
+        os.remove(file_path)
+        return output_path
+        
+    except Exception as e:
+        print(f"Background removal error: {e}")
+        return None

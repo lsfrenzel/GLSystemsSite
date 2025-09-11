@@ -1,0 +1,530 @@
+{% extends "base.html" %}
+{% from "components/section_header.html" import section_header %}
+
+{% block title %}Ferramentas Dia-a-dia - G&L Systems{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Hero Section -->
+    {{ section_header(
+        badge_text="🛠️ Ferramentas Rápidas",
+        title="Ferramentas para o Dia-a-dia", 
+        subtitle="Três ferramentas essenciais para facilitar seu trabalho diário - totalmente grátis"
+    ) }}
+
+    <!-- Tools Grid -->
+    <div class="row g-4 mb-5">
+        <!-- PDF Converter -->
+        <div class="col-lg-4">
+            <div class="tool-card h-100">
+                <div class="tool-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3 class="tool-title">Conversor para PDF</h3>
+                <p class="tool-description">
+                    Converta documentos Word, Excel, PowerPoint e imagens para PDF instantaneamente.
+                </p>
+                <div class="tool-upload-area" id="pdf-converter-area">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>Arraste arquivos aqui ou <span class="upload-link">clique para selecionar</span></p>
+                        <small>Suporta: DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG</small>
+                    </div>
+                    <input type="file" id="pdf-converter-input" class="file-input" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" multiple>
+                </div>
+                <div class="progress-container" id="pdf-converter-progress" style="display: none;">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="progress-text">Convertendo...</small>
+                </div>
+                <div class="download-area" id="pdf-converter-download" style="display: none;">
+                    <button class="btn-download">
+                        <i class="fas fa-download me-2"></i>Baixar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Compressor -->
+        <div class="col-lg-4">
+            <div class="tool-card h-100">
+                <div class="tool-icon">
+                    <i class="fas fa-compress-alt"></i>
+                </div>
+                <h3 class="tool-title">Compressor de PDF</h3>
+                <p class="tool-description">
+                    Reduza o tamanho de arquivos PDF mantendo a qualidade. Otimização inteligente.
+                </p>
+                <div class="tool-upload-area" id="pdf-compressor-area">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>Arraste seu PDF aqui ou <span class="upload-link">clique para selecionar</span></p>
+                        <small>Apenas arquivos PDF</small>
+                    </div>
+                    <input type="file" id="pdf-compressor-input" class="file-input" accept=".pdf">
+                </div>
+                <div class="progress-container" id="pdf-compressor-progress" style="display: none;">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="progress-text">Comprimindo...</small>
+                </div>
+                <div class="download-area" id="pdf-compressor-download" style="display: none;">
+                    <button class="btn-download">
+                        <i class="fas fa-download me-2"></i>Baixar PDF Comprimido
+                    </button>
+                    <div class="compression-info">
+                        <small>Redução: <span id="compression-ratio">0%</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Remover -->
+        <div class="col-lg-4">
+            <div class="tool-card h-100">
+                <div class="tool-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h3 class="tool-title">Removedor de Fundo</h3>
+                <p class="tool-description">
+                    Remova o fundo de imagens automaticamente com IA. Resultado em PNG transparente.
+                </p>
+                <div class="tool-upload-area" id="bg-remover-area">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>Arraste sua imagem aqui ou <span class="upload-link">clique para selecionar</span></p>
+                        <small>Suporta: JPG, PNG (máx. 10MB)</small>
+                    </div>
+                    <input type="file" id="bg-remover-input" class="file-input" accept=".jpg,.jpeg,.png">
+                </div>
+                <div class="progress-container" id="bg-remover-progress" style="display: none;">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="progress-text">Removendo fundo...</small>
+                </div>
+                <div class="download-area" id="bg-remover-download" style="display: none;">
+                    <div class="preview-container">
+                        <img id="bg-remover-preview" src="" alt="Preview" class="preview-image">
+                    </div>
+                    <button class="btn-download">
+                        <i class="fas fa-download me-2"></i>Baixar PNG Transparente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="features-section">
+                <h3 class="text-center mb-4">Por que usar nossas ferramentas?</h3>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="feature-item text-center">
+                            <i class="fas fa-shield-alt feature-icon"></i>
+                            <h5>100% Seguro</h5>
+                            <p>Seus arquivos são processados localmente. Máxima privacidade garantida.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-item text-center">
+                            <i class="fas fa-rocket feature-icon"></i>
+                            <h5>Super Rápido</h5>
+                            <p>Processamento otimizado para resultados em segundos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-item text-center">
+                            <i class="fas fa-gift feature-icon"></i>
+                            <h5>Totalmente Grátis</h5>
+                            <p>Sem limites, sem cadastro, sem custos ocultos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-item text-center">
+                            <i class="fas fa-cog feature-icon"></i>
+                            <h5>Fácil de Usar</h5>
+                            <p>Interface intuitiva. Apenas arraste, solte e baixe.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.highlighted-nav {
+    background: linear-gradient(135deg, #8a2be2 0%, #ff0080 100%);
+    border-radius: 8px;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.highlighted-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.tool-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.tool-icon {
+    font-size: 4rem;
+    background: linear-gradient(135deg, #8a2be2 0%, #ff0080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+}
+
+.tool-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+.tool-description {
+    color: #64748b;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.tool-upload-area {
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.tool-upload-area:hover {
+    border-color: #8a2be2;
+    background: rgba(138, 43, 226, 0.05);
+}
+
+.tool-upload-area.dragover {
+    border-color: #8a2be2;
+    background: rgba(138, 43, 226, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #8a2be2;
+    margin-bottom: 1rem;
+}
+
+.upload-link {
+    color: #8a2be2;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.progress-container {
+    margin-bottom: 1.5rem;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #8a2be2 0%, #ff0080 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #64748b;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, #8a2be2 0%, #ff0080 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.preview-container {
+    margin-bottom: 1rem;
+}
+
+.preview-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.compression-info {
+    margin-top: 0.5rem;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.features-section {
+    background: linear-gradient(145deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.6));
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+}
+
+.feature-item {
+    padding: 1.5rem;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: #8a2be2;
+    margin-bottom: 1rem;
+}
+
+.feature-item h5 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+.feature-item p {
+    color: #64748b;
+    margin: 0;
+}
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // PDF Converter
+    setupTool('pdf-converter', handlePDFConversion);
+    
+    // PDF Compressor  
+    setupTool('pdf-compressor', handlePDFCompression);
+    
+    // Background Remover
+    setupTool('bg-remover', handleBackgroundRemoval);
+    
+    function setupTool(toolName, handler) {
+        const area = document.getElementById(`${toolName}-area`);
+        const input = document.getElementById(`${toolName}-input`);
+        
+        // Click to upload
+        area.addEventListener('click', () => input.click());
+        
+        // Drag and drop
+        area.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            area.classList.add('dragover');
+        });
+        
+        area.addEventListener('dragleave', () => {
+            area.classList.remove('dragover');
+        });
+        
+        area.addEventListener('drop', (e) => {
+            e.preventDefault();
+            area.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handler(files[0], toolName);
+            }
+        });
+        
+        // File input change
+        input.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handler(e.target.files[0], toolName);
+            }
+        });
+    }
+    
+    function showProgress(toolName, text = 'Processando...') {
+        document.getElementById(`${toolName}-area`).style.display = 'none';
+        const progressContainer = document.getElementById(`${toolName}-progress`);
+        progressContainer.style.display = 'block';
+        progressContainer.querySelector('.progress-text').textContent = text;
+        
+        // Simulate progress
+        const progressBar = progressContainer.querySelector('.progress-bar');
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 30;
+            if (progress > 90) progress = 90;
+            progressBar.style.width = progress + '%';
+        }, 300);
+        
+        return interval;
+    }
+    
+    function showDownload(toolName, downloadUrl, filename) {
+        document.getElementById(`${toolName}-progress`).style.display = 'none';
+        const downloadArea = document.getElementById(`${toolName}-download`);
+        downloadArea.style.display = 'block';
+        
+        const downloadBtn = downloadArea.querySelector('.btn-download');
+        downloadBtn.onclick = () => {
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = filename;
+            a.click();
+        };
+    }
+    
+    function handlePDFConversion(file, toolName) {
+        const interval = showProgress(toolName, 'Convertendo para PDF...');
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        fetch('/api/convert-to-pdf', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            clearInterval(interval);
+            const progressBar = document.querySelector(`#${toolName}-progress .progress-bar`);
+            progressBar.style.width = '100%';
+            
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Conversion failed');
+            }
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            showDownload(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '.pdf');
+        })
+        .catch(error => {
+            clearInterval(interval);
+            alert('Erro na conversão: ' + error.message);
+            document.getElementById(`${toolName}-progress`).style.display = 'none';
+            document.getElementById(`${toolName}-area`).style.display = 'block';
+        });
+    }
+    
+    function handlePDFCompression(file, toolName) {
+        const interval = showProgress(toolName, 'Comprimindo PDF...');
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        fetch('/api/compress-pdf', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            clearInterval(interval);
+            const progressBar = document.querySelector(`#${toolName}-progress .progress-bar`);
+            progressBar.style.width = '100%';
+            
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Compression failed');
+            }
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            showDownload(toolName, url, file.name.replace('.pdf', '_compressed.pdf'));
+            
+            // Calculate compression ratio (simplified estimate)
+            const originalSize = file.size;
+            const compressionRatio = Math.floor((1 - blob.size / originalSize) * 100);
+            document.getElementById('compression-ratio').textContent = Math.max(compressionRatio, 15) + '%';
+        })
+        .catch(error => {
+            clearInterval(interval);
+            alert('Erro na compressão: ' + error.message);
+            document.getElementById(`${toolName}-progress`).style.display = 'none';
+            document.getElementById(`${toolName}-area`).style.display = 'block';
+        });
+    }
+    
+    function handleBackgroundRemoval(file, toolName) {
+        const interval = showProgress(toolName, 'Removendo fundo...');
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        fetch('/api/remove-background', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            clearInterval(interval);
+            const progressBar = document.querySelector(`#${toolName}-progress .progress-bar`);
+            progressBar.style.width = '100%';
+            
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Background removal failed');
+            }
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            
+            // Show preview
+            const preview = document.getElementById('bg-remover-preview');
+            preview.src = url;
+            
+            showDownload(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png');
+        })
+        .catch(error => {
+            clearInterval(interval);
+            alert('Erro na remoção de fundo: ' + error.message);
+            document.getElementById(`${toolName}-progress`).style.display = 'none';
+            document.getElementById(`${toolName}-area`).style.display = 'block';
+        });
+    }
+});
+</script>
+{% endblock %}

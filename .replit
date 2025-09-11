@@ -2,7 +2,7 @@ modules = ["web", "nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["openssl", "postgresql"]
+packages = ["freetype", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "postgresql", "tcl", "tk", "zlib"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -42,7 +42,7 @@ localPort = 39135
 externalPort = 3001
 
 [[ports]]
-localPort = 43279
+localPort = 42963
 externalPort = 3002
 
 [agent]

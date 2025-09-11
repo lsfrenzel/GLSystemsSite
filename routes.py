@@ -479,7 +479,7 @@ def convert_file_to_pdf(file_path, filename):
             c = canvas.Canvas(output_path, pagesize=letter)
             y_position = 750
             
-            if ws and hasattr(ws, 'iter_rows'):
+            try:
                 for row in ws.iter_rows(values_only=True, max_row=50):  # Limit rows
                     row_text = ' | '.join([str(cell) if cell else '' for cell in row])
                     if row_text.strip():
@@ -488,6 +488,9 @@ def convert_file_to_pdf(file_path, filename):
                         if y_position < 50:
                             c.showPage()
                             y_position = 750
+            except AttributeError:
+                # Fallback for older openpyxl versions
+                c.drawString(50, y_position, "Excel content (preview not available)")
             
             c.save()
             
@@ -570,14 +573,16 @@ def compress_pdf_file(file_path, filename, compression_level='medium'):
             
             # Apply additional compression settings
             if compression_level == 'high':
-                # Use available compression methods
+                # Use available compression methods (PyPDF2 compatibility)
                 try:
-                    writer.compress_identical_objects()
-                except AttributeError:
+                    if hasattr(writer, 'compress_identical_objects'):
+                        writer.compress_identical_objects()
+                except:
                     pass  # Method not available in this PyPDF2 version
                 try:
-                    writer.remove_links()
-                except AttributeError:
+                    if hasattr(writer, 'remove_links'):
+                        writer.remove_links()
+                except:
                     pass  # Method not available in this PyPDF2 version
                 
             with open(output_path, 'wb') as output_file:
@@ -722,7 +727,8 @@ def improved_segmentation(image):
             
             # Apply K-means
             criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 20, 1.0)
-            _, labels, centers = cv2.kmeans(pixel_values, 2, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+            # K-means clustering with proper parameters
+            compactness, labels, centers = cv2.kmeans(pixel_values, 2, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
             
             # Reshape back
             labels = labels.reshape(img_array.shape[:2])
@@ -769,7 +775,7 @@ def silhouette_detection(image):
             if contours:
                 largest_contour = max(contours, key=cv2.contourArea)
                 mask = np.zeros(gray.shape, np.uint8)
-                cv2.fillPoly(mask, [largest_contour], 255)
+                cv2.fillPoly(mask, [largest_contour], (255,))
                 
                 # Smooth the mask
                 mask = cv2.GaussianBlur(mask, (5, 5), 0)
@@ -844,21 +850,6 @@ def enhanced_basic_removal(image):
         image.putdata(new_data)
         return image
 
-def allowed_file(filename, file_type):
-    """Check if file type is allowed"""
-    if not filename:
-        return False
-    
-    ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
-    
-    if file_type == 'pdf':
-        return ext == 'pdf'
-    elif file_type == 'image':
-        return ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
-    elif file_type == 'document':
-        return ext in ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
-    
-    return False
 
 def get_edge_pixels(img_array):
     """Get boolean mask of edge pixels"""

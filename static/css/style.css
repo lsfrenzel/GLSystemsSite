@@ -1032,10 +1032,51 @@ h1, h2, h3, h4, h5, h6 {
     color: #fff !important;
 }
 
-/* Exceto quando em fundos escuros */
+/* Correções de contraste para fundos escuros */
+/* Botão Agendar Demo no hero */
+.modern-hero-section .btn-secondary-neon {
+    color: #fff !important;
+}
+
+/* Títulos e textos em fundos escuros devem ser brancos */
+.bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary h4, .bg-primary h5, .bg-primary h6,
+.bg-gradient-primary h1, .bg-gradient-primary h2, .bg-gradient-primary h3, .bg-gradient-primary h4, .bg-gradient-primary h5, .bg-gradient-primary h6,
+.card-header.bg-primary h1, .card-header.bg-primary h2, .card-header.bg-primary h3, .card-header.bg-primary h4, .card-header.bg-primary h5, .card-header.bg-primary h6,
+.card-header.bg-success h1, .card-header.bg-success h2, .card-header.bg-success h3, .card-header.bg-success h4, .card-header.bg-success h5, .card-header.bg-success h6 {
+    color: #fff !important;
+}
+
+
+/* Exceto quando em fundos escuros - títulos devem ser brancos */
 .bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6,
 .card-dark h1, .card-dark h2, .card-dark h3, .card-dark h4, .card-dark h5, .card-dark h6 {
     color: #fff !important;
+}
+
+/* Títulos dos systems cards devem ser roxos mesmo em bg-dark */
+.bg-dark .system-title {
+    color: #8a2be2 !important;
+}
+
+/* Sobrescrever regras text-white em fundos de gradiente para garantir contraste */
+.bg-gradient-primary h1.text-white, .bg-gradient-primary h2.text-white, .bg-gradient-primary h3.text-white, 
+.bg-gradient-primary h4.text-white, .bg-gradient-primary h5.text-white, .bg-gradient-primary h6.text-white,
+.bg-primary h1.text-white, .bg-primary h2.text-white, .bg-primary h3.text-white, 
+.bg-primary h4.text-white, .bg-primary h5.text-white, .bg-primary h6.text-white {
+    color: #fff !important;
+}
+
+/* Números e métricas em fundos escuros devem ser brancos */
+.bg-primary .stat-number, .bg-primary .impact-item h3, .bg-primary .fw-bold,
+.bg-gradient-primary .stat-number, .bg-gradient-primary .impact-item h3, .bg-gradient-primary .fw-bold,
+.bg-dark .stat-number, .bg-dark .impact-item h3, .bg-dark .fw-bold,
+.bg-primary strong, .bg-gradient-primary strong, .bg-dark strong {
+    color: #fff !important;
+}
+
+/* Case headers devem manter cor padrão (roxo) */
+.case-header h3 {
+    color: #8a2be2 !important;
 }
 
 /* Botões específicos por segmento */

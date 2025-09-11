@@ -506,20 +506,29 @@ GL_Systems.setupSolutionFilters = function() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const solutionCards = document.querySelectorAll('.solution-card');
     
-    if (filterButtons.length === 0 || solutionCards.length === 0) return;
+    if (filterButtons.length === 0 || solutionCards.length === 0) {
+        console.log('Filter elements not found:', {
+            buttons: filterButtons.length,
+            cards: solutionCards.length
+        });
+        return;
+    }
+    
+    console.log('Setting up solution filters:', {
+        buttons: filterButtons.length,
+        cards: solutionCards.length
+    });
     
     let isFiltering = false; // Prevent race conditions
-    let currentFilter = 'all'; // Track current filter
     
     filterButtons.forEach(button => {
-        button.addEventListener('click', GL_Systems.utils.debounce(function() {
+        button.addEventListener('click', function() {
             if (isFiltering) return;
             
-            const filterValue = this.dataset.filter;
-            if (filterValue === currentFilter) return; // Skip if same filter
-            
             isFiltering = true;
-            currentFilter = filterValue;
+            const filterValue = this.getAttribute('data-filter');
+            
+            console.log('Filter clicked:', filterValue);
             
             // Update active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
@@ -551,6 +560,8 @@ GL_Systems.setupSolutionFilters = function() {
                     cardsToHide.push(card);
                 }
             });
+            
+            console.log('Cards to show:', cardsToShow.length, 'Cards to hide:', cardsToHide.length);
             
             // Clear previous animations
             solutionCards.forEach(card => {
@@ -586,8 +597,7 @@ GL_Systems.setupSolutionFilters = function() {
                 }, cardsToShow.length * 100 + 600);
                 
             }, 400);
-            
-        }, 200)); // Debounce clicks
+        });
     });
 };
 

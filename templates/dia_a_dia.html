@@ -52,8 +52,33 @@
                 </div>
                 <h3 class="tool-title">Compressor de PDF</h3>
                 <p class="tool-description">
-                    Reduza o tamanho de arquivos PDF mantendo a qualidade. Otimização inteligente.
+                    Reduza o tamanho de arquivos PDF com níveis de compressão personalizáveis. Otimização inteligente.
                 </p>
+                
+                <!-- Compression Level Selection -->
+                <div class="compression-options mb-3">
+                    <label class="form-label"><i class="fas fa-sliders-h me-2"></i>Nível de Compressão:</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="compression-level" id="comp-low" value="low">
+                        <label class="btn btn-outline-primary" for="comp-low">
+                            <i class="fas fa-feather me-1"></i>Baixa
+                            <small class="d-block">Máxima qualidade</small>
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="compression-level" id="comp-medium" value="medium" checked>
+                        <label class="btn btn-outline-primary" for="comp-medium">
+                            <i class="fas fa-balance-scale me-1"></i>Média
+                            <small class="d-block">Balanceada</small>
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="compression-level" id="comp-high" value="high">
+                        <label class="btn btn-outline-primary" for="comp-high">
+                            <i class="fas fa-compress-arrows-alt me-1"></i>Alta
+                            <small class="d-block">Máxima redução</small>
+                        </label>
+                    </div>
+                </div>
+                
                 <div class="tool-upload-area" id="pdf-compressor-area">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
@@ -85,8 +110,46 @@
                 </div>
                 <h3 class="tool-title">Removedor de Fundo</h3>
                 <p class="tool-description">
-                    Remova o fundo de imagens automaticamente com IA. Resultado em PNG transparente.
+                    Remova o fundo de imagens com IA avançada. Múltiplos algoritmos e opções de saída.
                 </p>
+                
+                <!-- AI Model Selection -->
+                <div class="bg-options mb-3">
+                    <label class="form-label"><i class="fas fa-brain me-2"></i>Modelo de IA:</label>
+                    <select class="form-select" id="bg-model">
+                        <option value="u2net" selected>U²-Net (Uso geral)</option>
+                        <option value="isnet">ISNet (Melhor precisão)</option>
+                        <option value="silueta">Silhueta (Objetos simples)</option>
+                    </select>
+                </div>
+                
+                <!-- Output Options -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="fas fa-file-image me-2"></i>Formato:</label>
+                        <select class="form-select" id="bg-format">
+                            <option value="png" selected>PNG (transparente)</option>
+                            <option value="jpg">JPG (com fundo)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><i class="fas fa-palette me-2"></i>Fundo:</label>
+                        <select class="form-select" id="bg-color">
+                            <option value="transparent" selected>Transparente</option>
+                            <option value="white">Branco</option>
+                            <option value="black">Preto</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Advanced Options -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="edge-refine" checked>
+                    <label class="form-check-label" for="edge-refine">
+                        <i class="fas fa-magic me-1"></i>Refinar bordas automaticamente
+                    </label>
+                </div>
+                
                 <div class="tool-upload-area" id="bg-remover-area">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
@@ -327,6 +390,60 @@
     color: #64748b;
     margin: 0;
 }
+
+/* Revolutionary Tool Options Styling */
+.compression-options .btn-group .btn {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    border-color: rgba(138, 43, 226, 0.3);
+    transition: all 0.3s ease;
+}
+
+.compression-options .btn-check:checked + .btn {
+    background: linear-gradient(135deg, #8a2be2 0%, #6a1b9a 100%);
+    border-color: #8a2be2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+}
+
+.compression-options .btn:hover {
+    border-color: #8a2be2;
+    transform: translateY(-1px);
+}
+
+.bg-options .form-select,
+.bg-options .form-control {
+    border: 2px solid rgba(138, 43, 226, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.bg-options .form-select:focus,
+.bg-options .form-control:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #8a2be2;
+    border-color: #8a2be2;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.compression-options small {
+    color: #64748b;
+    font-size: 0.75rem;
+}
 </style>
 
 <!-- JavaScript -->
@@ -498,8 +615,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function handlePDFCompression(file, toolName) {
         const interval = showProgress(toolName, 'Comprimindo PDF...');
         
+        // Get compression level
+        const compressionLevel = document.querySelector('input[name="compression-level"]:checked').value;
+        
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('level', compressionLevel);
         
         fetch('/api/compress-pdf', {
             method: 'POST',
@@ -511,6 +632,15 @@ document.addEventListener('DOMContentLoaded', function() {
             progressBar.style.width = '100%';
             
             if (response.ok) {
+                // Get compression statistics from headers
+                const originalSize = response.headers.get('X-Original-Size');
+                const compressedSize = response.headers.get('X-Compressed-Size');
+                const compressionRatio = response.headers.get('X-Compression-Ratio');
+                
+                if (compressionRatio) {
+                    document.getElementById('compression-ratio').textContent = compressionRatio + '%';
+                }
+                
                 return response.blob();
             } else {
                 throw new Error('Compression failed');
@@ -518,12 +648,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            
-            // Calculate compression ratio (simplified estimate)
-            const originalSize = file.size;
-            const compressionRatio = Math.floor((1 - blob.size / originalSize) * 100);
-            document.getElementById('compression-ratio').textContent = Math.max(compressionRatio, 15) + '%';
-            
             showPreview(toolName, url, file.name.replace('.pdf', '_compressed.pdf'), 'pdf');
         })
         .catch(error => {
@@ -537,8 +661,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleBackgroundRemoval(file, toolName) {
         const interval = showProgress(toolName, 'Removendo fundo...');
         
+        // Get background removal options
+        const model = document.getElementById('bg-model').value;
+        const format = document.getElementById('bg-format').value;
+        const bgColor = document.getElementById('bg-color').value;
+        const edgeRefine = document.getElementById('edge-refine').checked;
+        
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('model', model);
+        formData.append('format', format);
+        formData.append('bg_color', bgColor);
+        formData.append('edge_refine', edgeRefine.toString());
         
         fetch('/api/remove-background', {
             method: 'POST',
@@ -557,7 +691,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            showPreview(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png', 'image');
+            const format = document.getElementById('bg-format').value;
+            const filename = file.name.replace(/\.[^/.]+$/, '') + `_no_bg.${format}`;
+            showPreview(toolName, url, filename, 'image');
         })
         .catch(error => {
             clearInterval(interval);

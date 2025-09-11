@@ -39,9 +39,7 @@
                     <small class="progress-text">Convertendo...</small>
                 </div>
                 <div class="download-area" id="pdf-converter-download" style="display: none;">
-                    <button class="btn-download">
-                        <i class="fas fa-download me-2"></i>Baixar PDF
-                    </button>
+                    <div class="preview-content"></div>
                 </div>
             </div>
         </div>
@@ -71,12 +69,10 @@
                     <small class="progress-text">Comprimindo...</small>
                 </div>
                 <div class="download-area" id="pdf-compressor-download" style="display: none;">
-                    <button class="btn-download">
-                        <i class="fas fa-download me-2"></i>Baixar PDF Comprimido
-                    </button>
-                    <div class="compression-info">
-                        <small>Redução: <span id="compression-ratio">0%</span></small>
+                    <div class="compression-info mb-3">
+                        <small class="text-success">Redução: <span id="compression-ratio">0%</span></small>
                     </div>
+                    <div class="preview-content"></div>
                 </div>
             </div>
         </div>
@@ -106,12 +102,7 @@
                     <small class="progress-text">Removendo fundo...</small>
                 </div>
                 <div class="download-area" id="bg-remover-download" style="display: none;">
-                    <div class="preview-container">
-                        <img id="bg-remover-preview" src="" alt="Preview" class="preview-image">
-                    </div>
-                    <button class="btn-download">
-                        <i class="fas fa-download me-2"></i>Baixar PNG Transparente
-                    </button>
+                    <div class="preview-content"></div>
                 </div>
             </div>
         </div>
@@ -403,18 +394,72 @@ document.addEventListener('DOMContentLoaded', function() {
         return interval;
     }
     
-    function showDownload(toolName, downloadUrl, filename) {
+    function showPreview(toolName, downloadUrl, filename, fileType) {
         document.getElementById(`${toolName}-progress`).style.display = 'none';
         const downloadArea = document.getElementById(`${toolName}-download`);
         downloadArea.style.display = 'block';
         
-        const downloadBtn = downloadArea.querySelector('.btn-download');
-        downloadBtn.onclick = () => {
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = filename;
-            a.click();
-        };
+        // Create preview content
+        const previewContainer = downloadArea.querySelector('.preview-content') || downloadArea;
+        
+        // Clear previous content
+        previewContainer.innerHTML = '';
+        
+        // Create preview based on file type
+        let previewElement;
+        if (fileType === 'pdf') {
+            previewElement = document.createElement('iframe');
+            previewElement.src = downloadUrl;
+            previewElement.style.cssText = 'width: 100%; height: 300px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px;';
+        } else if (fileType === 'image') {
+            previewElement = document.createElement('img');
+            previewElement.src = downloadUrl;
+            previewElement.style.cssText = 'max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px;';
+        }
+        
+        // Add preview title
+        const previewTitle = document.createElement('h6');
+        previewTitle.innerHTML = '<i class="fas fa-eye me-2"></i>Preview do arquivo processado:';
+        previewTitle.style.marginBottom = '10px';
+        
+        // Add download button
+        const downloadBtn = document.createElement('a');
+        downloadBtn.href = downloadUrl;
+        downloadBtn.download = filename;
+        downloadBtn.className = 'btn btn-success btn-lg me-2';
+        downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Baixar Arquivo';
+        
+        // Add reset button
+        const resetBtn = document.createElement('button');
+        resetBtn.className = 'btn btn-secondary';
+        resetBtn.innerHTML = '<i class="fas fa-redo me-2"></i>Processar Outro';
+        resetBtn.onclick = () => resetTool(toolName);
+        
+        // Build the preview area
+        previewContainer.appendChild(previewTitle);
+        if (previewElement) {
+            previewContainer.appendChild(previewElement);
+        }
+        
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'text-center mt-3';
+        buttonContainer.appendChild(downloadBtn);
+        buttonContainer.appendChild(resetBtn);
+        previewContainer.appendChild(buttonContainer);
+    }
+    
+    function resetTool(toolName) {
+        document.getElementById(`${toolName}-download`).style.display = 'none';
+        document.getElementById(`${toolName}-progress`).style.display = 'none';
+        document.getElementById(`${toolName}-area`).style.display = 'block';
+        
+        // Reset file input
+        const input = document.getElementById(`${toolName}-input`);
+        if (input) input.value = '';
+        
+        // Reset compression ratio if exists
+        const ratioElement = document.getElementById('compression-ratio');
+        if (ratioElement) ratioElement.textContent = '';
     }
     
     function handlePDFConversion(file, toolName) {
@@ -440,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            showDownload(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '.pdf');
+            showPreview(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '.pdf', 'pdf');
         })
         .catch(error => {
             clearInterval(interval);
@@ -473,12 +518,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            showDownload(toolName, url, file.name.replace('.pdf', '_compressed.pdf'));
             
             // Calculate compression ratio (simplified estimate)
             const originalSize = file.size;
             const compressionRatio = Math.floor((1 - blob.size / originalSize) * 100);
             document.getElementById('compression-ratio').textContent = Math.max(compressionRatio, 15) + '%';
+            
+            showPreview(toolName, url, file.name.replace('.pdf', '_compressed.pdf'), 'pdf');
         })
         .catch(error => {
             clearInterval(interval);
@@ -511,12 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            
-            // Show preview
-            const preview = document.getElementById('bg-remover-preview');
-            preview.src = url;
-            
-            showDownload(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png');
+            showPreview(toolName, url, file.name.replace(/\.[^/.]+$/, '') + '_no_bg.png', 'image');
         })
         .catch(error => {
             clearInterval(interval);

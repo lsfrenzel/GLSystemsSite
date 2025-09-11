@@ -189,6 +189,34 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: var(--shadow-md);
 }
 
+/* Highlighted navigation link for Dia-a-dia */
+.highlighted-nav {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    animation: pulse-highlight 2s infinite;
+}
+
+.highlighted-nav::before {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+.highlighted-nav:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6) !important;
+}
+
+@keyframes pulse-highlight {
+    0%, 100% { 
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); 
+    }
+    50% { 
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); 
+    }
+}
+
 /* Dark Neon Hero Section */
 .modern-hero-section {
     background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #16213e 100%);

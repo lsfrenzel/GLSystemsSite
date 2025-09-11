@@ -34,16 +34,16 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
+localPort = 35917
+externalPort = 3002
+
+[[ports]]
 localPort = 37927
 externalPort = 3000
 
 [[ports]]
 localPort = 39135
 externalPort = 3001
-
-[[ports]]
-localPort = 42963
-externalPort = 3002
 
 [agent]
 integrations = ["web_scraper:1.0.0"]

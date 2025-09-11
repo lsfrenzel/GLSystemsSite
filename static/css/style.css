@@ -9,7 +9,7 @@
     --success-color: #00ff88;
     --danger-color: #ff0040;
     --warning-color: #ffaa00;
-    --info-color: #0080ff;
+    --info-color: #8a2be2;
     --light-color: #f0f4f8;
     --dark-color: #0a0a0f;
     --accent-color: #ff0080;
@@ -21,7 +21,7 @@
     --gradient-neon: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
     --gradient-success: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
     --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(255,0,128,0.05) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(192,192,192,0.1) 0%, rgba(138,43,226,0.05) 100%);
     
     /* Spacing Scale - 4px base */
     --space-1: 0.25rem; /* 4px */
@@ -297,11 +297,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-gradient {
     font-family: 'Orbitron', monospace;
-    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 50%, #20c997 100%);
+    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 50%, #6f42c1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 30px rgba(13, 110, 253, 0.3);
+    text-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
     filter: drop-shadow(0 0 8px rgba(111, 66, 193, 0.4));
     letter-spacing: 0.02em;
     font-weight: 800;
@@ -339,14 +339,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-hero-primary {
-    background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
     color: #000;
     border: none;
     padding: 1rem 2rem;
     border-radius: var(--radius-2xl);
     font-weight: 700;
     transition: var(--transition-all);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3);
     text-shadow: none;
     position: relative;
     overflow: hidden;
@@ -354,7 +354,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-hero-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 15px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 30px rgba(192, 192, 192, 0.6), 0 15px 40px rgba(0, 0, 0, 0.4);
     color: #000;
     filter: brightness(1.1);
 }
@@ -605,15 +605,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-tabs .nav-link.active {
-    background-color: #0d6efd;
+    background-color: #8a2be2;
     color: white;
-    border-bottom: 3px solid #0d6efd;
+    border-bottom: 3px solid #8a2be2;
 }
 
 .nav-tabs .nav-link:hover {
     border-color: transparent;
-    color: #0d6efd;
-    background-color: rgba(13, 110, 253, 0.1);
+    color: #8a2be2;
+    background-color: rgba(138, 43, 226, 0.1);
 }
 
 /* Alerts */
@@ -918,18 +918,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .top-system-card {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(26, 10, 46, 0.5) 100%);
-    border: 1px solid rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(138, 43, 226, 0.3);
     border-radius: 1rem;
     padding: 2rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.1);
 }
 
 .top-system-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
-    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.2);
+    border-color: rgba(138, 43, 226, 0.5);
 }
 
 .system-title {
@@ -964,8 +964,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .system-icon {
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(255, 0, 255, 0.2) 100%);
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border: 2px solid rgba(138, 43, 226, 0.4);
     border-radius: 50%;
     width: 80px;
     height: 80px;
@@ -973,9 +973,9 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
-    color: #00ffff;
+    color: #8a2be2;
     font-size: 2rem;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
 }
 
 .stat-mini {
@@ -983,8 +983,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .stat-mini strong {
-    color: #00ffff;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    color: #c0c0c0;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
     display: block;
     font-size: 1.2rem;
 }

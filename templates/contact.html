@@ -30,47 +30,47 @@
                             <div class="col-md-6 mb-3">
                                 <label for="nome" class="form-label">{{ t('contact_name') }} *</label>
                                 <input type="text" class="form-control" id="nome" name="nome" required>
-                                <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
-                                <div class="valid-feedback">Perfeito!</div>
+                                <div class="invalid-feedback">{{ t('contact_form_validation_name') }}</div>
+                                <div class="valid-feedback">{{ t('contact_form_success_name') }}</div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">{{ t('contact_email') }} *</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
-                                <div class="invalid-feedback">Por favor, insira um e-mail válido.</div>
-                                <div class="valid-feedback">E-mail válido!</div>
+                                <div class="invalid-feedback">{{ t('contact_form_validation_email') }}</div>
+                                <div class="valid-feedback">{{ t('contact_form_success_email') }}</div>
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="empresa" class="form-label">{{ t('contact_company') }}</label>
                             <input type="text" class="form-control" id="empresa" name="empresa" 
-                                   placeholder="Nome da sua empresa (opcional)">
+                                   placeholder="{{ t('contact_company_placeholder') }}">
                         </div>
 
                         <div class="mb-3">
-                            <label for="interesse" class="form-label">Interesse</label>
+                            <label for="interesse" class="form-label">{{ t('contact_interest_label') }}</label>
                             <select class="form-select" id="interesse" name="interesse">
-                                <option value="">Selecione uma opção</option>
-                                <option value="sistema-vendas">Sistema de Vendas Online</option>
-                                <option value="agenda-online">Agenda Online</option>
-                                <option value="controle-estoque">Controle de Estoque</option>
-                                <option value="sistema-financeiro">Sistema Financeiro</option>
-                                <option value="gestao-restaurante">Gestão para Restaurantes</option>
-                                <option value="mini-erp">Mini ERP Financeiro</option>
-                                <option value="gestao-oficina">Gestão de Oficinas</option>
-                                <option value="sistema-imobiliario">Sistema Imobiliário</option>
-                                <option value="gestao-academia">Gestão de Academia</option>
-                                <option value="site-institucional">Site Institucional</option>
-                                <option value="outro">Outro</option>
+                                <option value="">{{ t('contact_interest_placeholder') }}</option>
+                                <option value="sistema-vendas">{{ t('contact_interest_sales') }}</option>
+                                <option value="agenda-online">{{ t('contact_interest_schedule') }}</option>
+                                <option value="controle-estoque">{{ t('contact_interest_inventory') }}</option>
+                                <option value="sistema-financeiro">{{ t('contact_interest_financial') }}</option>
+                                <option value="gestao-restaurante">{{ t('contact_interest_restaurant') }}</option>
+                                <option value="mini-erp">{{ t('contact_interest_erp') }}</option>
+                                <option value="gestao-oficina">{{ t('contact_interest_workshop') }}</option>
+                                <option value="sistema-imobiliario">{{ t('contact_interest_real_estate') }}</option>
+                                <option value="gestao-academia">{{ t('contact_interest_gym') }}</option>
+                                <option value="site-institucional">{{ t('contact_interest_website') }}</option>
+                                <option value="outro">{{ t('contact_interest_other') }}</option>
                             </select>
                         </div>
                         
                         <div class="mb-4">
                             <label for="mensagem" class="form-label">{{ t('contact_message') }} *</label>
                             <textarea class="form-control" id="mensagem" name="mensagem" rows="5" 
-                                      placeholder="Conte-nos sobre sua necessidade ou dúvida..." required></textarea>
-                            <div class="invalid-feedback">Por favor, conte-nos sobre sua necessidade.</div>
-                            <div class="valid-feedback">Mensagem incluída!</div>
+                                      placeholder="{{ t('contact_message_placeholder') }}" required></textarea>
+                            <div class="invalid-feedback">{{ t('contact_form_validation_message') }}</div>
+                            <div class="valid-feedback">{{ t('contact_form_success_message') }}</div>
                         </div>
                         
                         <div class="text-center">
@@ -85,9 +85,9 @@
         <div class="col-lg-4">
             <!-- WhatsApp Contact -->
             <div class="whatsapp-contact mb-4">
-                <h4><i class="fab fa-whatsapp me-2"></i>Contato Direto</h4>
-                <p>Prefere falar conosco pelo WhatsApp? Estamos online e prontos para ajudar!</p>
-                {{ btn_whatsapp("Chamar no WhatsApp", "5511999999999", "Olá! Gostaria de saber mais sobre os sistemas da G&L.") }}
+                <h4><i class="fab fa-whatsapp me-2"></i>{{ t('contact_direct_title') }}</h4>
+                <p>{{ t('contact_whatsapp_desc') }}</p>
+                {{ btn_whatsapp(t('contact_whatsapp_button'), "5511999999999", t('contact_whatsapp_message')) }}
             </div>
 
             <!-- Contact Details -->
@@ -123,8 +123,8 @@
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt text-danger me-3"></i>
                         <div>
-                            <strong>Localização</strong><br>
-                            <span class="text-muted">São Paulo - SP<br>Brasil</span>
+                            <strong>{{ t('contact_location') }}</strong><br>
+                            <span class="text-muted">{{ t('contact_location_text') }}</span>
                         </div>
                     </div>
                 </div>
@@ -133,13 +133,13 @@
             <!-- Quick Actions -->
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0"><i class="fas fa-lightning-bolt me-2"></i>Ações Rápidas</h5>
+                    <h5 class="mb-0"><i class="fas fa-lightning-bolt me-2"></i>{{ t('contact_quick_actions') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        {{ btn_cta("Testar Demos", url_for('solutions'), "fas fa-play") }}
-                        {{ btn_secondary_neon("Ligar Agora", "tel:+5511999999999", "fas fa-phone") }}
-                        {{ btn_secondary_neon("Enviar E-mail", "mailto:contato@glsystems.com.br", "fas fa-envelope") }}
+                        {{ btn_cta(t('contact_test_demos'), url_for('solutions'), "fas fa-play") }}
+                        {{ btn_secondary_neon(t('contact_call_now'), "tel:+5511999999999", "fas fa-phone") }}
+                        {{ btn_secondary_neon(t('contact_send_email'), "mailto:contato@glsystems.com.br", "fas fa-envelope") }}
                     </div>
                 </div>
             </div>
@@ -147,19 +147,19 @@
             <!-- FAQ -->
             <div class="card shadow-sm">
                 <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Perguntas Frequentes</h5>
+                    <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>{{ t('contact_faq_title') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="accordion" id="faqAccordion">
                         <div class="accordion-item">
                             <h6 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    Os sistemas são difíceis de usar?
+                                    {{ t('contact_faq_q1') }}
                                 </button>
                             </h6>
                             <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    <small>Não! Nossos sistemas são projetados para serem intuitivos e fáceis de usar, mesmo para quem não tem experiência técnica.</small>
+                                    <small>{{ t('contact_faq_a1') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                         <div class="accordion-item">
                             <h6 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Quanto tempo para implementar?
+                                    {{ t('contact_faq_q2') }}
                                 </button>
                             </h6>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">

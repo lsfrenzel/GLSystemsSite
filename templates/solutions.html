@@ -18,19 +18,19 @@
     <div class="stats-grid">
         <div class="stat-item">
             <div class="stat-number">500+</div>
-            <div class="stat-label">Empresas Atendidas</div>
+            <div class="stat-label">{{ t('solutions_stats_companies_served') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">85%</div>
-            <div class="stat-label">Aumento Produtividade</div>
+            <div class="stat-label">{{ t('solutions_stats_productivity_increase') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">24h</div>
-            <div class="stat-label">Implementação Rápida</div>
+            <div class="stat-label">{{ t('solutions_stats_fast_implementation') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">24/7</div>
-            <div class="stat-label">Suporte Especializado</div>
+            <div class="stat-label">{{ t('solutions_stats_specialized_support') }}</div>
         </div>
     </div>
 
@@ -39,17 +39,17 @@
         <div class="col-12">
             <div class="card bg-light">
                 <div class="card-body">
-                    <h5 class="mb-3">Filtrar por Categoria</h5>
+                    <h5 class="mb-3">{{ t('solutions_filter_title') }}</h5>
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
-                        {{ btn_filter("Todos os Sistemas", "all", active=true) }}
-                        {{ btn_filter("CRM & Vendas", "crm") }}
-                        {{ btn_filter("Comunicação", "comunicacao") }}
-                        {{ btn_filter("Gestão Projetos", "projetos") }}
-                        {{ btn_filter("Financeiro", "financeiro") }}
-                        {{ btn_filter("E-commerce", "ecommerce") }}
-                        {{ btn_filter("Saúde & Clínicas", "saude") }}
-                        {{ btn_filter("Educação", "educacao") }}
-                        {{ btn_filter("Serviços", "servicos") }}
+                        {{ btn_filter(t('solutions_filter_all'), "all", active=true) }}
+                        {{ btn_filter(t('solutions_filter_crm_sales'), "crm") }}
+                        {{ btn_filter(t('solutions_filter_communication'), "comunicacao") }}
+                        {{ btn_filter(t('solutions_filter_project_management'), "projetos") }}
+                        {{ btn_filter(t('solutions_filter_financial'), "financeiro") }}
+                        {{ btn_filter(t('solutions_filter_ecommerce'), "ecommerce") }}
+                        {{ btn_filter(t('solutions_filter_health_clinics'), "saude") }}
+                        {{ btn_filter(t('solutions_filter_education'), "educacao") }}
+                        {{ btn_filter(t('solutions_filter_services'), "servicos") }}
                     </div>
                 </div>
             </div>
@@ -58,9 +58,9 @@
 
     <!-- Todos os Sistemas -->
     {{ section_header(
-        badge_text="💼 Todos os Sistemas",
-        title="Nossas Soluções Completas",
-        subtitle="Sistemas empresariais famosos e tradicionais - Versões completas para sua empresa"
+        badge_text="💼 {{ t('solutions_all_systems_badge') }}",
+        title="{{ t('solutions_complete_title') }}",
+        subtitle="{{ t('solutions_complete_subtitle') }}"
     ) }}
     
     <div class="row mb-5">
@@ -69,20 +69,20 @@
             <div class="card solution-card segment-crm h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-chart-line fa-2x mb-2"></i>
-                    <h4>CRM Estilo Pipedrive</h4>
+                    <h4>{{ t('system_pipedrive_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema de CRM completo com funil visual, automação de vendas e gestão de leads inspirado no Pipedrive.</p>
+                    <p>{{ t('system_pipedrive_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Pipeline visual de vendas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Gestão de leads e atividades</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Automação de follow-ups</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de performance</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_pipedrive_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_pipedrive_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_pipedrive_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_pipedrive_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_crm_profissional') }}" class="btn-segment-crm">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -93,20 +93,20 @@
             <div class="card solution-card segment-marketing h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-bullhorn fa-2x mb-2"></i>
-                    <h4>Marketing Estilo HubSpot</h4>
+                    <h4>{{ t('system_hubspot_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Plataforma completa de automação de marketing, campanhas e geração de leads como o HubSpot.</p>
+                    <p>{{ t('system_hubspot_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Automação de marketing</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Campanhas de e-mail</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Funil de conversão</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Analytics avançado</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_hubspot_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_hubspot_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_hubspot_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_hubspot_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_hubspot_marketing') }}" class="btn-segment-marketing">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -117,20 +117,20 @@
             <div class="card solution-card segment-comunicacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-comments fa-2x mb-2"></i>
-                    <h4>Comunicação Estilo Slack</h4>
+                    <h4>{{ t('system_slack_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema de comunicação empresarial em tempo real com canais, threads e integrações como o Slack.</p>
+                    <p>{{ t('system_slack_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Chat em tempo real</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Canais organizados</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Mensagens diretas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Compartilhamento de arquivos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_slack_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_slack_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_slack_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_slack_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_slack_comunicacao') }}" class="btn-segment-comunicacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -141,20 +141,20 @@
             <div class="card solution-card segment-projetos h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-tasks fa-2x mb-2"></i>
-                    <h4>Gestão de Projetos</h4>
+                    <h4>{{ t('system_project_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema de gestão de projetos com boards visuais, timeline e colaboração em equipe como Trello.</p>
+                    <p>{{ t('system_project_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Boards de Kanban</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Timeline de projetos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Colaboração em equipe</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Drag & Drop</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_project_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_project_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_project_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_project_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_trello_projetos') }}" class="btn-segment-projetos">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -165,20 +165,20 @@
             <div class="card solution-card segment-comunicacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fab fa-whatsapp fa-2x mb-2"></i>
-                    <h4>WhatsApp Business</h4>
+                    <h4>{{ t('system_whatsapp_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Integração completa com WhatsApp Business para atendimento automatizado e gestão de conversas.</p>
+                    <p>{{ t('system_whatsapp_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Respostas automáticas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Múltiplos atendentes</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de mensagens</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Chatbot integrado</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_whatsapp_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_whatsapp_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_whatsapp_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_whatsapp_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_whatsapp_business') }}" class="btn-segment-comunicacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -189,20 +189,20 @@
             <div class="card solution-card segment-comunicacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-video fa-2x mb-2"></i>
-                    <h4>Videoconferência</h4>
+                    <h4>{{ t('system_video_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Plataforma de reuniões online com recursos avançados para empresas que trabalham remotamente.</p>
+                    <p>{{ t('system_video_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Salas virtuais</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Gravação de reuniões</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Compartilhamento de tela</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Chat integrado</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_video_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_video_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_video_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_video_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_zoom_videoconferencia') }}" class="btn-segment-comunicacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -213,20 +213,20 @@
             <div class="card solution-card segment-ecommerce h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-shopping-cart fa-2x mb-2"></i>
-                    <h4>Sistema de Vendas Online</h4>
+                    <h4>{{ t('system_ecommerce_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>E-commerce completo com controle de produtos, pedidos e relatórios de vendas automáticos.</p>
+                    <p>{{ t('system_ecommerce_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Catálogo de produtos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de pedidos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Gráficos de performance</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ecommerce_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ecommerce_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ecommerce_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ecommerce_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_ecommerce') }}" class="btn-segment-ecommerce">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -237,20 +237,20 @@
             <div class="card solution-card segment-saude h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-calendar-check fa-2x mb-2"></i>
-                    <h4>Agenda Online</h4>
+                    <h4>{{ t('system_schedule_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Perfeito para consultórios, salões e clínicas com agendamento automático e lembretes.</p>
+                    <p>{{ t('system_schedule_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Agendamento online</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de horários</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatório de atendimentos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Estatísticas mensais</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_schedule_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_schedule_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_schedule_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_schedule_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_agenda') }}" class="btn-segment-saude">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -261,20 +261,20 @@
             <div class="card solution-card segment-financeiro h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-boxes fa-2x mb-2"></i>
-                    <h4>Controle de Estoque</h4>
+                    <h4>{{ t('system_inventory_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Gestão completa de estoque com alertas automáticos e relatórios detalhados.</p>
+                    <p>{{ t('system_inventory_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de produtos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Alertas de reposição</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de movimento</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Exportação para Excel</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_inventory_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_inventory_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_inventory_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_inventory_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_estoque') }}" class="btn-segment-financeiro">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -285,20 +285,20 @@
             <div class="card solution-card segment-financeiro h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-chart-line fa-2x mb-2"></i>
-                    <h4>Sistema Financeiro</h4>
+                    <h4>{{ t('system_financial_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Controle financeiro completo com gráficos de receitas, despesas e fluxo de caixa.</p>
+                    <p>{{ t('system_financial_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de receitas/despesas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Fluxo de caixa</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Dashboards visuais</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios mensais</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_financial_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_financial_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_financial_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_financial_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_financeiro') }}" class="btn-segment-financeiro">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -309,20 +309,20 @@
             <div class="card solution-card segment-servicos h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-utensils fa-2x mb-2"></i>
-                    <h4>Gestão para Restaurantes</h4>
+                    <h4>{{ t('system_restaurant_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema completo para restaurantes com controle de pedidos e análise de vendas.</p>
+                    <p>{{ t('system_restaurant_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de pedidos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Cardápio digital</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Itens mais vendidos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_restaurant_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_restaurant_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_restaurant_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_restaurant_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_restaurante') }}" class="btn-segment-servicos">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -333,20 +333,20 @@
             <div class="card solution-card segment-financeiro h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-cogs fa-2x mb-2"></i>
-                    <h4>Mini ERP Financeiro</h4>
+                    <h4>{{ t('system_mini_erp_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>ERP simplificado com módulos integrados para gestão completa da empresa.</p>
+                    <p>{{ t('system_mini_erp_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Módulo financeiro</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de clientes</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Business Intelligence</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Dashboards executivos</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_mini_erp_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_mini_erp_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_mini_erp_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_mini_erp_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_erp') }}" class="btn-segment-financeiro">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -357,20 +357,20 @@
             <div class="card solution-card segment-servicos h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-wrench fa-2x mb-2"></i>
-                    <h4>Gestão de Oficinas</h4>
+                    <h4>{{ t('system_workshop_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Controle completo de ordens de serviço, peças e atendimentos para oficinas.</p>
+                    <p>{{ t('system_workshop_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Ordens de serviço</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de peças</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de produtividade</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Histórico de clientes</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_workshop_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_workshop_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_workshop_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_workshop_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_oficina') }}" class="btn-segment-servicos">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -381,20 +381,20 @@
             <div class="card solution-card segment-servicos h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-home fa-2x mb-2"></i>
-                    <h4>Gestão Imobiliária</h4>
+                    <h4>{{ t('system_real_estate_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema completo para imobiliárias com cadastro de imóveis e relatórios de vendas.</p>
+                    <p>{{ t('system_real_estate_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Cadastro de imóveis</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de disponibilidade</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de vendas/aluguéis</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Estatísticas de mercado</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_real_estate_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_real_estate_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_real_estate_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_real_estate_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_imoveis') }}" class="btn-segment-servicos">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -405,20 +405,20 @@
             <div class="card solution-card segment-educacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-dumbbell fa-2x mb-2"></i>
-                    <h4>Gestão de Academia</h4>
+                    <h4>{{ t('system_gym_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema para academias e escolas com controle de alunos, matrículas e frequência.</p>
+                    <p>{{ t('system_gym_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Cadastro de alunos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de matrículas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Relatórios de frequência</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Gráficos de desempenho</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_gym_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_gym_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_gym_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_gym_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_academia') }}" class="btn-segment-educacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -429,20 +429,20 @@
             <div class="card solution-card segment-educacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-graduation-cap fa-2x mb-2"></i>
-                    <h4>Sistema Escolar</h4>
+                    <h4>{{ t('system_school_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Gestão completa para escolas com controle de alunos, notas, frequência e relatórios.</p>
+                    <p>{{ t('system_school_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Cadastro de alunos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Controle de notas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Boletins automáticos</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Portal dos pais</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_school_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_school_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_school_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_school_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_academia') }}" class="btn-segment-educacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -453,20 +453,20 @@
             <div class="card solution-card segment-educacao h-100 shadow-sm">
                 <div class="card-header text-center">
                     <i class="fas fa-laptop fa-2x mb-2"></i>
-                    <h4>Plataforma EAD</h4>
+                    <h4>{{ t('system_ead_title') }}</h4>
                 </div>
                 <div class="card-body">
-                    <p>Sistema de ensino à distância completo com cursos, vídeo-aulas e certificados.</p>
+                    <p>{{ t('system_ead_desc') }}</p>
                     <ul class="list-unstyled mb-3">
-                        <li><i class="fas fa-check text-success me-2"></i>Cursos online</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Vídeo-aulas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Provas automáticas</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Certificados digitais</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ead_feature1') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ead_feature2') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ead_feature3') }}</li>
+                        <li><i class="fas fa-check text-success me-2"></i>{{ t('system_ead_feature4') }}</li>
                     </ul>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ url_for('demo_academia') }}" class="btn-segment-educacao">
-                        <i class="fas fa-play"></i> Testar Demo
+                        <i class="fas fa-play"></i> {{ t('demo_test_button') }}
                     </a>
                 </div>
             </div>
@@ -478,32 +478,30 @@
         <div class="col-12">
             <div class="card bg-light">
                 <div class="card-body text-center p-5">
-                    <h3 class="fw-bold mb-3">Também Criamos Sites Institucionais</h3>
+                    <h3 class="fw-bold mb-3">{{ t('solutions_additional_services') }}</h3>
                     <p class="lead mb-4">
-                        Além dos sistemas empresariais, a G&L Systems desenvolve sites institucionais 
-                        modernos, responsivos e profissionais para empresas que precisam de uma presença 
-                        online de qualidade.
+                        {{ t('solutions_additional_services_desc') }}
                     </p>
                     <div class="row justify-content-center">
                         <div class="col-md-3 mb-3">
                             <i class="fas fa-mobile-alt fa-2x text-primary mb-2"></i>
-                            <p><strong>Design Responsivo</strong></p>
+                            <p><strong>{{ t('solutions_responsive_design') }}</strong></p>
                         </div>
                         <div class="col-md-3 mb-3">
                             <i class="fas fa-search fa-2x text-success mb-2"></i>
-                            <p><strong>SEO Otimizado</strong></p>
+                            <p><strong>{{ t('solutions_seo_optimized') }}</strong></p>
                         </div>
                         <div class="col-md-3 mb-3">
                             <i class="fas fa-tachometer-alt fa-2x text-warning mb-2"></i>
-                            <p><strong>Alta Performance</strong></p>
+                            <p><strong>{{ t('solutions_high_performance') }}</strong></p>
                         </div>
                         <div class="col-md-3 mb-3">
                             <i class="fas fa-shield-alt fa-2x text-info mb-2"></i>
-                            <p><strong>100% Seguro</strong></p>
+                            <p><strong>{{ t('solutions_secure') }}</strong></p>
                         </div>
                     </div>
                     <a href="{{ url_for('contact') }}" class="btn btn-cta btn-lg">
-                        <i class="fas fa-envelope me-2"></i>Solicitar Orçamento
+                        <i class="fas fa-envelope me-2"></i>{{ t('solutions_request_quote') }}
                     </a>
                 </div>
             </div>
@@ -512,13 +510,13 @@
 
     <!-- CTA Banner -->
     {{ cta_banner(
-        title="Pronto para Revolucionar sua Empresa?",
-        description="Mais de 500 empresas já transformaram suas operações com nossos sistemas. Agende uma demonstração personalizada e veja como podemos otimizar seus processos.",
-        btn_text="Agendar Demonstração",
+        title=t('solutions_cta_title'),
+        description=t('solutions_cta_description'),
+        btn_text=t('solutions_cta_demo'),
         btn_href=url_for('contact'),
         btn_icon="fas fa-calendar",
         secondary_btn={
-            "text": "Ver Todos os Cases",
+            "text": t('solutions_cta_cases'),
             "href": url_for('cases'),
             "icon": "fas fa-chart-line"
         }

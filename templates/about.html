@@ -20,20 +20,13 @@
                         <h2 class="fw-bold">{{ t('about_mission') }}</h2>
                     </div>
                     <p class="lead text-center mb-4">
-                        Fundada em 2025, a G&L Systems nasceu da necessidade real de pequenas empresas 
-                        e empreendedores que perdiam horas preciosas com tarefas manuais e controles 
-                        desorganizados.
+                        {{ t('about_story_intro') }}
                     </p>
                     <p class="mb-4">
-                        Nossos fundadores, experientes em tecnologia e gestão empresarial, identificaram 
-                        que muitas empresas ainda dependiam de planilhas espalhadas, relatórios manuais 
-                        e processos demorados que consumiam tempo que poderia ser investido no crescimento 
-                        do negócio.
+                        {{ t('about_story_p1') }}
                     </p>
                     <p class="mb-0">
-                        Assim nasceu a G&L Systems: uma empresa focada em criar sistemas empresariais 
-                        inteligentes, acessíveis e que realmente fazem a diferença no dia a dia dos 
-                        empresários brasileiros.
+                        {{ t('about_story_p2') }}
                     </p>
                 </div>
             </div>
@@ -50,9 +43,7 @@
                 </div>
                 <div class="card-body text-center p-4">
                     <p class="mb-0">
-                        Economizar o tempo de pequenas empresas e empreendedores através de 
-                        sistemas empresariais inteligentes, transformando processos manuais 
-                        em automação eficiente e dados desorganizados em insights valiosos.
+                        {{ t('about_mission_card_text') }}
                     </p>
                 </div>
             </div>
@@ -66,9 +57,7 @@
                 </div>
                 <div class="card-body text-center p-4">
                     <p class="mb-0">
-                        Ser a principal referência em sistemas empresariais para pequenas 
-                        empresas no Brasil, democratizando o acesso à tecnologia de gestão 
-                        e contribuindo para o crescimento sustentável dos negócios.
+                        {{ t('about_vision_card_text') }}
                     </p>
                 </div>
             </div>
@@ -83,9 +72,9 @@
                 <div class="card-body text-center p-4">
                     <ul class="list-unstyled mb-0">
                         <li class="mb-2"><strong>{{ t('about_value2') }}:</strong> {{ t('about_value2_text') }}</li>
-                        <li class="mb-2"><strong>Acessibilidade:</strong> Preços justos para todos</li>
-                        <li class="mb-2"><strong>Eficiência:</strong> Soluções que realmente funcionam</li>
-                        <li class="mb-0"><strong>Inovação:</strong> Sempre em evolução</li>
+                        <li class="mb-2"><strong>{{ t('about_values_accessibility') }}:</strong> {{ t('about_values_accessibility_text') }}</li>
+                        <li class="mb-2"><strong>{{ t('about_values_efficiency') }}:</strong> {{ t('about_values_efficiency_text') }}</li>
+                        <li class="mb-0"><strong>{{ t('about_values_innovation') }}:</strong> {{ t('about_values_innovation_text') }}</li>
                     </ul>
                 </div>
             </div>
@@ -97,39 +86,30 @@
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-body p-5">
-                    <h2 class="fw-bold text-center mb-4">O Que Fazemos</h2>
+                    <h2 class="fw-bold text-center mb-4">{{ t('about_what_we_do') }}</h2>
                     <div class="row">
                         <div class="col-lg-6 mb-4">
-                            <h4><i class="fas fa-cogs text-primary me-2"></i>Sistemas Empresariais</h4>
+                            <h4><i class="fas fa-cogs text-primary me-2"></i>{{ t('about_business_systems') }}</h4>
                             <p>
-                                Desenvolvemos sistemas completos para gestão empresarial, incluindo 
-                                controle de estoque, sistema financeiro, e-commerce, agendamento online, 
-                                e muito mais. Cada sistema é projetado para economizar tempo e aumentar 
-                                a produtividade.
+                                {{ t('about_business_systems_desc') }}
                             </p>
                         </div>
                         <div class="col-lg-6 mb-4">
-                            <h4><i class="fas fa-chart-bar text-success me-2"></i>Relatórios e BI</h4>
+                            <h4><i class="fas fa-chart-bar text-success me-2"></i>{{ t('about_reports_bi') }}</h4>
                             <p>
-                                Nossos sistemas geram automaticamente relatórios detalhados, gráficos 
-                                intuitivos e planilhas exportáveis. Transformamos dados brutos em 
-                                informações valiosas para tomada de decisões estratégicas.
+                                {{ t('about_reports_bi_desc') }}
                             </p>
                         </div>
                         <div class="col-lg-6 mb-4">
-                            <h4><i class="fas fa-globe text-warning me-2"></i>Sites Institucionais</h4>
+                            <h4><i class="fas fa-globe text-warning me-2"></i>{{ t('about_institutional_websites') }}</h4>
                             <p>
-                                Criamos sites modernos, responsivos e profissionais para empresas 
-                                que precisam de uma presença online de qualidade. Design atrativo 
-                                e funcionalidades personalizadas.
+                                {{ t('about_institutional_websites_desc') }}
                             </p>
                         </div>
                         <div class="col-lg-6 mb-4">
-                            <h4><i class="fas fa-headset text-info me-2"></i>Suporte Especializado</h4>
+                            <h4><i class="fas fa-headset text-info me-2"></i>{{ t('about_specialized_support') }}</h4>
                             <p>
-                                Oferecemos suporte técnico especializado e treinamento para que 
-                                sua equipe aproveite ao máximo todas as funcionalidades dos nossos 
-                                sistemas.
+                                {{ t('about_specialized_support_desc') }}
                             </p>
                         </div>
                     </div>
@@ -141,15 +121,15 @@
     <!-- Why Choose Us -->
     <div class="row mb-5">
         <div class="col-12">
-            <h2 class="fw-bold text-center mb-4">Por Que Escolher a G&L Systems?</h2>
+            <h2 class="fw-bold text-center mb-4">{{ t('about_why_choose') }}</h2>
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="text-center">
                         <div class="feature-icon mb-3">
                             <i class="fas fa-rocket fa-3x text-primary"></i>
                         </div>
-                        <h5>Implementação Rápida</h5>
-                        <p class="text-muted">Sistemas prontos para usar em minutos, sem complicações.</p>
+                        <h5>{{ t('about_fast_implementation') }}</h5>
+                        <p class="text-muted">{{ t('about_fast_implementation_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -157,8 +137,8 @@
                         <div class="feature-icon mb-3">
                             <i class="fas fa-dollar-sign fa-3x text-success"></i>
                         </div>
-                        <h5>Preço Acessível</h5>
-                        <p class="text-muted">Tecnologia de qualidade com investimento que cabe no seu orçamento.</p>
+                        <h5>{{ t('about_affordable_price') }}</h5>
+                        <p class="text-muted">{{ t('about_affordable_price_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -166,8 +146,8 @@
                         <div class="feature-icon mb-3">
                             <i class="fas fa-users fa-3x text-warning"></i>
                         </div>
-                        <h5>Foco no Cliente</h5>
-                        <p class="text-muted">Desenvolvemos soluções pensando nas necessidades reais.</p>
+                        <h5>{{ t('about_customer_focus') }}</h5>
+                        <p class="text-muted">{{ t('about_customer_focus_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -175,8 +155,8 @@
                         <div class="feature-icon mb-3">
                             <i class="fas fa-shield-alt fa-3x text-info"></i>
                         </div>
-                        <h5>Segurança Total</h5>
-                        <p class="text-muted">Seus dados protegidos com a mais alta tecnologia de segurança.</p>
+                        <h5>{{ t('about_total_security') }}</h5>
+                        <p class="text-muted">{{ t('about_total_security_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -188,30 +168,27 @@
         <div class="col-12">
             <div class="card bg-light">
                 <div class="card-body p-5 text-center">
-                    <h2 class="fw-bold mb-4">Nossa Equipe</h2>
+                    <h2 class="fw-bold mb-4">{{ t('about_team_title') }}</h2>
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <p class="lead mb-4">
-                                Nossa equipe é formada por profissionais experientes em desenvolvimento 
-                                de software, design UX/UI, gestão empresarial e suporte técnico. 
-                                Trabalhamos unidos com um objetivo comum: criar soluções que realmente 
-                                façam a diferença na vida dos empresários.
+                                {{ t('about_team_description') }}
                             </p>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <i class="fas fa-code fa-2x text-primary mb-2"></i>
-                                    <h5>Desenvolvedores</h5>
-                                    <p class="text-muted">Especialistas em tecnologias modernas</p>
+                                    <h5>{{ t('about_team_developers') }}</h5>
+                                    <p class="text-muted">{{ t('about_team_developers_desc') }}</p>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <i class="fas fa-paint-brush fa-2x text-success mb-2"></i>
-                                    <h5>Designers</h5>
-                                    <p class="text-muted">Focados em experiência do usuário</p>
+                                    <h5>{{ t('about_team_designers') }}</h5>
+                                    <p class="text-muted">{{ t('about_team_designers_desc') }}</p>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
-                                    <h5>Consultores</h5>
-                                    <p class="text-muted">Especialistas em gestão empresarial</p>
+                                    <h5>{{ t('about_team_consultants') }}</h5>
+                                    <p class="text-muted">{{ t('about_team_consultants_desc') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -226,16 +203,16 @@
         <div class="col-12">
             <div class="card bg-primary text-white">
                 <div class="card-body p-5 text-center">
-                    <h2 class="fw-bold mb-3">Pronto para Conhecer Nossas Soluções?</h2>
+                    <h2 class="fw-bold mb-3">{{ t('about_cta_title') }}</h2>
                     <p class="lead mb-4">
-                        Teste nossos sistemas gratuitamente e veja como podem transformar sua empresa!
+                        {{ t('about_cta_description') }}
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <a href="{{ url_for('solutions') }}" class="btn btn-warning btn-lg">
-                            <i class="fas fa-play me-2"></i>Testar Demos
+                            <i class="fas fa-play me-2"></i>{{ t('about_cta_test_demos') }}
                         </a>
                         <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-envelope me-2"></i>Falar Conosco
+                            <i class="fas fa-envelope me-2"></i>{{ t('about_cta_contact_us') }}
                         </a>
                     </div>
                 </div>

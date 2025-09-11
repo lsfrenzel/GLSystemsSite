@@ -520,6 +520,7 @@ GL_Systems.setupSolutionFilters = function() {
     });
     
     let isFiltering = false; // Prevent race conditions
+    let cardContainer = solutionCards[0].closest('.row'); // Get the container for reorganization
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -538,67 +539,109 @@ GL_Systems.setupSolutionFilters = function() {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             
             if (prefersReducedMotion) {
-                // Simple show/hide for reduced motion
-                solutionCards.forEach(card => {
-                    const shouldShow = filterValue === 'all' || card.classList.contains(`segment-${filterValue}`);
-                    card.style.display = shouldShow ? '' : 'none';
-                });
+                // Simple show/hide with reorganization for reduced motion
+                reorganizeAndShowCards(filterValue, true);
                 isFiltering = false;
                 return;
             }
             
-            // Categorize cards using CSS classes
-            const cardsToShow = [];
-            const cardsToHide = [];
-            
-            solutionCards.forEach(card => {
-                const shouldShow = filterValue === 'all' || card.classList.contains(`segment-${filterValue}`);
-                
-                if (shouldShow) {
-                    cardsToShow.push(card);
-                } else {
-                    cardsToHide.push(card);
-                }
-            });
-            
-            console.log('Cards to show:', cardsToShow.length, 'Cards to hide:', cardsToHide.length);
-            
-            // Clear previous animations
-            solutionCards.forEach(card => {
-                card.classList.remove('filtering-out', 'filtering-in');
-                card.style.animationDelay = '';
-            });
-            
-            // Phase 1: Hide cards using CSS classes
-            cardsToHide.forEach(card => {
-                card.classList.add('filtering-out');
-            });
-            
-            // Phase 2: Show cards after hide animation
-            setTimeout(() => {
-                cardsToHide.forEach(card => {
-                    card.style.display = 'none';
-                    card.classList.remove('filtering-out');
-                });
-                
-                cardsToShow.forEach((card, index) => {
-                    card.style.display = '';
-                    card.classList.add('filtering-in');
-                    card.style.animationDelay = `${index * 100}ms`;
-                });
-                
-                // Clean up after animation
-                setTimeout(() => {
-                    cardsToShow.forEach(card => {
-                        card.classList.remove('filtering-in');
-                        card.style.animationDelay = '';
-                    });
-                    isFiltering = false;
-                }, cardsToShow.length * 100 + 600);
-                
-            }, 400);
+            // Animate and reorganize cards
+            reorganizeAndShowCards(filterValue, false);
         });
     });
+    
+    function reorganizeAndShowCards(filterValue, skipAnimation) {
+        // Separate cards by category
+        let priorityCards = [];
+        let otherCards = [];
+        
+        solutionCards.forEach(card => {
+            const cardColumn = card.closest('.col-lg-4, .col-md-6');
+            if (filterValue === 'all') {
+                priorityCards.push(cardColumn);
+            } else if (card.classList.contains(`segment-${filterValue}`)) {
+                priorityCards.push(cardColumn);
+            } else {
+                // Hide non-matching cards for specific filters
+                if (filterValue !== 'all') {
+                    otherCards.push(cardColumn);
+                } else {
+                    priorityCards.push(cardColumn);
+                }
+            }
+        });
+        
+        if (skipAnimation) {
+            // Simple reorganization without animation
+            reorganizeCardOrder(priorityCards, otherCards, filterValue);
+            isFiltering = false;
+            return;
+        }
+        
+        // Clear previous animations
+        solutionCards.forEach(card => {
+            card.classList.remove('filtering-out', 'filtering-in');
+            card.style.animationDelay = '';
+        });
+        
+        // Phase 1: Hide all cards
+        solutionCards.forEach(card => {
+            card.classList.add('filtering-out');
+        });
+        
+        // Phase 2: Reorganize and show cards
+        setTimeout(() => {
+            reorganizeCardOrder(priorityCards, otherCards, filterValue);
+            
+            // Show priority cards first with animation
+            priorityCards.forEach((cardColumn, index) => {
+                const card = cardColumn.querySelector('.solution-card');
+                cardColumn.style.display = '';
+                card.classList.remove('filtering-out');
+                card.classList.add('filtering-in');
+                card.style.animationDelay = `${index * 100}ms`;
+            });
+            
+            // Show other cards after priority ones if showing all
+            if (filterValue === 'all') {
+                otherCards.forEach((cardColumn, index) => {
+                    const card = cardColumn.querySelector('.solution-card');
+                    cardColumn.style.display = '';
+                    card.classList.remove('filtering-out');
+                    card.classList.add('filtering-in');
+                    card.style.animationDelay = `${(priorityCards.length + index) * 100}ms`;
+                });
+            } else {
+                // Hide non-matching cards
+                otherCards.forEach(cardColumn => {
+                    cardColumn.style.display = 'none';
+                });
+            }
+            
+            // Clean up after animation
+            setTimeout(() => {
+                solutionCards.forEach(card => {
+                    card.classList.remove('filtering-in', 'filtering-out');
+                    card.style.animationDelay = '';
+                });
+                isFiltering = false;
+            }, (priorityCards.length + (filterValue === 'all' ? otherCards.length : 0)) * 100 + 600);
+            
+        }, 400);
+    }
+    
+    function reorganizeCardOrder(priorityCards, otherCards, filterValue) {
+        // Reorganize DOM order: priority cards first, then others
+        priorityCards.forEach(cardColumn => {
+            cardContainer.appendChild(cardColumn);
+        });
+        
+        if (filterValue === 'all') {
+            otherCards.forEach(cardColumn => {
+                cardContainer.appendChild(cardColumn);
+            });
+        }
+    }
 };
 
 // Revolutionary Top Systems Demo Functionality

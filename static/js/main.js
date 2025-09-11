@@ -501,9 +501,83 @@ GL_Systems.enhanceContactForm = function() {
     });
 };
 
+// Solution filters functionality
+GL_Systems.setupSolutionFilters = function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const solutionCards = document.querySelectorAll('.solution-card');
+    
+    if (filterButtons.length === 0 || solutionCards.length === 0) return;
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filterValue = this.dataset.filter;
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter cards with smooth animation
+            solutionCards.forEach(card => {
+                const cardCategories = card.className;
+                let shouldShow = false;
+                
+                if (filterValue === 'all') {
+                    shouldShow = true;
+                } else {
+                    // Map filter values to segment classes
+                    const categoryMap = {
+                        'crm': 'segment-crm',
+                        'comunicacao': 'segment-comunicacao',
+                        'projetos': 'segment-projetos',
+                        'financeiro': 'segment-financeiro',
+                        'ecommerce': 'segment-ecommerce',
+                        'saude': 'segment-saude',
+                        'educacao': 'segment-educacao',
+                        'servicos': 'segment-servicos',
+                        'marketing': 'segment-marketing'
+                    };
+                    
+                    shouldShow = cardCategories.includes(categoryMap[filterValue]);
+                }
+                
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.8)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.3s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.8)';
+                    
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            // Update counter if exists
+            setTimeout(() => {
+                const visibleCards = Array.from(solutionCards).filter(card => 
+                    window.getComputedStyle(card).display !== 'none'
+                ).length;
+                
+                // You can add a counter display here if needed
+                GL_Systems.log && GL_Systems.log(`Showing ${visibleCards} solutions`);
+            }, 350);
+        });
+    });
+};
+
 // Initialize contact form enhancement
 document.addEventListener('DOMContentLoaded', function() {
     GL_Systems.enhanceContactForm();
+    GL_Systems.setupSolutionFilters();
 });
 
 // Global error handler

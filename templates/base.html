@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}G&L Systems - Sistemas Empresariais{% endblock %}</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -25,7 +29,7 @@
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}">
                 <div class="logo-container me-2">
-                    <i class="fas fa-cube logo-icon"></i>
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="G&L Systems Logo" class="navbar-logo">
                 </div>
                 <span class="logo-text">G&L Systems</span>
             </a>
@@ -105,7 +109,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5><i class="fas fa-code-branch me-2"></i>G&L Systems</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="G&L Systems Logo" style="height: 40px; margin-right: 10px;">
+                        <h5 class="mb-0">G&L Systems</h5>
+                    </div>
                     <p class="text-muted">Tecnologia que economiza tempo para pequenas empresas e empreendedores.</p>
                     <div class="social-links">
                         <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>

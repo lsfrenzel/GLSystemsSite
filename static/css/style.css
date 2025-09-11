@@ -188,6 +188,41 @@ h1, h2, h3, h4, h5, h6 {
     100% { transform: translateX(100%); }
 }
 
+/* Language Dropdown Styles */
+.language-dropdown {
+    background: var(--gradient-dark) !important;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-width: 140px;
+}
+
+.language-item {
+    color: white !important;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.language-item:hover {
+    background: rgba(138, 43, 226, 0.2) !important;
+    color: #b084ff !important;
+}
+
+.language-item.active {
+    background: rgba(138, 43, 226, 0.3) !important;
+    color: #b084ff !important;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
 .logo-container {
     position: relative;
     display: flex;

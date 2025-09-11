@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from flask import render_template, request, flash, redirect, url_for, make_response, jsonify, send_file
 from werkzeug.utils import secure_filename
 from app import app
+from flask import session, redirect, url_for, request as flask_request
 from PIL import Image, ImageEnhance, ImageFilter
 import PyPDF2
 from reportlab.pdfgen import canvas
@@ -74,6 +75,15 @@ sample_financial_data = [
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/change-language/<language>')
+def change_language(language):
+    """Alterar idioma do site"""
+    if language in ['pt', 'en']:
+        session['language'] = language
+    
+    # Redirecionar de volta para a página anterior
+    return redirect(flask_request.referrer or url_for('index'))
 
 @app.route('/solucoes')
 def solutions():

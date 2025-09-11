@@ -40,43 +40,65 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('index') }}">
-                            <i class="fas fa-home me-1"></i>Início
+                            <i class="fas fa-home me-1"></i>{{ t('nav_home') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('solutions') }}">
-                            <i class="fas fa-rocket me-1"></i>Soluções
+                            <i class="fas fa-rocket me-1"></i>{{ t('nav_solutions') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link highlighted-nav" href="{{ url_for('dia_a_dia') }}">
-                            <i class="fas fa-tools me-1"></i>Dia-a-dia
+                            <i class="fas fa-tools me-1"></i>{{ t('nav_tools') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('about') }}">
-                            <i class="fas fa-users me-1"></i>Sobre Nós
+                            <i class="fas fa-users me-1"></i>{{ t('nav_about') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('cases') }}">
-                            <i class="fas fa-trophy me-1"></i>Cases
+                            <i class="fas fa-trophy me-1"></i>{{ t('nav_cases') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('vantagens') }}">
-                            <i class="fas fa-star me-1"></i>Vantagens
+                            <i class="fas fa-star me-1"></i>{{ t('nav_advantages') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('estudos') }}">
-                            <i class="fas fa-chart-bar me-1"></i>Estudos
+                            <i class="fas fa-chart-bar me-1"></i>{{ t('nav_studies') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link modern-nav-link" href="{{ url_for('contact') }}">
-                            <i class="fas fa-paper-plane me-1"></i>Contato
+                            <i class="fas fa-paper-plane me-1"></i>{{ t('nav_contact') }}
                         </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle modern-nav-link" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i>
+                            {% if lang == 'en' %}EN{% else %}PT{% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end language-dropdown">
+                            <li>
+                                <a class="dropdown-item language-item {% if lang == 'pt' %}active{% endif %}" 
+                                   href="{{ url_for('change_language', language='pt') }}">
+                                    <img src="https://flagicons.lipis.dev/flags/4x3/br.svg" alt="Português" class="flag-icon">
+                                    Português
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item language-item {% if lang == 'en' %}active{% endif %}" 
+                                   href="{{ url_for('change_language', language='en') }}">
+                                    <img src="https://flagicons.lipis.dev/flags/4x3/us.svg" alt="English" class="flag-icon">
+                                    English
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

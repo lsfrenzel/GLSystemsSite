@@ -297,13 +297,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-gradient {
     font-family: 'Orbitron', monospace;
-    background: linear-gradient(135deg, #00ffff 0%, #ff00ff 50%, #00ff88 100%);
+    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 50%, #20c997 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-    filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.4));
+    text-shadow: 0 0 30px rgba(13, 110, 253, 0.3);
+    filter: drop-shadow(0 0 8px rgba(111, 66, 193, 0.4));
     letter-spacing: 0.02em;
+    font-weight: 800;
 }
 
 .hero-stats {
@@ -598,20 +599,21 @@ h1, h2, h3, h4, h5, h6 {
 .nav-tabs .nav-link {
     border-radius: 10px 10px 0 0;
     border: none;
-    color: var(--secondary-color);
+    color: #495057;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .nav-tabs .nav-link.active {
-    background-color: white;
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
+    background-color: #0d6efd;
+    color: white;
+    border-bottom: 3px solid #0d6efd;
 }
 
 .nav-tabs .nav-link:hover {
     border-color: transparent;
-    color: var(--primary-color);
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
 }
 
 /* Alerts */

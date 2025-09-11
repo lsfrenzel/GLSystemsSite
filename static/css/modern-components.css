@@ -11,7 +11,7 @@
 
 .text-neon {
     color: var(--primary-color);
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
 }
 
 /* Section Header Component */
@@ -23,14 +23,14 @@
 .section-badge {
     display: inline-block;
     background: var(--gradient-tech);
-    color: white;
+    color: #000;
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
     font-weight: 600;
     margin-bottom: var(--space-4);
     box-shadow: var(--shadow-neon);
-    border: 1px solid rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(138, 43, 226, 0.3);
 }
 
 .section-title {
@@ -73,21 +73,21 @@
 }
 
 .btn-secondary-neon {
-    background: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
-    border: 2px solid #0d6efd;
+    background: rgba(192, 192, 192, 0.1);
+    color: #8a2be2;
+    border: 2px solid #8a2be2;
     box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary-neon:hover {
-    background: #0d6efd;
+    background: #8a2be2;
     color: white;
     box-shadow: var(--shadow-neon);
 }
 
 .btn-cta {
     background: var(--gradient-neon);
-    color: white;
+    color: #000;
     border: none;
     padding: var(--space-4) var(--space-8);
     font-size: var(--text-lg);
@@ -98,7 +98,7 @@
 }
 
 .btn-cta:hover {
-    color: white;
+    color: #000;
     transform: translateY(-3px) scale(1.05);
     box-shadow: var(--shadow-glow);
 }
@@ -147,7 +147,7 @@
 .card-dark {
     background: var(--gradient-dark);
     color: white;
-    border-color: rgba(0, 255, 255, 0.2);
+    border-color: rgba(138, 43, 226, 0.2);
 }
 
 .card-dark:hover {
@@ -211,7 +211,7 @@
     font-weight: 800;
     font-family: 'Orbitron', monospace;
     color: var(--primary-color);
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
 }
 
 .stat-label {
@@ -228,7 +228,7 @@
     text-align: center;
     color: white;
     margin: var(--space-16) 0;
-    border: 2px solid rgba(0, 255, 255, 0.2);
+    border: 2px solid rgba(138, 43, 226, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -383,18 +383,7 @@
     75% { transform: translateY(-10px) rotate(270deg); }
 }
 
-/* Section Badges */
-.section-badge {
-    display: inline-block;
-    background: var(--gradient-tech);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-2xl);
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    box-shadow: var(--shadow-md);
-}
+/* Section Badges - Removed duplicate, using earlier definition */
 
 .section-title {
     font-size: 2.5rem;
@@ -489,7 +478,7 @@
     justify-content: center;
     margin: 0 auto 1rem;
     font-size: 2rem;
-    color: white;
+    color: #000;
     box-shadow: var(--shadow-md);
 }
 

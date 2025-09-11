@@ -2,9 +2,9 @@
 
 :root {
     /* Colors - Cyberpunk Theme */
-    --primary-color: #00ffff;
-    --primary-dark: #00cccc;
-    --primary-light: #66ffff;
+    --primary-color: #c0c0c0;
+    --primary-dark: #a0a0a0;
+    --primary-light: #e0e0e0;
     --secondary-color: #ff0080;
     --success-color: #00ff88;
     --danger-color: #ff0040;
@@ -15,10 +15,10 @@
     --accent-color: #ff0080;
     --accent-light: #ff66b3;
     
-    /* Cyberpunk Gradients */
-    --gradient-primary: linear-gradient(135deg, #00ffff 0%, #0080ff 100%);
-    --gradient-tech: linear-gradient(135deg, #00ffff 0%, #ff0080 50%, #0080ff 100%);
-    --gradient-neon: linear-gradient(135deg, #00ffff 0%, #ff0080 100%);
+    /* Silver Gradients */
+    --gradient-primary: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
+    --gradient-tech: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 50%, #6f42c1 100%);
+    --gradient-neon: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
     --gradient-success: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
     --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
     --gradient-glass: linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(255,0,128,0.05) 100%);
@@ -52,9 +52,9 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-neon: 0 0 20px rgba(0, 255, 255, 0.4);
-    --shadow-neon-pink: 0 0 20px rgba(255, 0, 128, 0.4);
-    --shadow-glow: 0 0 30px rgba(0, 255, 255, 0.3);
+    --shadow-neon: 0 0 20px rgba(192, 192, 192, 0.4);
+    --shadow-neon-pink: 0 0 20px rgba(138, 43, 226, 0.4);
+    --shadow-glow: 0 0 30px rgba(192, 192, 192, 0.3);
     
     /* Border Radius */
     --radius-sm: 0.375rem;
@@ -234,12 +234,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .bg-shape {
     position: absolute;
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.05) 100%);
+    background: radial-gradient(circle, rgba(192, 192, 192, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%);
     border-radius: 50%;
     animation: float 6s ease-in-out infinite;
     backdrop-filter: blur(3px);
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(192, 192, 192, 0.2);
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
 }
 
 .bg-shape.shape-1 {
@@ -273,17 +273,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-badge {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.15) 0%, rgba(255, 0, 255, 0.15) 100%);
-    color: #00ffff;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+    color: #8a2be2;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-2xl);
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    border: 1px solid rgba(0, 255, 255, 0.4);
+    border: 1px solid rgba(138, 43, 226, 0.4);
     backdrop-filter: blur(15px);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
 }
 
 .hero-title {
@@ -311,9 +311,9 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(26, 10, 46, 0.4) 100%);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
-    border: 1px solid rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(192, 192, 192, 0.3);
     backdrop-filter: blur(25px);
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.2), inset 0 0 25px rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 25px rgba(192, 192, 192, 0.2), inset 0 0 25px rgba(138, 43, 226, 0.1);
 }
 
 .stat-item {
@@ -324,10 +324,10 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', monospace;
     font-size: 2rem;
     font-weight: 800;
-    color: #00ffff;
+    color: #8a2be2;
     margin-bottom: 0.25rem;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+    filter: drop-shadow(0 0 5px rgba(138, 43, 226, 0.5));
     letter-spacing: 0.01em;
 }
 
@@ -376,24 +376,24 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-hero-outline {
     background: transparent;
-    color: #00ffff;
-    border: 2px solid rgba(0, 255, 255, 0.5);
+    color: #c0c0c0;
+    border: 2px solid rgba(192, 192, 192, 0.5);
     padding: 1rem 2rem;
     border-radius: var(--radius-2xl);
     font-weight: 600;
     transition: var(--transition-all);
     backdrop-filter: blur(15px);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+    text-shadow: 0 0 8px rgba(192, 192, 192, 0.6);
 }
 
 .btn-hero-outline:hover {
-    background: rgba(0, 255, 255, 0.1);
-    border-color: rgba(0, 255, 255, 0.8);
+    background: rgba(192, 192, 192, 0.1);
+    border-color: rgba(192, 192, 192, 0.8);
     transform: translateY(-3px);
-    color: #00ffff;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-    text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    color: #c0c0c0;
+    box-shadow: 0 0 25px rgba(192, 192, 192, 0.4);
+    text-shadow: 0 0 12px rgba(192, 192, 192, 0.8);
 }
 
 .bg-gradient-primary {
@@ -531,7 +531,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .table tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.05);
+    background-color: rgba(192, 192, 192, 0.05);
 }
 
 /* Buttons */
@@ -559,7 +559,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus, .form-select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(192, 192, 192, 0.25);
 }
 
 /* Modals */
@@ -767,7 +767,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #0056b3;
+    background: #a0a0a0;
 }
 
 /* Print Styles */
@@ -846,6 +846,35 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Fix white text on light backgrounds */
+.card-body .text-white,
+.bg-light .text-white,
+.card-white .text-white {
+    color: #8a2be2 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure good contrast on all background types */
+.bg-gradient-primary .text-white,
+.card-header .text-white {
+    color: #000 !important;
+    text-shadow: none;
+}
+
+.table-primary .text-white {
+    color: #000 !important;
+}
+
+/* Keep high contrast on dark backgrounds */
+.bg-dark .text-white,
+.card-dark .text-white,
+.cta-banner .text-white,
+.impact-item .text-white,
+.trend-item .text-white {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
 /* Dark Theme Styles for Main Page */
 .bg-dark {
     background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 100%) !important;
@@ -864,17 +893,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-badge {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.15) 0%, rgba(255, 0, 255, 0.15) 100%);
-    color: #00ffff;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+    color: #8a2be2;
     padding: 0.5rem 1rem;
     border-radius: 1.5rem;
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    border: 1px solid rgba(0, 255, 255, 0.4);
+    border: 1px solid rgba(138, 43, 226, 0.4);
     backdrop-filter: blur(15px);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
 }
 
 .section-title {
@@ -904,8 +933,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .system-title {
-    color: #00ffff;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    color: #8a2be2;
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
 }
 
 .system-subtitle {
@@ -919,7 +948,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .rank-badge {
-    background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+    background: linear-gradient(135deg, #c0c0c0 0%, #8a2be2 100%);
     color: #000;
     border-radius: 50%;
     width: 50px;
@@ -931,7 +960,7 @@ h1, h2, h3, h4, h5, h6 {
     top: -10px;
     right: -10px;
     font-weight: bold;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
 }
 
 .system-icon {

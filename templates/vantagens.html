@@ -3,15 +3,15 @@
 {% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
 {% from "components/cta_banner.html" import cta_banner %}
 
-{% block title %}Vantagens e Benefícios - G&L Systems{% endblock %}
+{% block title %}{{ t('advantages_title') }} - {{ t('company_name') }}{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
     {{ section_header(
-        badge_text="🏆 Vantagens Exclusivas",
-        title="Vantagens Competitivas",
-        subtitle="Por que escolher G&L Systems para transformar sua empresa"
+        badge_text=t('advantages_badge'),
+        title=t('advantages_main_title'),
+        subtitle=t('advantages_main_subtitle')
     ) }}
 
     <!-- Principais Vantagens -->
@@ -21,11 +21,11 @@
                 <div class="advantage-icon">
                     <i class="fas fa-rocket fa-3x text-primary"></i>
                 </div>
-                <h4>Implementação Ultrarrápida</h4>
-                <p>Sistemas prontos para usar em <strong>minutos</strong>, não semanas. Nossa tecnologia permite configuração instantânea sem necessidade de treinamento complexo.</p>
+                <h4>{{ t('advantages_fast_impl') }}</h4>
+                <p>{{ t('advantages_fast_impl_desc') }}</p>
                 <div class="advantage-stats">
                     <span class="stat-number">24h</span>
-                    <span class="stat-label">Tempo máximo de implementação</span>
+                    <span class="stat-label">{{ t('advantages_fast_impl_stat') }}</span>
                 </div>
             </div>
         </div>
@@ -35,11 +35,11 @@
                 <div class="advantage-icon">
                     <i class="fas fa-brain fa-3x text-success"></i>
                 </div>
-                <h4>Inteligência Artificial Integrada</h4>
-                <p>IA nativa que aprende com seus dados, otimiza processos automaticamente e fornece insights preditivos para tomada de decisões estratégicas.</p>
+                <h4>{{ t('advantages_ai_integration') }}</h4>
+                <p>{{ t('advantages_ai_integration_desc') }}</p>
                 <div class="advantage-stats">
                     <span class="stat-number">87%</span>
-                    <span class="stat-label">Melhoria em decisões estratégicas</span>
+                    <span class="stat-label">{{ t('advantages_ai_integration_stat') }}</span>
                 </div>
             </div>
         </div>
@@ -49,11 +49,11 @@
                 <div class="advantage-icon">
                     <i class="fas fa-shield-alt fa-3x text-warning"></i>
                 </div>
-                <h4>Segurança Bancária</h4>
-                <p>Criptografia de nível militar, backups automáticos e conformidade total com LGPD. Seus dados mais seguros que em bancos tradicionais.</p>
+                <h4>{{ t('advantages_bank_security') }}</h4>
+                <p>{{ t('advantages_bank_security_desc') }}</p>
                 <div class="advantage-stats">
                     <span class="stat-number">99.9%</span>
-                    <span class="stat-label">Disponibilidade garantida</span>
+                    <span class="stat-label">{{ t('advantages_bank_security_stat') }}</span>
                 </div>
             </div>
         </div>
@@ -62,56 +62,56 @@
     <!-- Comparativo com Concorrentes -->
     <div class="row mb-5">
         <div class="col-12">
-            <h2 class="text-center mb-5">G&L Systems vs. Concorrência</h2>
+            <h2 class="text-center mb-5">{{ t('advantages_vs_competition') }}</h2>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead class="table-primary">
                         <tr>
-                            <th>Características</th>
+                            <th>{{ t('advantages_features') }}</th>
                             <th class="text-center">G&L Systems</th>
-                            <th class="text-center">Concorrente A</th>
-                            <th class="text-center">Concorrente B</th>
-                            <th class="text-center">Concorrente C</th>
+                            <th class="text-center">{{ t('advantages_competitor_a') }}</th>
+                            <th class="text-center">{{ t('advantages_competitor_b') }}</th>
+                            <th class="text-center">{{ t('advantages_competitor_c') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Implementação Rápida</strong></td>
+                            <td><strong>{{ t('advantages_fast_implementation') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                         </tr>
                         <tr>
-                            <td><strong>IA Nativa</strong></td>
+                            <td><strong>{{ t('advantages_native_ai') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                         </tr>
                         <tr>
-                            <td><strong>Preço Acessível</strong></td>
+                            <td><strong>{{ t('advantages_affordable_price') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                         </tr>
                         <tr>
-                            <td><strong>Suporte 24/7</strong></td>
+                            <td><strong>{{ t('advantages_24_7_support') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                         </tr>
                         <tr>
-                            <td><strong>Customização Total</strong></td>
+                            <td><strong>{{ t('advantages_total_customization') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-danger"><i class="fas fa-times fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                         </tr>
                         <tr>
-                            <td><strong>Integração Ilimitada</strong></td>
+                            <td><strong>{{ t('advantages_unlimited_integration') }}</strong></td>
                             <td class="text-center text-success"><i class="fas fa-check fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
                             <td class="text-center text-warning"><i class="fas fa-minus fa-lg"></i></td>
@@ -126,12 +126,12 @@
     <!-- Benefícios por Setor -->
     <div class="row mb-5">
         <div class="col-12">
-            <h2 class="text-center mb-5">Benefícios Específicos por Setor</h2>
+            <h2 class="text-center mb-5">{{ t('advantages_sector_benefits') }}</h2>
         </div>
         
         <div class="col-lg-6 mb-4">
             <div class="sector-benefits">
-                <h4><i class="fas fa-shopping-cart text-primary me-2"></i>Varejo & E-commerce</h4>
+                <h4><i class="fas fa-shopping-cart text-primary me-2"></i>{{ t('advantages_retail_title') }}</h4>
                 <ul class="benefits-list">
                     <li><strong>Controle de Estoque Inteligente:</strong> IA prevê demanda e otimiza reposição automaticamente</li>
                     <li><strong>Omnichannel Nativo:</strong> Unifique loja física, online e marketplaces em um só sistema</li>
@@ -143,7 +143,7 @@
 
         <div class="col-lg-6 mb-4">
             <div class="sector-benefits">
-                <h4><i class="fas fa-stethoscope text-success me-2"></i>Saúde & Clínicas</h4>
+                <h4><i class="fas fa-stethoscope text-success me-2"></i>{{ t('advantages_health_title') }}</h4>
                 <ul class="benefits-list">
                     <li><strong>Prontuário Eletrônico Completo:</strong> Histórico médico centralizado com IA para diagnósticos</li>
                     <li><strong>Agendamento Inteligente:</strong> Otimiza agenda médica e reduz faltas em 60%</li>
@@ -155,7 +155,7 @@
 
         <div class="col-lg-6 mb-4">
             <div class="sector-benefits">
-                <h4><i class="fas fa-utensils text-warning me-2"></i>Restaurantes & Food Service</h4>
+                <h4><i class="fas fa-utensils text-warning me-2"></i>{{ t('advantages_restaurant_title') }}</h4>
                 <ul class="benefits-list">
                     <li><strong>Gestão de Cardápio Dinâmica:</strong> Ajuste preços e pratos baseado em demanda real</li>
                     <li><strong>Controle de Desperdício:</strong> IA monitora validade e otimiza uso de ingredientes</li>
@@ -167,7 +167,7 @@
 
         <div class="col-lg-6 mb-4">
             <div class="sector-benefits">
-                <h4><i class="fas fa-tools text-info me-2"></i>Serviços & Oficinas</h4>
+                <h4><i class="fas fa-tools text-info me-2"></i>{{ t('advantages_services_title') }}</h4>
                 <ul class="benefits-list">
                     <li><strong>Rastreamento Total:</strong> Acompanhe cada equipamento em tempo real</li>
                     <li><strong>Orçamentos Inteligentes:</strong> IA sugere preços baseados no histórico e mercado</li>
@@ -183,34 +183,34 @@
         <div class="col-12">
             <div class="card bg-gradient-primary text-white">
                 <div class="card-body p-5">
-                    <h2 class="text-center mb-5">Impacto Financeiro Comprovado</h2>
+                    <h2 class="text-center mb-5">{{ t('advantages_financial_impact') }}</h2>
                     <div class="row">
                         <div class="col-md-3 mb-4">
                             <div class="impact-item text-center">
                                 <i class="fas fa-chart-line fa-3x mb-3"></i>
                                 <h3 class="fw-bold">+180%</h3>
-                                <p>Aumento médio na receita</p>
+                                <p>{{ t('advantages_revenue_increase') }}</p>
                             </div>
                         </div>
                         <div class="col-md-3 mb-4">
                             <div class="impact-item text-center">
                                 <i class="fas fa-cut fa-3x mb-3"></i>
                                 <h3 class="fw-bold">-65%</h3>
-                                <p>Redução de custos operacionais</p>
+                                <p>{{ t('advantages_cost_reduction') }}</p>
                             </div>
                         </div>
                         <div class="col-md-3 mb-4">
                             <div class="impact-item text-center">
                                 <i class="fas fa-clock fa-3x mb-3"></i>
                                 <h3 class="fw-bold">20h</h3>
-                                <p>Horas economizadas por semana</p>
+                                <p>{{ t('advantages_hours_saved') }}</p>
                             </div>
                         </div>
                         <div class="col-md-3 mb-4">
                             <div class="impact-item text-center">
                                 <i class="fas fa-trophy fa-3x mb-3"></i>
                                 <h3 class="fw-bold">95%</h3>
-                                <p>Taxa de satisfação dos clientes</p>
+                                <p>{{ t('advantages_satisfaction_rate') }}</p>
                             </div>
                         </div>
                     </div>
@@ -222,34 +222,34 @@
     <!-- Tecnologias Utilizadas -->
     <div class="row mb-5">
         <div class="col-12">
-            <h2 class="text-center mb-5">Tecnologias de Ponta</h2>
+            <h2 class="text-center mb-5">{{ t('advantages_technologies') }}</h2>
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="tech-card text-center">
                         <i class="fas fa-cloud fa-3x text-primary mb-3"></i>
-                        <h5>Cloud Computing</h5>
-                        <p class="text-muted">Infraestrutura escalável na AWS com 99.9% de uptime garantido</p>
+                        <h5>{{ t('advantages_cloud_computing') }}</h5>
+                        <p class="text-muted">{{ t('advantages_cloud_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="tech-card text-center">
                         <i class="fas fa-robot fa-3x text-success mb-3"></i>
-                        <h5>Machine Learning</h5>
-                        <p class="text-muted">Algoritmos proprietários que aprendem e otimizam seu negócio</p>
+                        <h5>{{ t('advantages_machine_learning') }}</h5>
+                        <p class="text-muted">{{ t('advantages_ml_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="tech-card text-center">
                         <i class="fas fa-mobile-alt fa-3x text-warning mb-3"></i>
-                        <h5>Mobile First</h5>
-                        <p class="text-muted">Apps nativos iOS e Android com sincronização em tempo real</p>
+                        <h5>{{ t('advantages_mobile_first') }}</h5>
+                        <p class="text-muted">{{ t('advantages_mobile_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="tech-card text-center">
                         <i class="fas fa-link fa-3x text-info mb-3"></i>
-                        <h5>API Aberta</h5>
-                        <p class="text-muted">Integre com qualquer sistema existente via API REST moderna</p>
+                        <h5>{{ t('advantages_open_api') }}</h5>
+                        <p class="text-muted">{{ t('advantages_api_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -259,15 +259,15 @@
     <!-- Garantias -->
     <div class="row mb-5">
         <div class="col-12">
-            <h2 class="text-center mb-5">Nossas Garantias</h2>
+            <h2 class="text-center mb-5">{{ t('advantages_guarantees') }}</h2>
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <div class="guarantee-card">
                         <div class="guarantee-icon">
                             <i class="fas fa-money-bill-wave fa-2x text-success"></i>
                         </div>
-                        <h5>Garantia de ROI</h5>
-                        <p>Se não economizar pelo menos 3x o valor investido em 12 meses, devolvemos seu dinheiro.</p>
+                        <h5>{{ t('advantages_roi_guarantee') }}</h5>
+                        <p>{{ t('advantages_roi_guarantee_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
@@ -275,8 +275,8 @@
                         <div class="guarantee-icon">
                             <i class="fas fa-undo fa-2x text-primary"></i>
                         </div>
-                        <h5>30 Dias de Teste</h5>
-                        <p>Use todos os recursos por 30 dias. Não ficou satisfeito? Cancelamento sem custo.</p>
+                        <h5>{{ t('advantages_30_days_trial') }}</h5>
+                        <p>{{ t('advantages_30_days_desc') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-4 mb-4">
@@ -284,8 +284,8 @@
                         <div class="guarantee-icon">
                             <i class="fas fa-headset fa-2x text-warning"></i>
                         </div>
-                        <h5>Suporte Vitalício</h5>
-                        <p>Suporte técnico especializado 24/7 durante toda a vida útil do seu sistema.</p>
+                        <h5>{{ t('advantages_lifetime_support') }}</h5>
+                        <p>{{ t('advantages_lifetime_desc') }}</p>
                     </div>
                 </div>
             </div>

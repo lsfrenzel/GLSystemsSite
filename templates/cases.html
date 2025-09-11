@@ -3,42 +3,42 @@
 {% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
 {% from "components/cta_banner.html" import cta_banner %}
 
-{% block title %}Cases de Sucesso - G&L Systems{% endblock %}
+{% block title %}{{ t('cases_title') }} - {{ t('company_name') }}{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
     {{ section_header(
-        badge_text="📈 Resultados Comprovados",
-        title="Cases de Sucesso",
-        subtitle="Empresas reais que transformaram seus resultados com nossos sistemas"
+        badge_text=t('cases_badge_proven'),
+        title=t('cases_main_title'),
+        subtitle=t('cases_main_subtitle')
     ) }}
 
     <!-- Métricas Gerais -->
     <div class="stats-grid">
         <div class="stat-item">
             <div class="stat-number">85%</div>
-            <div class="stat-label">Aumento Produtividade</div>
+            <div class="stat-label">{{ t('cases_productivity_increase') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">12h</div>
-            <div class="stat-label">Horas Economizadas</div>
+            <div class="stat-label">{{ t('cases_hours_saved') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">45%</div>
-            <div class="stat-label">Redução de Custos</div>
+            <div class="stat-label">{{ t('cases_cost_reduction') }}</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">500+</div>
-            <div class="stat-label">Empresas Atendidas</div>
+            <div class="stat-label">{{ t('cases_companies_served') }}</div>
         </div>
     </div>
 
     <!-- Cases Detalhados -->
     {{ section_header(
-        badge_text="💼 Cases Reais",
-        title="Histórias de Transformação",
-        subtitle="Veja como cada empresa alcançou seus objetivos"
+        badge_text=t('cases_real_badge'),
+        title=t('cases_transformation_title'),
+        subtitle=t('cases_transformation_subtitle')
     ) }}
 
     <!-- Case 1: E-commerce -->
@@ -48,7 +48,7 @@
                 <div class="placeholder-image bg-primary d-flex align-items-center justify-content-center">
                     <div class="text-center text-white">
                         <i class="fas fa-shopping-cart fa-4x mb-3"></i>
-                        <h4>ModaStyle Boutique</h4>
+                        <h4>{{ t('case_modastyle_title') }}</h4>
                     </div>
                 </div>
             </div>
@@ -57,20 +57,20 @@
             <div class="case-content">
                 <div class="case-header mb-3">
                     <span class="badge bg-primary mb-2">E-commerce</span>
-                    <h3>ModaStyle Boutique</h3>
-                    <p class="text-muted">Loja de roupas femininas - São Paulo/SP</p>
+                    <h3>{{ t('case_modastyle_title') }}</h3>
+                    <p class="text-muted">{{ t('case_modastyle_desc') }}</p>
                 </div>
                 
                 <div class="challenge mb-4">
-                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Desafio</h5>
-                    <p>Controle manual de estoque causava vendas duplicadas e falta de produtos. Processo de vendas demorado e relatórios inexistentes.</p>
+                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>{{ t('case_challenge') }}</h5>
+                    <p>{{ t('case_modastyle_challenge') }}</p>
                 </div>
 
                 <div class="solution mb-4">
-                    <h5><i class="fas fa-lightbulb text-success me-2"></i>Solução</h5>
-                    <p>Implementação do sistema integrado de e-commerce com controle automático de estoque, PDV digital e relatórios em tempo real.</p>
+                    <h5><i class="fas fa-lightbulb text-success me-2"></i>{{ t('case_solution') }}</h5>
+                    <p>{{ t('case_modastyle_solution') }}</p>
                     <div class="automation-highlight mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
-                        <h6><i class="fas fa-cogs text-info me-2"></i>Automação n8n Implementada</h6>
+                        <h6><i class="fas fa-cogs text-info me-2"></i>{{ t('case_automation_implemented') }}</h6>
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2"><strong>• Sincronização automática de estoque:</strong> n8n monitora vendas online e atualiza estoque físico em tempo real</li>
                             <li class="mb-2"><strong>• Notificações de vendas:</strong> Cliente recebe WhatsApp automático com confirmação e rastreamento</li>
@@ -81,18 +81,18 @@
                 </div>
 
                 <div class="results">
-                    <h5><i class="fas fa-trophy text-warning me-2"></i>Resultados</h5>
+                    <h5><i class="fas fa-trophy text-warning me-2"></i>{{ t('case_results') }}</h5>
                     <div class="row">
                         <div class="col-6">
                             <div class="result-item">
                                 <strong class="text-success">+120%</strong>
-                                <span class="text-muted d-block">Vendas online</span>
+                                <span class="text-muted d-block">{{ t('case_modastyle_online_sales') }}</span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="result-item">
                                 <strong class="text-primary">-80%</strong>
-                                <span class="text-muted d-block">Tempo de atendimento</span>
+                                <span class="text-muted d-block">{{ t('case_modastyle_service_time') }}</span>
                             </div>
                         </div>
                     </div>
@@ -100,10 +100,10 @@
 
                 <div class="testimonial mt-4">
                     <blockquote class="blockquote">
-                        <p class="mb-0">"Em 3 meses dobrei as vendas e reduzi o tempo gasto com controles manuais em 90%. O sistema se pagou rapidamente."</p>
+                        <p class="mb-0">"{{ t('case_modastyle_testimonial') }}"</p>
                     </blockquote>
                     <figcaption class="blockquote-footer mt-2">
-                        <strong>Mariana Santos</strong>, Proprietária
+                        <strong>Mariana Santos</strong>, {{ t('case_owner') }}
                     </figcaption>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                 <div class="placeholder-image bg-success d-flex align-items-center justify-content-center">
                     <div class="text-center text-white">
                         <i class="fas fa-utensils fa-4x mb-3"></i>
-                        <h4>Cantina da Vovó</h4>
+                        <h4>{{ t('case_cantina_title') }}</h4>
                     </div>
                 </div>
             </div>
@@ -128,20 +128,20 @@
             <div class="case-content">
                 <div class="case-header mb-3">
                     <span class="badge bg-success mb-2">Restaurante</span>
-                    <h3>Cantina da Vovó</h3>
-                    <p class="text-muted">Restaurante familiar - Rio de Janeiro/RJ</p>
+                    <h3>{{ t('case_cantina_title') }}</h3>
+                    <p class="text-muted">{{ t('case_cantina_desc') }}</p>
                 </div>
                 
                 <div class="challenge mb-4">
-                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Desafio</h5>
+                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>{{ t('case_challenge') }}</h5>
                     <p>Gestão de pedidos confusa, controle de caixa manual e dificuldade para acompanhar performance de pratos e funcionários.</p>
                 </div>
 
                 <div class="solution mb-4">
-                    <h5><i class="fas fa-lightbulb text-success me-2"></i>Solução</h5>
+                    <h5><i class="fas fa-lightbulb text-success me-2"></i>{{ t('case_solution') }}</h5>
                     <p>Sistema completo de gestão para restaurantes com controle de pedidos, caixa integrado, gestão de funcionários e relatórios detalhados.</p>
                     <div class="automation-highlight mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
-                        <h6><i class="fas fa-cogs text-info me-2"></i>Automação n8n Implementada</h6>
+                        <h6><i class="fas fa-cogs text-info me-2"></i>{{ t('case_automation_implemented') }}</h6>
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2"><strong>• Integração com delivery:</strong> n8n conecta automaticamente iFood, Uber Eats e balcão em um só sistema</li>
                             <li class="mb-2"><strong>• Controle de mesas:</strong> Status das mesas atualizado em tempo real e avisos automáticos para garçons</li>
@@ -152,7 +152,7 @@
                 </div>
 
                 <div class="results">
-                    <h5><i class="fas fa-trophy text-warning me-2"></i>Resultados</h5>
+                    <h5><i class="fas fa-trophy text-warning me-2"></i>{{ t('case_results') }}</h5>
                     <div class="row">
                         <div class="col-6">
                             <div class="result-item">
@@ -174,7 +174,7 @@
                         <p class="mb-0">"Agora tenho controle total do restaurante. Sei exatamente quais pratos vendem mais e posso tomar decisões baseadas em dados reais."</p>
                     </blockquote>
                     <figcaption class="blockquote-footer mt-2">
-                        <strong>Roberto Silva</strong>, Proprietário
+                        <strong>Roberto Silva</strong>, {{ t('case_owner') }}
                     </figcaption>
                 </div>
             </div>
@@ -204,15 +204,15 @@
                 </div>
                 
                 <div class="challenge mb-4">
-                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Desafio</h5>
+                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>{{ t('case_challenge') }}</h5>
                     <p>Agendamentos em papel, prontuários desorganizados, dificuldade para controlar convênios e falta de relatórios médicos.</p>
                 </div>
 
                 <div class="solution mb-4">
-                    <h5><i class="fas fa-lightbulb text-success me-2"></i>Solução</h5>
+                    <h5><i class="fas fa-lightbulb text-success me-2"></i>{{ t('case_solution') }}</h5>
                     <p>Sistema integrado de gestão clínica com agendamento online, prontuário eletrônico, controle de convênios e relatórios médicos.</p>
                     <div class="automation-highlight mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
-                        <h6><i class="fas fa-cogs text-info me-2"></i>Automação n8n Implementada</h6>
+                        <h6><i class="fas fa-cogs text-info me-2"></i>{{ t('case_automation_implemented') }}</h6>
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2"><strong>• Lembretes inteligentes:</strong> n8n envia SMS/WhatsApp automático 24h antes da consulta para confirmar presença</li>
                             <li class="mb-2"><strong>• Integração com convênios:</strong> Autorização de guias processada automaticamente via API dos convênios</li>
@@ -223,7 +223,7 @@
                 </div>
 
                 <div class="results">
-                    <h5><i class="fas fa-trophy text-warning me-2"></i>Resultados</h5>
+                    <h5><i class="fas fa-trophy text-warning me-2"></i>{{ t('case_results') }}</h5>
                     <div class="row">
                         <div class="col-6">
                             <div class="result-item">
@@ -275,15 +275,15 @@
                 </div>
                 
                 <div class="challenge mb-4">
-                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Desafio</h5>
+                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>{{ t('case_challenge') }}</h5>
                     <p>Ordens de serviço em papel, perda de equipamentos, dificuldade para rastrear reparos e comunicação confusa com clientes.</p>
                 </div>
 
                 <div class="solution mb-4">
-                    <h5><i class="fas fa-lightbulb text-success me-2"></i>Solução</h5>
+                    <h5><i class="fas fa-lightbulb text-success me-2"></i>{{ t('case_solution') }}</h5>
                     <p>Sistema de gestão de oficinas com controle de OS, rastreamento de equipamentos, comunicação automatizada e relatórios de performance.</p>
                     <div class="automation-highlight mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
-                        <h6><i class="fas fa-cogs text-info me-2"></i>Automação n8n Implementada</h6>
+                        <h6><i class="fas fa-cogs text-info me-2"></i>{{ t('case_automation_implemented') }}</h6>
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2"><strong>• Comunicação automatizada:</strong> n8n envia atualizações de status via WhatsApp toda vez que O.S. muda de etapa</li>
                             <li class="mb-2"><strong>• Controle de peças:</strong> Pedidos para distribuidores feitos automaticamente quando peça não está em estoque</li>
@@ -294,7 +294,7 @@
                 </div>
 
                 <div class="results">
-                    <h5><i class="fas fa-trophy text-warning me-2"></i>Resultados</h5>
+                    <h5><i class="fas fa-trophy text-warning me-2"></i>{{ t('case_results') }}</h5>
                     <div class="row">
                         <div class="col-6">
                             <div class="result-item">
@@ -316,7 +316,7 @@
                         <p class="mb-0">"Zero equipamentos perdidos em 1 ano. Os clientes recebem atualizações automáticas e nossa produtividade triplicou."</p>
                     </blockquote>
                     <figcaption class="blockquote-footer mt-2">
-                        <strong>Carlos Mendes</strong>, Proprietário
+                        <strong>Carlos Mendes</strong>, {{ t('case_owner') }}
                     </figcaption>
                 </div>
             </div>
@@ -328,19 +328,19 @@
         <div class="col-12">
             <div class="card bg-primary text-white">
                 <div class="card-body p-5 text-center">
-                    <h2 class="mb-4">Retorno Sobre Investimento (ROI)</h2>
+                    <h2 class="mb-4">{{ t('case_roi_title') }}</h2>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <h3 class="fw-bold">3-6 meses</h3>
-                            <p>Tempo médio para recuperar o investimento</p>
+                            <p>{{ t('case_roi_time_desc') }}</p>
                         </div>
                         <div class="col-md-4 mb-3">
                             <h3 class="fw-bold">380%</h3>
-                            <p>ROI médio em 12 meses</p>
+                            <p>{{ t('case_roi_average_desc') }}</p>
                         </div>
                         <div class="col-md-4 mb-3">
                             <h3 class="fw-bold">R$ 15.000</h3>
-                            <p>Economia média mensal por empresa</p>
+                            <p>{{ t('case_roi_savings_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -353,9 +353,9 @@
         <div class="col-12">
             <div class="card bg-light">
                 <div class="card-body p-5 text-center">
-                    <h2 class="fw-bold mb-3">Sua Empresa Pode Ser o Próximo Case de Sucesso</h2>
+                    <h2 class="fw-bold mb-3">{{ t('case_cta_title') }}</h2>
                     <p class="lead mb-4">
-                        Transforme sua gestão empresarial e junte-se a centenas de empresas que já revolucionaram seus resultados
+                        {{ t('case_cta_subtitle') }}
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         {{ btn_cta("Ver Soluções", url_for('solutions'), "fas fa-rocket", "lg") }}

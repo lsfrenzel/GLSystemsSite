@@ -3,15 +3,15 @@
 {% from "components/buttons.html" import btn_cta, btn_secondary_neon, btn_filter %}
 {% from "components/cta_banner.html" import cta_banner %}
 
-{% block title %}Soluções - G&L Systems{% endblock %}
+{% block title %}{{ t('solutions_title') }} - {{ t('company_name') }}{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section Expandido -->
     {{ section_header(
-        badge_text="🚀 Sistemas Empresariais 2025",
-        title="Soluções Empresariais Completas", 
-        subtitle="+20 sistemas integrados • IA nativa • ROI comprovado em 90 dias • 500+ ferramentas"
+        badge_text="🚀 {{ t('solutions_title') }} 2025",
+        title="{{ t('solutions_title') }}", 
+        subtitle="{{ t('solutions_subtitle') }}"
     ) }}
         
     <!-- Estatísticas Rápidas -->

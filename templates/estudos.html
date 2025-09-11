@@ -3,22 +3,22 @@
 {% from "components/buttons.html" import btn_cta, btn_secondary_neon %}
 {% from "components/cta_banner.html" import cta_banner %}
 
-{% block title %}Estudos e Referências - G&L Systems{% endblock %}
+{% block title %}{{ t('studies_title') }} - {{ t('company_name') }}{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
     {{ section_header(
-        badge_text="📊 Evidências Científicas",
-        title="Estudos & Referências",
-        subtitle="Pesquisas, dados e evidências que comprovam a eficácia dos nossos sistemas"
+        badge_text=t('studies_badge'),
+        title=t('studies_main_title'),
+        subtitle=t('studies_main_subtitle')
     ) }}
 
     <!-- Pesquisas de Mercado -->
     {{ section_header(
-        badge_text="🔬 Pesquisas",
-        title="Pesquisas de Mercado",
-        subtitle="Dados científicos que fundamentam nossa abordagem"
+        badge_text=t('studies_research_badge'),
+        title=t('studies_research_title'),
+        subtitle=t('studies_research_subtitle')
     ) }}
             <div class="row">
                 <div class="col-lg-6 mb-4">

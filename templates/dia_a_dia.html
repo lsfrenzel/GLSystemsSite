@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% from "components/section_header.html" import section_header %}
 
-{% block title %}Ferramentas Dia-a-dia - G&L Systems{% endblock %}
+{% block title %}{{ t('daily_tools_title') }} - {{ t('company_name') }}{% endblock %}
 
 {% block content %}
 <div class="container py-5 mt-5">
     <!-- Hero Section -->
     {{ section_header(
-        badge_text="🛠️ Ferramentas Rápidas",
-        title="Ferramentas para o Dia-a-dia", 
-        subtitle="Três ferramentas essenciais para facilitar seu trabalho diário - totalmente grátis"
+        badge_text=t('daily_tools_badge'),
+        title=t('daily_tools_main_title'), 
+        subtitle=t('daily_tools_main_subtitle')
     ) }}
 
     <!-- Tools Grid -->
@@ -20,15 +20,15 @@
                 <div class="tool-icon">
                     <i class="fas fa-file-pdf"></i>
                 </div>
-                <h3 class="tool-title">Conversor para PDF</h3>
+                <h3 class="tool-title">{{ t('pdf_converter_title') }}</h3>
                 <p class="tool-description">
-                    Converta documentos Word, Excel, PowerPoint e imagens para PDF instantaneamente.
+                    {{ t('pdf_converter_desc') }}
                 </p>
                 <div class="tool-upload-area" id="pdf-converter-area">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <p>Arraste arquivos aqui ou <span class="upload-link">clique para selecionar</span></p>
-                        <small>Suporta: DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG</small>
+                        <p>{{ t('pdf_converter_drag') }} <span class="upload-link">{{ t('pdf_converter_click') }}</span></p>
+                        <small>{{ t('pdf_converter_supports') }}</small>
                     </div>
                     <input type="file" id="pdf-converter-input" class="file-input" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" multiple>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                     </div>
-                    <small class="progress-text">Convertendo...</small>
+                    <small class="progress-text">{{ t('pdf_converter_converting') }}</small>
                 </div>
                 <div class="download-area" id="pdf-converter-download" style="display: none;">
                     <div class="preview-content"></div>
@@ -50,31 +50,31 @@
                 <div class="tool-icon">
                     <i class="fas fa-compress-alt"></i>
                 </div>
-                <h3 class="tool-title">Compressor de PDF</h3>
+                <h3 class="tool-title">{{ t('pdf_compressor_title') }}</h3>
                 <p class="tool-description">
-                    Reduza o tamanho de arquivos PDF com níveis de compressão personalizáveis. Otimização inteligente.
+                    {{ t('pdf_compressor_desc') }}
                 </p>
                 
                 <!-- Compression Level Selection -->
                 <div class="compression-options mb-3">
-                    <label class="form-label"><i class="fas fa-sliders-h me-2"></i>Nível de Compressão:</label>
+                    <label class="form-label"><i class="fas fa-sliders-h me-2"></i>{{ t('pdf_compressor_level') }}</label>
                     <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="compression-level" id="comp-low" value="low">
                         <label class="btn btn-outline-primary" for="comp-low">
-                            <i class="fas fa-feather me-1"></i>Baixa
-                            <small class="d-block">Máxima qualidade</small>
+                            <i class="fas fa-feather me-1"></i>{{ t('pdf_compressor_low') }}
+                            <small class="d-block">{{ t('pdf_compressor_low_desc') }}</small>
                         </label>
                         
                         <input type="radio" class="btn-check" name="compression-level" id="comp-medium" value="medium" checked>
                         <label class="btn btn-outline-primary" for="comp-medium">
-                            <i class="fas fa-balance-scale me-1"></i>Média
-                            <small class="d-block">Balanceada</small>
+                            <i class="fas fa-balance-scale me-1"></i>{{ t('pdf_compressor_medium') }}
+                            <small class="d-block">{{ t('pdf_compressor_medium_desc') }}</small>
                         </label>
                         
                         <input type="radio" class="btn-check" name="compression-level" id="comp-high" value="high">
                         <label class="btn btn-outline-primary" for="comp-high">
-                            <i class="fas fa-compress-arrows-alt me-1"></i>Alta
-                            <small class="d-block">Máxima redução</small>
+                            <i class="fas fa-compress-arrows-alt me-1"></i>{{ t('pdf_compressor_high') }}
+                            <small class="d-block">{{ t('pdf_compressor_high_desc') }}</small>
                         </label>
                     </div>
                 </div>
@@ -82,8 +82,8 @@
                 <div class="tool-upload-area" id="pdf-compressor-area">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <p>Arraste seu PDF aqui ou <span class="upload-link">clique para selecionar</span></p>
-                        <small>Apenas arquivos PDF</small>
+                        <p>{{ t('pdf_compressor_drag') }} <span class="upload-link">{{ t('pdf_compressor_click') }}</span></p>
+                        <small>{{ t('pdf_compressor_only_pdf') }}</small>
                     </div>
                     <input type="file" id="pdf-compressor-input" class="file-input" accept=".pdf">
                 </div>
@@ -91,11 +91,11 @@
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                     </div>
-                    <small class="progress-text">Comprimindo...</small>
+                    <small class="progress-text">{{ t('pdf_compressor_compressing') }}</small>
                 </div>
                 <div class="download-area" id="pdf-compressor-download" style="display: none;">
                     <div class="compression-info mb-3">
-                        <small class="text-success">Redução: <span id="compression-ratio">0%</span></small>
+                        <small class="text-success">{{ t('pdf_compressor_reduction') }} <span id="compression-ratio">0%</span></small>
                     </div>
                     <div class="preview-content"></div>
                 </div>
@@ -108,36 +108,36 @@
                 <div class="tool-icon">
                     <i class="fas fa-magic"></i>
                 </div>
-                <h3 class="tool-title">Removedor de Fundo</h3>
+                <h3 class="tool-title">{{ t('bg_remover_title') }}</h3>
                 <p class="tool-description">
-                    Remova o fundo de imagens com IA avançada. Múltiplos algoritmos e opções de saída.
+                    {{ t('bg_remover_desc') }}
                 </p>
                 
                 <!-- AI Model Selection -->
                 <div class="bg-options mb-3">
-                    <label class="form-label"><i class="fas fa-brain me-2"></i>Modelo de IA:</label>
+                    <label class="form-label"><i class="fas fa-brain me-2"></i>{{ t('bg_remover_ai_model') }}</label>
                     <select class="form-select" id="bg-model">
-                        <option value="u2net" selected>U²-Net (Uso geral)</option>
-                        <option value="isnet">ISNet (Melhor precisão)</option>
-                        <option value="silueta">Silhueta (Objetos simples)</option>
+                        <option value="u2net" selected>{{ t('bg_remover_u2net') }}</option>
+                        <option value="isnet">{{ t('bg_remover_isnet') }}</option>
+                        <option value="silueta">{{ t('bg_remover_silueta') }}</option>
                     </select>
                 </div>
                 
                 <!-- Output Options -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label"><i class="fas fa-file-image me-2"></i>Formato:</label>
+                        <label class="form-label"><i class="fas fa-file-image me-2"></i>{{ t('bg_remover_format') }}</label>
                         <select class="form-select" id="bg-format">
-                            <option value="png" selected>PNG (transparente)</option>
-                            <option value="jpg">JPG (com fundo)</option>
+                            <option value="png" selected>{{ t('bg_remover_png') }}</option>
+                            <option value="jpg">{{ t('bg_remover_jpg') }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label"><i class="fas fa-palette me-2"></i>Fundo:</label>
+                        <label class="form-label"><i class="fas fa-palette me-2"></i>{{ t('bg_remover_background') }}</label>
                         <select class="form-select" id="bg-color">
-                            <option value="transparent" selected>Transparente</option>
-                            <option value="white">Branco</option>
-                            <option value="black">Preto</option>
+                            <option value="transparent" selected>{{ t('bg_remover_transparent') }}</option>
+                            <option value="white">{{ t('bg_remover_white') }}</option>
+                            <option value="black">{{ t('bg_remover_black') }}</option>
                         </select>
                     </div>
                 </div>
@@ -146,15 +146,15 @@
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="edge-refine" checked>
                     <label class="form-check-label" for="edge-refine">
-                        <i class="fas fa-magic me-1"></i>Refinar bordas automaticamente
+                        <i class="fas fa-magic me-1"></i>{{ t('bg_remover_refine') }}
                     </label>
                 </div>
                 
                 <div class="tool-upload-area" id="bg-remover-area">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <p>Arraste sua imagem aqui ou <span class="upload-link">clique para selecionar</span></p>
-                        <small>Suporta: JPG, PNG (máx. 10MB)</small>
+                        <p>{{ t('bg_remover_drag') }} <span class="upload-link">{{ t('bg_remover_click') }}</span></p>
+                        <small>{{ t('bg_remover_supports') }}</small>
                     </div>
                     <input type="file" id="bg-remover-input" class="file-input" accept=".jpg,.jpeg,.png">
                 </div>
@@ -162,7 +162,7 @@
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                     </div>
-                    <small class="progress-text">Removendo fundo...</small>
+                    <small class="progress-text">{{ t('bg_remover_processing') }}</small>
                 </div>
                 <div class="download-area" id="bg-remover-download" style="display: none;">
                     <div class="preview-content"></div>
@@ -175,34 +175,34 @@
     <div class="row">
         <div class="col-12">
             <div class="features-section">
-                <h3 class="text-center mb-4">Por que usar nossas ferramentas?</h3>
+                <h3 class="text-center mb-4">{{ t('daily_tools_features_title') }}</h3>
                 <div class="row g-4">
                     <div class="col-md-3">
                         <div class="feature-item text-center">
                             <i class="fas fa-shield-alt feature-icon"></i>
-                            <h5>100% Seguro</h5>
-                            <p>Seus arquivos são processados localmente. Máxima privacidade garantida.</p>
+                            <h5>{{ t('daily_tools_secure') }}</h5>
+                            <p>{{ t('daily_tools_secure_desc') }}</p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="feature-item text-center">
                             <i class="fas fa-rocket feature-icon"></i>
-                            <h5>Super Rápido</h5>
-                            <p>Processamento otimizado para resultados em segundos.</p>
+                            <h5>{{ t('daily_tools_fast') }}</h5>
+                            <p>{{ t('daily_tools_fast_desc') }}</p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="feature-item text-center">
                             <i class="fas fa-gift feature-icon"></i>
-                            <h5>Totalmente Grátis</h5>
-                            <p>Sem limites, sem cadastro, sem custos ocultos.</p>
+                            <h5>{{ t('daily_tools_free') }}</h5>
+                            <p>{{ t('daily_tools_free_desc') }}</p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="feature-item text-center">
                             <i class="fas fa-cog feature-icon"></i>
-                            <h5>Fácil de Usar</h5>
-                            <p>Interface intuitiva. Apenas arraste, solte e baixe.</p>
+                            <h5>{{ t('daily_tools_easy') }}</h5>
+                            <p>{{ t('daily_tools_easy_desc') }}</p>
                         </div>
                     </div>
                 </div>

@@ -602,27 +602,119 @@ def convert_file_to_pdf(file_path, filename):
             c.save()
             
         elif ext in ['ppt', 'pptx']:
-            # Convert PowerPoint to PDF (simplified)
+            # Convert PowerPoint to PDF with images preserved
             prs = Presentation(file_path)
             
             c = canvas.Canvas(output_path, pagesize=letter)
-            y_position = 750
+            page_width, page_height = letter
             
+            slide_number = 0
+            image_counter = 0
             for slide in prs.slides:
-                c.drawString(50, y_position, f"Slide {prs.slides.index(slide) + 1}")
+                slide_number += 1
+                c.showPage()  # Start new page for each slide
+                y_position = page_height - 50
+                
+                # Title for slide
+                c.setFont("Helvetica-Bold", 14)
+                c.drawString(50, y_position, f"Slide {slide_number}")
                 y_position -= 30
+                c.setFont("Helvetica", 12)
+                
+                # Track image positions to avoid overlap
+                image_positions = []
                 
                 for shape in slide.shapes:
-                    if hasattr(shape, "text") and hasattr(shape, "text") and getattr(shape, "text", "").strip():
-                        c.drawString(70, y_position, getattr(shape, "text", "")[:70])
-                        y_position -= 20
-                        if y_position < 50:
-                            c.showPage()
-                            y_position = 750
+                    # Handle text shapes
+                    if hasattr(shape, "text") and shape.text.strip():
+                        text = shape.text.strip()
+                        # Split long text into multiple lines
+                        words = text.split()
+                        line = ""
+                        
+                        for word in words:
+                            if len(line + word) > 65:
+                                if line:
+                                    c.drawString(70, y_position, line)
+                                    y_position -= 15
+                                    line = word + " "
+                                else:
+                                    c.drawString(70, y_position, word[:65])
+                                    y_position -= 15
+                            else:
+                                line += word + " "
+                        
+                        if line.strip():
+                            c.drawString(70, y_position, line.strip())
+                            y_position -= 15
+                    
+                    # Handle image shapes
+                    elif hasattr(shape, 'shape_type'):
+                        # Check if it's a picture shape
+                        if shape.shape_type == 13:  # MSO_SHAPE_TYPE.PICTURE
+                            try:
+                                # Extract image from shape
+                                image_part = shape.part.related_parts[shape._element.blip_rId]
+                                image_counter += 1
+                                img_filename = f"slide_img_{slide_number}_{image_counter}.{image_part.content_type.split('/')[-1]}"
+                                img_path = os.path.join(TEMP_FOLDER, img_filename)
+                                
+                                with open(img_path, 'wb') as img_file:
+                                    img_file.write(image_part.blob)
+                                
+                                # Load and resize image
+                                img = Image.open(img_path)
+                                img_width, img_height = img.size
+                                
+                                # Calculate available space
+                                max_width = (page_width - 100) // 2  # Use half width for images
+                                max_height = 150
+                                
+                                if img_width > max_width or img_height > max_height:
+                                    ratio = min(max_width / img_width, max_height / img_height)
+                                    img_width = int(img_width * ratio)
+                                    img_height = int(img_height * ratio)
+                                
+                                # Find position for image (avoid text area)
+                                img_x = page_width - img_width - 50  # Right side
+                                img_y = y_position - img_height
+                                
+                                # Check if image overlaps with previous images
+                                overlap = False
+                                for prev_x, prev_y, prev_w, prev_h in image_positions:
+                                    if (img_x < prev_x + prev_w and img_x + img_width > prev_x and
+                                        img_y < prev_y + prev_h and img_y + img_height > prev_y):
+                                        overlap = True
+                                        break
+                                
+                                if overlap or img_y < 50:
+                                    # Move to next available position
+                                    img_y = y_position - img_height - 20
+                                    if img_y < 50:
+                                        img_y = page_height - 100  # Top of page
+                                
+                                # Draw image
+                                if img_y > 50:
+                                    c.drawImage(img_path, img_x, img_y, 
+                                               width=img_width, height=img_height)
+                                    image_positions.append((img_x, img_y, img_width, img_height))
+                                
+                                # Clean up temp image
+                                os.remove(img_path)
+                                
+                            except Exception as e:
+                                print(f"Error processing slide image: {e}")
+                                c.drawString(70, y_position, "[Imagem do slide não pôde ser processada]")
+                                y_position -= 15
+                    
+                    # Ensure we don't run out of space
+                    if y_position < 100:
+                        break
                 
-                if y_position < 700:  # New slide
-                    c.showPage()
-                    y_position = 750
+                # Add separator between slides if not the last slide
+                if slide_number < len(prs.slides):
+                    y_position = 80
+                    c.line(50, y_position, page_width - 50, y_position)
             
             c.save()
         
